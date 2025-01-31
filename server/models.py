@@ -36,6 +36,9 @@ class User(db.Model, SerializerMixin):
 
     rentals = association_proxy('bookings', 'rental', creator=lambda rental_obj: Booking(rental=rental_obj))
 
+    #Add serialization rules
+    serialize_rules = ('-bookings.user',)
+
 class Rental(db.Model, SerializerMixin):
     __tablename__ = 'rentals'
 
@@ -53,6 +56,9 @@ class Rental(db.Model, SerializerMixin):
 
     users = association_proxy('bookings', 'user', creator=lambda user_obj: Booking(user=user_obj))
 
+    #Add serialization rules
+    serialize_rules = ('-bookings.rental',)
+
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
 
@@ -67,3 +73,6 @@ class Booking(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates='bookings')
     rental = db.relationship('Rental', back_populates='bookings')
+
+    #Add serialization rules
+    serialize_rules = ('-user.bookings', '-rental.bookings',)
