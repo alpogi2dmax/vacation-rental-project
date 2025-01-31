@@ -38,6 +38,7 @@ class Rental(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     address = db.Column(db.String)
     city = db.Column(db.String)
+    state = db.Column(db.String)
     daily_rate = db.Column(db.Integer)
     description = db.Column(db.String)
     cover_pic = db.Column(db.String)

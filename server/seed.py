@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User
+from models import db, User, Rental
 
 if __name__ == '__main__':
     fake = Faker()
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
         print("Clearing db...")
         User.query.delete()
+        Rental.query.delete()
 
         print("Seeding users...")
         users = []
@@ -34,6 +35,12 @@ if __name__ == '__main__':
         user1.password_hash = 'password'
         users.append(user1)
         db.session.add_all(users)
+
+        print("Seeding rentals...")
+        rentals = []
+        rentals.append(Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image'))
+        db.session.add_all(rentals)
         db.session.commit()
+
 
         print("Seeding done!")
