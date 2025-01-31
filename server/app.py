@@ -23,7 +23,26 @@ class Users(Resource):
     def get(self):
 
         users = [users.to_dict(rules=('rentals',)) for users in User.query.all()]
-        return make_response(users, 200)
+        return users, 200
+
+    def post(self):
+        try:
+            data = request.get_json()
+            user = User(
+                username = data['username'],
+                email = data['email'],
+                first_name = data['first_name'],
+                last_name = data['last_name'],
+                profile_pic = data['profile_pic']
+            )
+            user.password_hash = data['password']
+            db.session.add(user)
+            db.session.commit()
+            user_dict = user.to_dict()
+            return make_response(user_dict, 201)
+        except:
+            response_body = {'errors': ['validation errors']}
+            return response_body, 400
 
 api.add_resource(Users,'/users')
 
