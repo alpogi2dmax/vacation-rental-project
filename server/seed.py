@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Rental
+from models import db, User, Rental, Booking, datetime
 
 if __name__ == '__main__':
     fake = Faker()
@@ -40,7 +40,14 @@ if __name__ == '__main__':
         rentals = []
         rentals.append(Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image'))
         db.session.add_all(rentals)
+
+        print("Seeding bookings...")
+        bookings = []
+        bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), user_id=1, rental_id=1))
+        db.session.add_all(bookings)
         db.session.commit()
 
+
+        
 
         print("Seeding done!")

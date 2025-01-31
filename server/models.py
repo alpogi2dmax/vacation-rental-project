@@ -2,7 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from config import db, bcrypt
+from config import db, datetime, bcrypt
 
 # Models go here!
 
@@ -30,6 +30,11 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
+    
+    #add relationships
+    bookings = db.relationship('Booking', back_populates='user', cascade='all, delete-orphan')
+
+    rentals = association_proxy('bookings', 'rental', creator=lambda rental_obj: Booking(rental=rental_obj))
 
 class Rental(db.Model, SerializerMixin):
     __tablename__ = 'rentals'
@@ -42,4 +47,23 @@ class Rental(db.Model, SerializerMixin):
     daily_rate = db.Column(db.Integer)
     description = db.Column(db.String)
     cover_pic = db.Column(db.String)
-    
+
+    #add relationships
+    bookings = db.relationship('Booking', back_populates='rental', cascade='all, delete-orphan')
+
+    users = association_proxy('bookings', 'user', creator=lambda user_obj: Booking(user=user_obj))
+
+class Booking(db.Model, SerializerMixin):
+    __tablename__ = 'bookings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+
+    #Add relatinoships
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    rental_id = db.Column(db.Integer, db.ForeignKey('rentals.id'))
+
+    user = db.relationship('User', back_populates='bookings')
+    rental = db.relationship('Rental', back_populates='bookings')
