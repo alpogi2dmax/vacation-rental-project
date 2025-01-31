@@ -46,6 +46,43 @@ class Users(Resource):
 
 api.add_resource(Users,'/users')
 
+class UsersByID(Resource):
+
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user:
+            user_dict = user.to_dict()
+            return user_dict, 200
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+        
+    def patch(self, id):
+        user = User.query.filter_by(id=id).first()
+        data = request.get_json()
+        if user:
+            for attr, value, in data.items():
+                setattr(user, attr, value)
+            db.session.add(user)
+            db.session.commit()
+            user_dict = user.to_dict()
+            return user_dict, 202
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+    
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            response_body = ''
+            return response_body, 204
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+
+api.add_resource(UsersByID,'/users/<int:id>')
 
 
 if __name__ == '__main__':
