@@ -22,6 +22,7 @@ if __name__ == '__main__':
         print("Clearing db...")
         User.query.delete()
         Rental.query.delete()
+        Booking.query.delete()
 
         print("Seeding users...")
         users = []
@@ -34,16 +35,25 @@ if __name__ == '__main__':
         )
         user1.password_hash = 'password'
         users.append(user1)
+        user2 = User(
+            username='gelolico',
+            email='gelolico@gmail.com',
+            first_name='Angelo Christopher',
+            last_name='Lico',
+            profile_pic='image'
+        )
+        user2.password_hash = 'password'
+        users.append(user2)
         db.session.add_all(users)
 
         print("Seeding rentals...")
         rentals = []
-        rentals.append(Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image'))
+        rentals.append(Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image', owner_id=2))
         db.session.add_all(rentals)
 
         print("Seeding bookings...")
         bookings = []
-        bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), user_id=1, rental_id=1))
+        bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), traveler_id=1, rental_id=1))
         db.session.add_all(bookings)
         db.session.commit()
 

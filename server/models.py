@@ -2,7 +2,10 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
+
 from config import db, datetime, bcrypt
+
+
 
 # Models go here!
 
@@ -32,12 +35,14 @@ class User(db.Model, SerializerMixin):
             self._password_hash, password.encode('utf-8'))
     
     #add relationships
-    bookings = db.relationship('Booking', back_populates='user', cascade='all, delete-orphan')
+    owned_rentals = db.relationship('Rental', back_populates='owner', cascade='all, delete-orphan')
 
-    rentals = association_proxy('bookings', 'rental', creator=lambda rental_obj: Booking(rental=rental_obj))
+    bookings = db.relationship('Booking', back_populates='traveler', cascade='all, delete-orphan')
+
+    rentals = association_proxy('bookings', 'rental')
 
     #Add serialization rules
-    serialize_rules = ('-bookings.user',)
+    serialize_rules = ('-bookings.user', '-owned_rentals.owner',)
 
 class Rental(db.Model, SerializerMixin):
     __tablename__ = 'rentals'
@@ -52,12 +57,16 @@ class Rental(db.Model, SerializerMixin):
     cover_pic = db.Column(db.String)
 
     #add relationships
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    owner = db.relationship('User', back_populates='owned_rentals')
+
     bookings = db.relationship('Booking', back_populates='rental', cascade='all, delete-orphan')
 
-    users = association_proxy('bookings', 'user', creator=lambda user_obj: Booking(user=user_obj))
+    traveler = association_proxy('bookings', 'traveler')
 
-    #Add serialization rules
-    serialize_rules = ('-bookings.rental',)
+    # Add serialization rules
+    serialize_rules = ('-owner.owned_rentals', '-bookings.rental',)
 
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
@@ -68,11 +77,20 @@ class Booking(db.Model, SerializerMixin):
     end_date = db.Column(db.DateTime)
 
     #Add relatinoships
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    traveler_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     rental_id = db.Column(db.Integer, db.ForeignKey('rentals.id'))
 
-    user = db.relationship('User', back_populates='bookings')
+    traveler = db.relationship('User', back_populates='bookings')
     rental = db.relationship('Rental', back_populates='bookings')
 
-    #Add serialization rules
-    serialize_rules = ('-user.bookings', '-rental.bookings',)
+    # Add serialization rules
+    serialize_rules = ('-traveler.bookings', '-rental.bookings',)
+
+# Traveler = aliased(User, name="traveler")
+
+# Session = sessionmaker(bind=engine)
+# session = Session()
+
+# result = session.query(Booking, User.username.label('traveler_name'))\
+#             .join(User, Booking.user_id == User.id)\
+#             .all()
