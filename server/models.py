@@ -3,11 +3,20 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
 
-from config import db, datetime, bcrypt
+from config import db, datetime, bcrypt, metadata
 
 
 
 # Models go here!
+
+rental_amenities = db.Table(
+    'rental_amenities',
+    metadata,
+    db.Column('rental_id', db.Integer, db.ForeignKey(
+        'rentals.id'), primary_key=True),
+    db.Column('amenity_id', db.Integer, db.ForeignKey(
+        'amenities.id'), primary_key=True)
+    )
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -74,8 +83,11 @@ class Rental(db.Model, SerializerMixin):
     reviews = db.relationship('Review', back_populates='reviewed_rental', cascade='all, delete-orphan')
     reviewer = association_proxy('reviews', 'reviewer')
 
+    amenities = db.relationship(
+        'Amenity', secondary=rental_amenities, back_populates='rentals')
+
     # Add serialization rules
-    serialize_rules = ('-owner.owned_rentals', '-bookings.rental', '=reviews.reviewed_rental',)
+    serialize_rules = ('-owner.owned_rentals', '-bookings.rental', '-reviews.reviewed_rental',)
 
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
@@ -111,4 +123,23 @@ class Review(db.Model, SerializerMixin):
 
     # Add serialization rules
     serialize_rules = ('-reviewer.reviews', '-reviewed_rental.reviews',)
+
+class Amenity(db.Model, SerializerMixin):
+    __tablename__ = 'amenities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    rentals = db.relationship(
+        'Rental', secondary=rental_amenities, back_populates='amenities')
+    
+
+# rental_amentities = db.Table(
+#     'rental_amenities',
+#     metadata,
+#     db.Column('rental_id', db.Integer, db.ForeignKey(
+#         'rentals.id'), primary_key=True),
+#     db.Column('amentity_id', db.Integer, db.ForeignKey(
+#         'amentities.id'), primary_key=True)
+#     )
     

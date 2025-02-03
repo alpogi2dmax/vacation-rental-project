@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Rental, Booking, Review, datetime
+from models import db, User, Rental, Booking, Review, Amenity, datetime
 
 if __name__ == '__main__':
     fake = Faker()
@@ -23,6 +23,8 @@ if __name__ == '__main__':
         User.query.delete()
         Rental.query.delete()
         Booking.query.delete()
+        Review.query.delete()
+        Amenity.query.delete()
 
         print("Seeding users...")
         users = []
@@ -48,7 +50,8 @@ if __name__ == '__main__':
 
         print("Seeding rentals...")
         rentals = []
-        rentals.append(Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image', owner_id=2))
+        rental1 = Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image', owner_id=2)
+        rentals.append(rental1)
         db.session.add_all(rentals)
 
         print("Seeding bookings...")
@@ -60,6 +63,10 @@ if __name__ == '__main__':
         reviews = []
         reviews.append(Review(title='Beautiful', review='I would love to go back!', reviewer_id=1, reviewed_rental_id=1))
         db.session.add_all(reviews)
+
+        print("Seeding amenities...")
+        amenity1 = Amenity(name='Swimming Pool')
+        rental1.amenities.append(amenity1)
         db.session.commit()
 
 
