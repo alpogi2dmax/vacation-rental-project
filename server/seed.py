@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Rental, Booking, datetime
+from models import db, User, Rental, Booking, Review, datetime
 
 if __name__ == '__main__':
     fake = Faker()
@@ -55,6 +55,11 @@ if __name__ == '__main__':
         bookings = []
         bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), traveler_id=1, rental_id=1))
         db.session.add_all(bookings)
+
+        print("Seeding reviews...")
+        reviews = []
+        reviews.append(Review(title='Beautiful', review='I would love to go back!', reviewer_id=1, reviewed_rental_id=1))
+        db.session.add_all(reviews)
         db.session.commit()
 
 
