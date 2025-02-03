@@ -9,14 +9,14 @@ from config import db, datetime, bcrypt, metadata
 
 # Models go here!
 
-rental_amenities = db.Table(
-    'rental_amenities',
-    metadata,
-    db.Column('rental_id', db.Integer, db.ForeignKey(
-        'rentals.id'), primary_key=True),
-    db.Column('amenity_id', db.Integer, db.ForeignKey(
-        'amenities.id'), primary_key=True)
-    )
+# rental_amenities = db.Table(
+#     'rental_amenities',
+#     metadata,
+#     db.Column('rental_id', db.Integer, db.ForeignKey(
+#         'rentals.id'), primary_key=True),
+#     db.Column('amenity_id', db.Integer, db.ForeignKey(
+#         'amenities.id'), primary_key=True)
+#     )
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -56,7 +56,10 @@ class User(db.Model, SerializerMixin):
     reviewed_rentals = association_proxy('reviews', 'reviewed_rental')
 
     #Add serialization rules
+    # serialize_rules = ('-bookings.traveler', 'owned_rentals.owner')
     serialize_rules = ('-bookings.traveler', '-owned_rentals.owner', '-reviews.reviewer',)
+    # serialize_only = ('id', 'username', 'email', 'first_name', 'last_name', 'profile_pic', 'owned_rentals')
+    # serialize_rules = ('-owned_rentals.owner',)
 
 class Rental(db.Model, SerializerMixin):
     __tablename__ = 'rentals'
@@ -79,14 +82,15 @@ class Rental(db.Model, SerializerMixin):
     bookings = db.relationship('Booking', back_populates='rental', cascade='all, delete-orphan')
     traveler = association_proxy('bookings', 'traveler')
 
-    #many-many-rentals
+    # many-many-reviews
     reviews = db.relationship('Review', back_populates='reviewed_rental', cascade='all, delete-orphan')
     reviewer = association_proxy('reviews', 'reviewer')
 
-    amenities = db.relationship(
-        'Amenity', secondary=rental_amenities, back_populates='rentals')
+    # amenities = db.relationship(
+    #     'Amenity', secondary=rental_amenities, back_populates='rentals')
 
     # Add serialization rules
+    # serialize_rules = ('-owner.owned_rentals', '-bookings.rental',)
     serialize_rules = ('-owner.owned_rentals', '-bookings.rental', '-reviews.reviewed_rental',)
 
 class Booking(db.Model, SerializerMixin):
@@ -105,7 +109,7 @@ class Booking(db.Model, SerializerMixin):
     rental = db.relationship('Rental', back_populates='bookings')
 
     # Add serialization rules
-    serialize_rules = ('-traveler.bookings', '-rental.bookings',)
+    serialize_rules = ('-traveler.bookings', '-rental.bookings', '-traveler.reviews')
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
@@ -122,16 +126,17 @@ class Review(db.Model, SerializerMixin):
     reviewed_rental = db.relationship('Rental', back_populates='reviews')
 
     # Add serialization rules
-    serialize_rules = ('-reviewer.reviews', '-reviewed_rental.reviews',)
+    serialize_only = ('title', 'review', 'reviewer.first_name')
+    serialize_rules = ('-reviewer.reviews', '-reviewed_rental.reviews', '-reviewer.bookings', '-bookings.reviews',)
 
-class Amenity(db.Model, SerializerMixin):
-    __tablename__ = 'amenities'
+# class Amenity(db.Model, SerializerMixin):
+#     __tablename__ = 'amenities'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String)
 
-    rentals = db.relationship(
-        'Rental', secondary=rental_amenities, back_populates='amenities')
+#     rentals = db.relationship(
+#         'Rental', secondary=rental_amenities, back_populates='amenities')
     
 
 # rental_amentities = db.Table(

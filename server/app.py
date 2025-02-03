@@ -22,7 +22,7 @@ class Users(Resource):
 
     def get(self):
 
-        users = [users.to_dict(rules=('rentals',)) for users in User.query.all()]
+        users = [users.to_dict() for users in User.query.all()]
         return users, 200
 
     def post(self):
@@ -83,6 +83,14 @@ class UsersByID(Resource):
             return response_body, 404
 
 api.add_resource(UsersByID,'/users/<int:id>')
+
+class Rentals(Resource):
+
+    def get(self):
+        rentals = [rental.to_dict() for rental in Rental.query.all()]
+        return rentals, 200
+    
+api.add_resource(Rentals, '/rentals')
 
 
 if __name__ == '__main__':
