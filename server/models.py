@@ -1,4 +1,4 @@
-from sqlalchemy_serializer import SerializerMixin
+# from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -18,7 +18,7 @@ rental_amenities = db.Table(
         'amenities.id'), primary_key=True)
     )
 
-class User(db.Model, SerializerMixin):
+class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -61,7 +61,7 @@ class User(db.Model, SerializerMixin):
     # serialize_only = ('id', 'username', 'email', 'first_name', 'last_name', 'profile_pic', 'owned_rentals')
     # serialize_rules = ('-owned_rentals.owner',)
 
-class Rental(db.Model, SerializerMixin):
+class Rental(db.Model):
     __tablename__ = 'rentals'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -93,7 +93,7 @@ class Rental(db.Model, SerializerMixin):
     # serialize_rules = ('-owner.owned_rentals', '-bookings.rental',)
     serialize_rules = ('-owner.owned_rentals', '-bookings.rental', '-reviews.reviewed_rental', '-amenity.rentals',)
 
-class Booking(db.Model, SerializerMixin):
+class Booking(db.Model):
     __tablename__ = 'bookings'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -111,7 +111,7 @@ class Booking(db.Model, SerializerMixin):
     # Add serialization rules
     serialize_rules = ('-traveler.bookings', '-rental.bookings', '-traveler.reviews', '-reviewed_rental.reviews')
 
-class Review(db.Model, SerializerMixin):
+class Review(db.Model):
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -129,7 +129,7 @@ class Review(db.Model, SerializerMixin):
     serialize_only = ('id', 'title', 'review', 'reviewer.first_name', 'reviewed_rental')
     serialize_rules = ('-reviewer.reviews', '-reviewed_rental.reviews', '-reviewer.bookings', '-bookings.reviews',)
 
-class Amenity(db.Model, SerializerMixin):
+class Amenity(db.Model):
     __tablename__ = 'amenities'
 
     id = db.Column(db.Integer, primary_key=True)
