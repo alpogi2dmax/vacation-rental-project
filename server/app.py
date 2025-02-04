@@ -294,6 +294,74 @@ class ReviewsByID(Resource):
         
 api.add_resource(ReviewsByID, '/reviews/<int:id>')
 
+class SignUp(Resource):
+
+    def post(self):
+        try:
+            data = request.get_json()
+            user = User(
+                username = data['username'],
+                email = data['email'],
+                first_name = data['first_name'],
+                last_name = data['last_name'],
+                profile_pic = data['profile_pic']
+            )
+            user.password_hash = data['password']
+            db.session.add(user)
+            db.session.commit()
+            user_dict = user.to_dict()
+            return make_response(user_dict, 201)
+        except:
+            response_body = {'errors': ['validation errors']}
+            return response_body, 400
+
+api.add_resource(SignUp, '/signup')
+
+class CheckSession(Resource):
+
+    def get(self):
+
+        user_id = session.get('user_id')
+
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            user_dict = user.to_dict()
+            return user_dict, 200
+        return {}, 204
+
+api.add_resource(CheckSession, '/checksession')
+
+class Login(Resource):
+
+    def post(self):
+
+        username = request.get_json().get('username')
+        user = User.query.filter(User.username == username).first()
+
+        password = request.get_json()['password']
+
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            user_dict = user.to_dict()
+            return user_dict, 200
+        else:
+            response_body = {'error': 'Invalid username and password'}
+            return response_body, 401
+        
+api.add_resource(Login, '/login')
+
+class Logout(Resource):
+
+    def delete(self):
+
+        session['user_id'] = None
+        return {}, 204
+    
+api.add_resource(Logout, '/logout')
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 
