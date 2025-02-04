@@ -22,6 +22,10 @@ class RentalSchema(ma.SQLAlchemySchema):
     id = ma.auto_field()
     name = ma.auto_field()
     address = ma.auto_field()
+    city = ma.auto_field()
+    state = ma.auto_field()
+    daily_rate = ma.auto_field()
+    description = ma.auto_field()
     owner = ma.Nested(lambda: UserSchema, exclude=("owned_rentals", "rentals",))
     traveler = ma.Nested(lambda: UserSchema, only=("id", "username"))
 
@@ -208,6 +212,30 @@ class Rentals(Resource):
         rentals = Rental.query.all()
         response = make_response(rentals_schema.dump(rentals), 200)
         return response
+    
+    def post(self):
+        try:
+            data = request.get_json()
+            rental = Rental(
+                name = data['name'],
+                address = data['address'],
+                city = data['city'],
+                state = data['state'],
+                daily_rate = data['daily_rate'],
+                description = data['description'],
+                cover_pic = data['cover_pic'],
+                owner_id = data['owner_id']
+            )
+            db.session.add(rental)
+            db.session.commit()
+            response = make_response(
+                user_schema.dump(rental), 201)
+            return response
+        except:
+            response_body = {'errors': ['validation errors']}
+            return response_body, 400
+    
+
 
     # def get(self):
     #     rentals = [rental.to_dict() for rental in Rental.query.all()]
@@ -244,6 +272,32 @@ class RentalsByID(Resource):
             rental_schema.dump(rental), 200
         )
         return response
+    
+    def patch(self, id):
+        rental = Rental.query.filter_by(id=id).first()
+        data = request.get_json()
+        if rental:
+            for attr, value, in data.items():
+                setattr(rental, attr, value)
+            db.session.add(rental)
+            db.session.commit()
+            response = make_response(
+                user_schema.dump(rental), 202)
+            return response
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+        
+    def delete(self, id):
+        rental = Rental.query.filter_by(id=id).first()
+        if rental:
+            db.session.delete(rental)
+            db.session.commit()
+            response_body = ''
+            return response_body, 204
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
 
     # 
     
