@@ -1,10 +1,14 @@
+import Login from './Login'
 
+function MyAccount({user, onLogin}) {
 
-function MyAccount() {
+    if (!user) return <Login onLogin={onLogin}/>
+
+    console.log(user)
 
     return (
         <div>
-            My Account
+            <h1>Welcome {user.first_name} {user.last_name}!</h1>
         </div>
     )
 }

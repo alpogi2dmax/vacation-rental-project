@@ -7,12 +7,40 @@ import MyAccount from "./MyAccount";
 
 function App() {
 
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    fetch('/checksession')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.session === null) {
+          console.log('No active session');
+        } else {
+          setUser(data);
+        }
+      })
+      .catch(error => console.error('Fetch error:', error));
+  }, []);
+
+  function handleLogOut() {
+    fetch('/logout', { method: 'DELETE' }).then((r) => {
+        if (r.ok) {
+            setUser(null);
+        }
+    })
+}
+
   return (
     <div className="fontapp">
-      <NavBar />
+      <NavBar onLogOut={handleLogOut}/>
       <Routes>
-        <Route path="rentals" element={<RentalList />}/>
-        <Route path="myaccount" element={<MyAccount />}/>
+        <Route path="" element={<RentalList />}/>
+        <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser}/>}/>
       </Routes>
     </div>
   )

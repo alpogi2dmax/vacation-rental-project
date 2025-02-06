@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, session
+from flask import request, make_response, session, jsonify
 from flask_restful import Resource
 
 # Local imports
@@ -399,25 +399,6 @@ class SignUp(Resource):
         except:
             response_body = {'errors': ['validation errors']}
             return response_body, 400
-        
-    # def post(self):
-    #     try:
-    #         data = request.get_json()
-    #         user = User(
-    #             username = data['username'],
-    #             email = data['email'],
-    #             first_name = data['first_name'],
-    #             last_name = data['last_name'],
-    #             profile_pic = data['profile_pic']
-    #         )
-    #         user.password_hash = data['password']
-    #         db.session.add(user)
-    #         db.session.commit()
-    #         user_dict = user.to_dict()
-    #         return make_response(user_dict, 201)
-    #     except:
-    #         response_body = {'errors': ['validation errors']}
-    #         return response_body, 400
 
 api.add_resource(SignUp, '/signup')
 
@@ -428,21 +409,14 @@ class CheckSession(Resource):
         user_id = session.get('user_id')
 
         if user_id:
-            user = User.query.filter(User.id == user_id).first()
-            response = make_response(
-                user_schema.dump(user), 200)
+               user = User.query.filter(User.id == user_id).first()
+               response = make_response(user_schema.dump(user), 200)
+               return response
+        else:
+            # Return a response that can be safely parsed as JSON
+            response_body = {"message": "No active session", "session": None}
+            response = make_response(jsonify(response_body), 200)
             return response
-        return {}, 204
-
-    # def get(self):
-
-    #     user_id = session.get('user_id')
-
-    #     if user_id:
-    #         user = User.query.filter(User.id == user_id).first()
-    #         user_dict = user.to_dict()
-    #         return user_dict, 200
-    #     return {}, 204
 
 api.add_resource(CheckSession, '/checksession')
 
