@@ -54,17 +54,32 @@ if __name__ == '__main__':
         )
         user2.password_hash = 'password'
         users.append(user2)
+        user3 = User(
+            username='glendalico',
+            email='glendalico@gmail.com',
+            first_name='Glenda',
+            last_name='Lico',
+            profile_pic='image'
+        )
+        user3.password_hash = 'password'
+        users.append(user3)
         db.session.add_all(users)
 
         print("Seeding rentals...")
         rentals = []
         rental1 = Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image', owner_id=2)
         rentals.append(rental1)
+        rental2 = Rental(name='Seaside Cabana', address ='543 Beach St', city='Carmel', state='CA', description='Enjoy the peace and quiet!', daily_rate=350, cover_pic='image', owner_id=1)
+        rentals.append(rental2)
+        rental3 = Rental(name='City Condo', address ='222 City St', city='San Francisco', state='CA', description='Near the mall!', daily_rate=222, cover_pic='image', owner_id=3)
+        rentals.append(rental3)
         db.session.add_all(rentals)
 
         print("Seeding bookings...")
         bookings = []
         bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), traveler_id=1, rental_id=1))
+        bookings.append(Booking(name='glendalico-Seaside Cabana', start_date=datetime.strptime('06/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('06/05/2025', '%m/%d/%Y'), traveler_id=3, rental_id=2))
+        bookings.append(Booking(name='gelolico-City Condo', start_date=datetime.strptime('07/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('07/05/2025', '%m/%d/%Y'), traveler_id=2, rental_id=3))
         db.session.add_all(bookings)
 
         print("Seeding reviews...")

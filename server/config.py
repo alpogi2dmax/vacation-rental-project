@@ -9,6 +9,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from datetime import datetime
+from flask_marshmallow import Marshmallow
 
 # Local imports
 
@@ -19,6 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret_key'
 app.json.compact = False
 
+
 # Define metadata, instantiate db
 metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -26,6 +28,8 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
+
+ma = Marshmallow(app)
 
 bcrypt = Bcrypt(app)
 

@@ -1,10 +1,14 @@
 # from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
+from marshmallow import Schema, fields
+from sqlalchemy.orm import validates
+from email_validator import validate_email, EmailNotValidError
+
+# marshmallow schema fields
 
 
-from config import db, datetime, bcrypt, metadata
-
+from config import db, datetime, bcrypt, metadata, ma
 
 
 # Models go here!
@@ -22,7 +26,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String)
     email = db.Column(db.String)
     first_name = db.Column(db.String)
@@ -55,11 +59,33 @@ class User(db.Model):
     reviews = db.relationship('Review', back_populates='reviewer', cascade='all, delete-orphan')
     reviewed_rentals = association_proxy('reviews', 'reviewed_rental')
 
-    #Add serialization rules
-    # serialize_rules = ('-bookings.traveler', 'owned_rentals.owner')
-    serialize_rules = ('-bookings.traveler', '-owned_rentals.owner', '-reviews.reviewer',)
-    # serialize_only = ('id', 'username', 'email', 'first_name', 'last_name', 'profile_pic', 'owned_rentals')
-    # serialize_rules = ('-owned_rentals.owner',)
+    #validation
+    @validates('username')
+    def validate_username(self, key, username):
+        if len(username) < 3 or len(username) > 15:
+            raise ValueError('username must be between 3 and 15 characters')
+        return username
+    
+    @validates('first_name')
+    def validate_first_name(self, key, first_name):
+        if len(first_name) < 1 or len(first_name) > 20:
+            raise ValueError('first name must be between 1 and 20 characters')
+        return first_name
+    
+    @validates('last_name')
+    def validate_last_name(self, key, last_name):
+        if len(last_name) < 1 or len(last_name) > 20:
+            raise ValueError('last name must be between 1 and 20 characters')
+        return last_name
+    
+    @validates('email')
+    def validate_email(self, key, email):
+        try:
+            validate_email(email)
+        except EmailNotValidError:
+            raise ValueError("Invalid email address")
+        return email
+
 
 class Rental(db.Model):
     __tablename__ = 'rentals'
@@ -88,10 +114,9 @@ class Rental(db.Model):
 
     amenities = db.relationship(
         'Amenity', secondary=rental_amenities, back_populates='rentals')
+    
+    #validation
 
-    # Add serialization rules
-    # serialize_rules = ('-owner.owned_rentals', '-bookings.rental',)
-    serialize_rules = ('-owner.owned_rentals', '-bookings.rental', '-reviews.reviewed_rental', '-amenity.rentals',)
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
@@ -125,10 +150,6 @@ class Review(db.Model):
     reviewer = db.relationship('User', back_populates='reviews')
     reviewed_rental = db.relationship('Rental', back_populates='reviews')
 
-    # Add serialization rules
-    serialize_only = ('id', 'title', 'review', 'reviewer.first_name', 'reviewed_rental')
-    serialize_rules = ('-reviewer.reviews', '-reviewed_rental.reviews', '-reviewer.bookings', '-bookings.reviews',)
-
 class Amenity(db.Model):
     __tablename__ = 'amenities'
 
@@ -138,18 +159,149 @@ class Amenity(db.Model):
     rentals = db.relationship(
         'Rental', secondary=rental_amenities, back_populates='amenities')
     
-    # Add serialization rules
-    # serialize_rules = ('-owner.owned_rentals', '-bookings.rental',)
-    serialize_only = ('id', 'name')
-    serialize_rules = ('-rental.amenities',)
+    
+class UserSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = User
+        load_instance = True
+
+    id = ma.auto_field()
+    username = ma.auto_field()
+    first_name = ma.auto_field()
+    last_name = ma.auto_field()
+    email = ma.auto_field()
+    profile_pic = ma.auto_field()
+    # owned_rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'address', 'bookings'))
+    owned_rentals = fields.List(fields.Nested(lambda: RentalSchema(only=('id', 'name', 'bookings'))))
+    # rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'city', 'amenities', 'bookings'))
+    rentals = ma.Method("get_bookings")
+    # bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "rental"))
     
 
-# rental_amentities = db.Table(
-#     'rental_amenities',
-#     metadata,
-#     db.Column('rental_id', db.Integer, db.ForeignKey(
-#         'rentals.id'), primary_key=True),
-#     db.Column('amentity_id', db.Integer, db.ForeignKey(
-#         'amentities.id'), primary_key=True)
-#     )
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "usersbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("users"),
+        }
+    )
+
+    def get_bookings(self, user):
+        rentals = user.rentals
+        rental_schema = RentalSchema()
+        filtered_rentals = []
+        for rental in rentals:
+            filtered_bookings = [booking for booking in rental.bookings if booking.traveler_id == user.id]
+            rental_data = rental_schema.dump(rental)
+            rental_data['bookings'] = BookingSchema(many=True).dump(filtered_bookings)
+            filtered_rentals.append(rental_data)
+        return filtered_rentals
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+class RentalSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Rental
+        load_instance = True
+
+    id = ma.auto_field()
+    name = ma.auto_field()
+    address = ma.auto_field()
+    city = ma.auto_field()
+    state = ma.auto_field()
+    daily_rate = ma.auto_field()
+    description = ma.auto_field()
+    owner = ma.Nested(lambda: UserSchema, only=('id', 'username'))
+    traveler = ma.Nested(lambda: UserSchema, many=True, only=('id', 'username'))
+    bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "traveler_id"))
+    reviews = ma.Nested(lambda: ReviewSchema, many=True, only=('id', 'title', 'review', 'reviewer'))
+    amenities = ma.Nested(lambda: AmenitySchema, many=True, only=('id', 'name'))
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "rentalsbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("rentals"),
+        }
+    )
+
+rental_schema = RentalSchema()
+rentals_schema = RentalSchema(many=True)
+
+
+class BookingSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Booking
+        load_instance = True
+
+    id = ma.auto_field()
+    name = ma.auto_field()
+    start_date = ma.auto_field()
+    end_date = ma.auto_field()
+    traveler_id = ma.auto_field()
+    rental_id = ma.auto_field()
+
+    traveler = ma.Nested(UserSchema, only=('id', 'username'))
+    rental = ma.Nested(RentalSchema, only=('id', 'name'))
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "bookingsbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("bookings"),
+        }
+    )
+        
+booking_schema = BookingSchema()
+bookings_schema = BookingSchema(many=True)
+
+class ReviewSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Review
+        load_instance = True
     
+    id = ma.auto_field()
+    title = ma.auto_field()
+    review = ma.auto_field()
+    reviewer_id = ma.auto_field()
+    reviewed_rental_id = ma.auto_field()
+
+    reviewer = ma.Nested(UserSchema, only=('id', 'username'))
+    reviewed_rental = ma.Nested(RentalSchema, only=('id', 'name'))
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "reviewsbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("reviews"),
+        }
+    )
+
+review_schema = ReviewSchema()
+reviews_schema = ReviewSchema(many=True)
+
+
+class AmenitySchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Amenity
+        load_instance = True
+
+    id = ma.auto_field()
+    name = ma.auto_field()
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "amenitiesbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("amenities"),
+        }
+    )
+
+amenity_schema = AmenitySchema()
+amenities_schema = AmenitySchema(many=True)
