@@ -37,41 +37,131 @@ if __name__ == '__main__':
         print("Seeding users...")
         users = []
         user1 = User(
-            username='alcerdanlico',
-            email='alcerdanlico@gmail.com',
-            first_name='Al Cerdan',
-            last_name='Lico',
-            profile_pic='image'
+            username='lightyagami',
+            email='lightyagami@gmail.com',
+            first_name='Light',
+            last_name='Yagami',
+            profile_pic='./images/lightyagami.png'
         )
         user1.password_hash = 'password'
         users.append(user1)
         user2 = User(
-            username='gelolico',
-            email='gelolico@gmail.com',
-            first_name='Angelo Christopher',
-            last_name='Lico',
-            profile_pic='image'
+            username='roronoazoro',
+            email='roronoazoro@gmail.com',
+            first_name='Roronoa',
+            last_name='Zoro',
+            profile_pic='./images/roronoazoro.png'
         )
         user2.password_hash = 'password'
         users.append(user2)
         user3 = User(
-            username='glendalico',
-            email='glendalico@gmail.com',
-            first_name='Glenda',
-            last_name='Lico',
-            profile_pic='image'
+            username='leviackerman',
+            email='leviackerman@gmail.com',
+            first_name='Levi',
+            last_name='Ackerman',
+            profile_pic='./images/leviackerman.png'
         )
         user3.password_hash = 'password'
         users.append(user3)
+        user4 = User(
+            username='edwardeldric',
+            email='edwardeldric@gmail.com',
+            first_name='Edward',
+            last_name='Eldric',
+            profile_pic='./images/edwardeldric.png'
+        )
+        user4.password_hash = 'password'
+        users.append(user4)
+        user5 = User(
+            username='gojosatoru',
+            email='gojosatoru@gmail.com',
+            first_name='Gojo',
+            last_name='Satoru',
+            profile_pic='./images/satorugojo.png'
+        )
+        user5.password_hash = 'password'
+        users.append(user5)
+        user6 = User(
+            username='josephjoestar',
+            email='josephjoestar@gmail.com',
+            first_name='Joseph',
+            last_name='Joestar',
+            profile_pic='./images/josephjoestar.png'
+        )
+        user6.password_hash = 'password'
+        users.append(user6)
+        user7 = User(
+            username='monkeydluffy',
+            email='monkeydluffy@gmail.com',
+            first_name='Monkey',
+            last_name='Luffy',
+            profile_pic='./images/monkeydluffy.png'
+        )
+        user7.password_hash = 'password'
+        users.append(user7)
+        user8 = User(
+            username='arsenelupiniii',
+            email='arsenelupiniii@gmail.com',
+            first_name='Arsene',
+            last_name='Lupin III',
+            profile_pic='./images/arsenelupiniii.png'
+        )
+        user8.password_hash = 'password'
+        users.append(user8)
+        user9 = User(
+            username='kenshinhimura',
+            email='kenshinhimura@gmail.com',
+            first_name='Kenshin',
+            last_name='Himura',
+            profile_pic='./images/kenshinhimura.png'
+        )
+        user9.password_hash = 'password'
+        users.append(user9)
+        user10 = User(
+            username='spikespiegel',
+            email='spikespiegel@gmail.com',
+            first_name='Spike',
+            last_name='Spiegel',
+            profile_pic='./images/spikespiegel.png'
+        )
+        user10.password_hash = 'password'
+        users.append(user10)
         db.session.add_all(users)
 
         print("Seeding rentals...")
         rentals = []
-        rental1 = Rental(name='Mountain Area Cottage', address ='123 Street St', city='Lake Tahoe', state='CA', description='Such a lovely place!', daily_rate=125, cover_pic='image', owner_id=2)
+        rental1 = Rental(
+            name='Tree-Top Window Loft-Unique Nature Experience',
+            address ='123 Treetop Street',
+            city='Sautee Nacoochee',
+            state='GA',
+            description='The Loft is located in the forest on 22 acres that we call Farfalla, along with 2 other geodesic dome rentals. Less than 10 min drive to Helen, Yonah Mtn, Anna Ruby Falls, Lake Unicoi, and so much more! As former adventure travel guides we fell in love with this area because of the great hiking trails and stunning national forest that surrounds Sautee.',
+            daily_rate=199,
+            cover_pic='./images/treetop-ga.png',
+            owner_id=1
+            )
         rentals.append(rental1)
-        rental2 = Rental(name='Seaside Cabana', address ='543 Beach St', city='Carmel', state='CA', description='Enjoy the peace and quiet!', daily_rate=350, cover_pic='image', owner_id=1)
+        rental2 = Rental(
+            name='Luxurious Ranch Retreat',
+            address ='111 Ranch Street',
+            city='Troutman',
+            state='NC',
+            description='Come experience Weatherstone Ranch! View Mini Highland Cattle & Valais Blacknose sheep in comfort - pastoral views and a 54-acre working-farm experience awaits! Plenty of woods to explore and farm activities on site, but lots of nearby attractions like Lake Norman State Park, Zootastic, Davaste Vineyards, Fort Dobbs, Iredell Fairgrounds (of Dixie Horse Auction fame) and lots more. Seasonal highlights include lambing and calving & shearing time.',
+            daily_rate=285,
+            cover_pic='./images/ranchretreat-nc.png',
+            owner_id=2
+            )
         rentals.append(rental2)
-        rental3 = Rental(name='City Condo', address ='222 City St', city='San Francisco', state='CA', description='Near the mall!', daily_rate=222, cover_pic='image', owner_id=3)
+        rental3 = Rental(
+            name='Mulk Place',
+            address ='222 City Street',
+            city='San Francisco',
+            state='CA',
+            description='Studio suite with a private entrance located in the Parkside/Upper Sunset area of San Francisco. Studio suite is attached to an occupied family home. Close to restaurants and shops in the West Portal area. Stern Grove Park in walking distance. Ocean Beach, Golden Gate Park, and San Francisco Zoo all within one mile. Transportation on Muni or the street car to anywhere in the city just one block away. Parking in the neighborhood is easy with 24 hour street parking down the street.',
+            daily_rate=172,
+            cover_pic='./images/mulkplace-ca.png',
+            owner_id=3
+            )
         rentals.append(rental3)
         db.session.add_all(rentals)
 

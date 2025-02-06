@@ -1,0 +1,16 @@
+.fontapp {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.rentalcard {
+    height: 400px;
+    width: 210px;
+    color: gray;
+    float: left
+}
+
+.imagecard {
+    height: 200px;
+    width: 200px;
+    font-family: Arial, Helvetica, sans-serif;
+}

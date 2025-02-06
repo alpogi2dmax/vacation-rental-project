@@ -143,8 +143,8 @@ class Rental(db.Model):
 
     @validates('description')
     def validate_daily_rate(self, key, description):
-        if len(description) < 3 or len(description) > 200:
-            raise ValueError('city must be between 3 and 200 characters')
+        if len(description) < 3:
+            raise ValueError('description must not be less than 3 characters.')
         return description
 
 class Booking(db.Model):
@@ -262,6 +262,7 @@ class RentalSchema(ma.SQLAlchemySchema):
     state = ma.auto_field()
     daily_rate = ma.auto_field()
     description = ma.auto_field()
+    cover_pic = ma.auto_field()
     owner = ma.Nested(lambda: UserSchema, only=('id', 'username'))
     traveler = ma.Nested(lambda: UserSchema, many=True, only=('id', 'username'))
     bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "traveler_id"))
