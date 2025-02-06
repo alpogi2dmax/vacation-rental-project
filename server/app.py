@@ -118,20 +118,22 @@ class Rentals(Resource):
                 cover_pic = data['cover_pic'],
                 owner_id = data['owner_id']
             )
+            if rental.daily_rate < 1:
+                raise ValueError('Daily rate must be over 0')
             db.session.add(rental)
             db.session.commit()
             response = make_response(
                 rental_schema.dump(rental), 201)
             return response
-        except:
-            response_body = {'errors': ['validation errors']}
+        except Exception as e:
+            response_body = {'errors': [str(e)]}
             return response_body, 400
     
 api.add_resource(Rentals, '/rentals')
 
 class RentalsByID(Resource):
 
-    def get(seld, id):
+    def get(self, id):
         rental = Rental.query.filter_by(id=id).first()
         response = make_response(
             rental_schema.dump(rental), 200
@@ -243,49 +245,6 @@ class BookingsByID(Resource):
         else:
             response_body = {'error': 'User not found'}
             return response_body, 404
-
-#     def get(self, id):
-#         booking = Booking.query.filter_by(id=id).first()
-#         if booking:
-#             booking_dict = booking.to_dict()
-#             return booking_dict, 200
-#         else:
-#             response_body = {"error": "Rental not found"}
-#             return response_body, 404
-        
-#     def patch(self, id):
-#         booking = Booking.query.filter_by(id=id).first()
-#         data = request.get_json()
-#         if booking:
-#             try:
-#                 # Convert start_date and end_date to datetime objects if they are included in the request
-#                 if 'start_date' in data:
-#                     data['start_date'] = datetime.strptime(data['start_date'], '%m/%d/%Y')
-#                 if 'end_date' in data:
-#                     data['end_date'] = datetime.strptime(data['end_date'], '%m/%d/%Y')
-#                 for attr, value, in data.items():
-#                     setattr(booking, attr, value)
-#                 db.session.add(booking)
-#                 db.session.commit()
-#                 booking_dict = booking.to_dict()
-#                 return booking_dict, 202
-#             except ValueError as e:
-#                 response_body = {'error': 'Invalid date format. Please use MM/DD/YYYY.'}
-#                 return response_body, 400
-#         else:
-#             response_body = {'error': 'User not found'}
-#             return response_body, 404
-        
-#     def delete(self, id):
-#         booking = Booking.query.filter_by(id=id).first()
-#         if booking:
-#             db.session.delete(booking)
-#             db.session.commit()
-#             response_body = ''
-#             return response_body, 204
-#         else:
-#             response_body = {'error': 'User not found'}
-#             return response_body, 404
         
 api.add_resource(BookingsByID, '/bookings/<int:id>')
 
@@ -312,31 +271,8 @@ class Reviews(Resource):
                 review_schema.dump(review), 201)
             return response
         except Exception as e:
-            print(e)
-            response_body = {'errors': ['validation errors']}
+            response_body = {'errors': [str(e)]}
             return response_body, 400
-
-#     def get(self):
-#         reviews = [review.to_dict() for review in Review.query.all()]
-#         return reviews, 200
-    
-#     def post(self):
-#         try:
-#             data = request.get_json()
-#             review = Review(
-#                 title = data['title'],
-#                 review = data['review'],
-#                 reviewer_id = data['reviewer_id'],
-#                 reviewed_rental_id = data['reviewed_rental_id']
-#             )
-#             db.session.add(review)
-#             db.session.commit()
-#             review_dict = review.to_dict()
-#             return make_response(review_dict, 201)
-#         except Exception as e:
-#             print(e)
-#             response_body = {'errors': ['validation errors']}
-#             return response_body, 400
     
 api.add_resource(Reviews, '/reviews')
 
@@ -376,41 +312,71 @@ class ReviewsByID(Resource):
             response_body = {'error': 'User not found'}
             return response_body, 404
 
-#     def get(self, id):
-#         review = Review.query.filter_by(id=id).first()
-#         if review:
-#             review_dict = review.to_dict()
-#             return review_dict, 200
-#         else:
-#             response_body = {"error": "Rental not found"}
-#             return response_body, 404
-        
-#     def patch(self, id):
-#         review = Review.query.filter_by(id=id).first()
-#         data = request.get_json()
-#         if review:
-#             for attr, value, in data.items():
-#                 setattr(review, attr, value)
-#             db.session.add(review)
-#             db.session.commit()
-#             review_dict = review.to_dict()
-#             return review_dict, 202
-#         else:
-#             response_body = {'error': 'User not found'}
-#             return response_body, 404
-        
-#     def delete(self, id):
-#         review = Review.query.filter_by(id=id).first()
-#         if review:
-#             db.session.delete(review)
-#             db.session.commit()
-#             response_body = ''
-#             return response_body, 204
-#         else:
-#             response_body = {'error': 'User not found'}
-#             return response_body, 404
-        
 api.add_resource(ReviewsByID, '/reviews/<int:id>')
+
+class Amenities(Resource):
+
+    def get(self):
+
+        amenities = Amenity.query.all()
+        response = make_response(amenities_schema.dump(amenities), 200)
+        return response
+    
+    def post(self):
+        try:
+            data = request.get_json()
+            amenity = Amenity(
+                name = data['name']
+            )
+            db.session.add(amenity)
+            db.session.commit()
+
+            response = make_response(
+                amenity_schema.dump(amenity), 201)
+            return response
+        except Exception as e:
+            response_body = {'errors': [str(e)]}
+            return response_body, 400
+
+api.add_resource(Amenities, '/amenities')
+
+class AmenitiesByID(Resource):
+
+    def get(self, id):
+        amenity = Amenity.query.filter_by(id=id).first()
+        response = make_response(
+            amenity_schema.dump(amenity), 200
+        )
+        return response
+    
+    def patch(self, id):
+        amenity = Amenity.query.filter_by(id=id).first()
+        data = request.get_json()
+        if amenity:
+            for attr, value, in data.items():
+                setattr(amenity, attr, value)
+            db.session.add(amenity)
+            db.session.commit()
+
+            response = make_response(
+            amenity_schema.dump(amenity), 202)
+            return response
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+        
+    def delete(self, id):
+        amenity = Amenity.query.filter_by(id=id).first()
+        if amenity:
+            db.session.delete(amenity)
+            db.session.commit()
+            response_body = ''
+            return response_body, 204
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
+    
+api.add_resource(AmenitiesByID, '/amenities/<int:id>')
 
 class SignUp(Resource):
 

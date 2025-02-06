@@ -88,8 +88,17 @@ if __name__ == '__main__':
         db.session.add_all(reviews)
 
         print("Seeding amenities...")
+        amenities_list = []
+        amenities_list.append(Amenity(name='Wifi'))
+        amenities_list.append(Amenity(name='Kitchen'))
+        amenities_list.append(Amenity(name='Air Conditioning'))
+        amenities_list.append(Amenity(name='Fire Place'))
+        amenities_list.append(Amenity(name='Kitchen'))
+        amenities_list.append(Amenity(name='Washer and Dryer - In Unit'))
+        amenities_list.append(Amenity(name='Free Driveway'))
         amenity1 = Amenity(name='Swimming Pool')
         rental1.amenities.append(amenity1)
+        db.session.add_all(amenities_list)
         db.session.commit()
 
 

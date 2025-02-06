@@ -3,6 +3,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from marshmallow import Schema, fields
 from sqlalchemy.orm import validates
+from sqlalchemy import CheckConstraint
 from email_validator import validate_email, EmailNotValidError
 
 # marshmallow schema fields
@@ -95,7 +96,7 @@ class Rental(db.Model):
     address = db.Column(db.String)
     city = db.Column(db.String)
     state = db.Column(db.String)
-    daily_rate = db.Column(db.Integer)
+    daily_rate = db.Column(db.Integer, CheckConstraint('daily_rate > 0'), nullable=False)
     description = db.Column(db.String)
     cover_pic = db.Column(db.String)
 
@@ -116,7 +117,35 @@ class Rental(db.Model):
         'Amenity', secondary=rental_amenities, back_populates='rentals')
     
     #validation
+    @validates('name')
+    def validate_username(self, key, name):
+        if len(name) < 3 or len(name) > 50:
+            raise ValueError('name must be between 3 and 50 characters')
+        return name
+    
+    @validates('address')
+    def validate_address(self, key, address):
+        if len(address) < 3 or len(address) > 30:
+            raise ValueError('address must be between 3 and 30 characters')
+        return address
+    
+    @validates('city')
+    def validate_city(self, key, city):
+        if len(city) < 3 or len(city) > 20:
+            raise ValueError('city must be between 3 and 20 characters')
+        return city
+    
+    @validates('daily_rate')
+    def validate_daily_rate(self, key, daily_rate):
+        if daily_rate < 1:
+            raise ValueError('Daily rate must be at least 1.')
+        return daily_rate
 
+    @validates('description')
+    def validate_daily_rate(self, key, description):
+        if len(description) < 3 or len(description) > 200:
+            raise ValueError('city must be between 3 and 200 characters')
+        return description
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
@@ -133,8 +162,15 @@ class Booking(db.Model):
     traveler = db.relationship('User', back_populates='bookings')
     rental = db.relationship('Rental', back_populates='bookings')
 
-    # Add serialization rules
-    serialize_rules = ('-traveler.bookings', '-rental.bookings', '-traveler.reviews', '-reviewed_rental.reviews')
+    # # Add serialization rules
+    # serialize_rules = ('-traveler.bookings', '-rental.bookings', '-traveler.reviews', '-reviewed_rental.reviews')
+
+    #validation
+    @validates('end_date')
+    def validate_end_date(self, key, end_date):
+        if self.start_date and end_date < self.start_date:
+            raise ValueError('End date cannot be earlier than start date.')
+        return end_date
 
 class Review(db.Model):
     __tablename__ = 'reviews'
@@ -149,6 +185,19 @@ class Review(db.Model):
 
     reviewer = db.relationship('User', back_populates='reviews')
     reviewed_rental = db.relationship('Rental', back_populates='reviews')
+
+    #validation
+    @validates('title')
+    def validate_title(self, key, title):
+        if len(title) < 3 or len(title) > 50:
+            raise ValueError('title must be between 3 and 50 characters')
+        return title
+    
+    @validates('review')
+    def validate_review(self, key, review):
+        if len(review) < 3 or len(review) > 50:
+            raise ValueError('review must be between 3 and 500 characters')
+        return review
 
 class Amenity(db.Model):
     __tablename__ = 'amenities'
