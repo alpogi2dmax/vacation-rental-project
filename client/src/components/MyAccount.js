@@ -1,14 +1,16 @@
 import Login from './Login'
+import React, { useEffect, useState } from "react";
 
-function MyAccount({user, onLogin}) {
+
+function MyAccount({user, onLogin, ownedRentals}) {
 
     if (!user) return <Login onLogin={onLogin}/>
 
-    console.log(user)
+    console.log(ownedRentals)
 
     return (
         <div>
-            <h1>Welcome {user.first_name} {user.last_name}!</h1>
+            <h2>My Properties</h2>
         </div>
     )
 }

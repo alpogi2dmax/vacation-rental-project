@@ -8,6 +8,7 @@ import MyAccount from "./MyAccount";
 function App() {
 
   const [user, setUser] = useState(null)
+  const [ownedRentals, setOwnedRentals] = useState(null)
 
   useEffect(() => {
     fetch('/checksession')
@@ -22,6 +23,7 @@ function App() {
           console.log('No active session');
         } else {
           setUser(data);
+          setOwnedRentals(data.owned_rentals);
         }
       })
       .catch(error => console.error('Fetch error:', error));
@@ -35,12 +37,15 @@ function App() {
     })
 }
 
+  console.log(ownedRentals)
+
   return (
     <div className="fontapp">
       <NavBar onLogOut={handleLogOut}/>
+      {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
       <Routes>
         <Route path="" element={<RentalList />}/>
-        <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser}/>}/>
+        <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals}/>}/>
       </Routes>
     </div>
   )
