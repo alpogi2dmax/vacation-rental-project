@@ -1,24 +1,54 @@
 
+import { useEffect, useState } from "react";
 
 
+function OwnedRentalAmenities({rentalId, rentalAmenities}) {
 
-function OwnedRentalAmenities({amenities}) {
+    const [allAmenities, setAllAmenities] = useState([])
+    const [isVisible, setIsVisible] = useState(false)
 
-    if (amenities.length === 0) return (<p>There are no amenities at this time.</p>)
+useEffect(() => {
+    console.log('Fetching amenities...');
+    fetch('/amenities')
+      .then(r => r.json())
+      .then(data => {
+        console.log('All amenities fetched:', data);
+        setAllAmenities(data);
+      })
+      .catch(error => console.error('Error fetching amenities:', error));
+  }, [rentalId, rentalAmenities]);
 
-    console.log(amenities)
+  function handleToggle() {
+    setIsVisible(!isVisible)
+  }
 
-    return (
-        
+ 
+
+  return (
+    <div>
+      {rentalAmenities && rentalAmenities.length > 0 ? (
         <div>
-            <ul>
-                {amenities.map(amenity => (
-                    <li>{amenity.name}</li>
-                ))}
-            </ul>
+          <ul>
+            {rentalAmenities.map((amenity, index) => (
+              <li key={amenity.id || index}>{amenity.name}</li>
+            ))}
+          </ul>
         </div>
-    )
-
+      ) : (
+        <p>No specific amenities for this rental.</p>
+      )}
+      <button onClick={handleToggle}>Add Amenities</button>
+      {isVisible && (
+        <select>
+          {allAmenities.map(amenity => (
+            <option key={amenity.id} value={amenity.id}>
+              {amenity.name} {/* Ensure you access a property like name */}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+  );
 }
 
 export default OwnedRentalAmenities
