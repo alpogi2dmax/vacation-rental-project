@@ -43,7 +43,10 @@ useEffect(() => {
       body: JSON.stringify({name: newAmenity})
     })
     .then(r => r.json())
-    .then(data => setAllAmenities([...allAmenities, data]))
+    .then(data => {
+      setAllAmenities([...allAmenities, data])
+      setNewAmenity('')
+    })
   }
 
   return (
@@ -72,7 +75,7 @@ useEffect(() => {
           </select>
           <button onClick={handleClick}>Add Amenity</button>
           <br></br>
-          <input type='text' id='newamenities' name='newamenities' defaultValue='Add New Amenities in list' onChange={e => setNewAmenity(e.target.value)}></input>
+          <input type='text' id='newamenities' name='newamenities' value={newAmenity} onChange={e => setNewAmenity(e.target.value)}></input>
           <button onClick={handleAddAmenityClick}>Add Amenity to List</button>
         </div>
       )}
