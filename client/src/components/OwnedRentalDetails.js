@@ -47,7 +47,7 @@ function OwnedRentalDetails() {
                     {!isVisible &&
                     <div>
                         <h2>{rental.name}</h2>
-                        <img src={rental.cover_pic} alt={rental.name} />
+                        <img src={rental.cover_pic} alt={rental.cover_pic} />
                         <h3>Description</h3>
                         <p>{rental.description}</p>
                         <h3>Details</h3>

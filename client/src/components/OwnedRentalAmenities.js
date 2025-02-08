@@ -7,6 +7,7 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity}
     const [allAmenities, setAllAmenities] = useState([])
     const [selectedAmenity, setSelectedAmenity] = useState("")
     const [isVisible, setIsVisible] = useState(false)
+    const [newAmenity, setNewAmenity] = useState('')
 
 useEffect(() => {
     console.log('Fetching amenities...');
@@ -24,7 +25,7 @@ useEffect(() => {
   }
 
   function handleClick() {
-    const selectedAmenityId = parseInt(selectedAmenity, 10); // Convert to a number if IDs are numbers
+    const selectedAmenityId = parseInt(selectedAmenity, 10);
     if (rentalAmenities.map(amenity => amenity.id).includes(selectedAmenityId)) {
       alert('Amenity is already on the list. Select another one.');
     } else {
@@ -33,7 +34,17 @@ useEffect(() => {
     }
   }
 
- 
+  function handleAddAmenityClick() {
+    fetch('/amenities', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({name: newAmenity})
+    })
+    .then(r => r.json())
+    .then(data => setAllAmenities([...allAmenities, data]))
+  }
 
   return (
     <div>
@@ -60,6 +71,9 @@ useEffect(() => {
             ))}
           </select>
           <button onClick={handleClick}>Add Amenity</button>
+          <br></br>
+          <input type='text' id='newamenities' name='newamenities' defaultValue='Add New Amenities in list' onChange={e => setNewAmenity(e.target.value)}></input>
+          <button onClick={handleAddAmenityClick}>Add Amenity to List</button>
         </div>
       )}
     </div>
