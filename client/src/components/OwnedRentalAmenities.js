@@ -4,7 +4,7 @@
 
 function OwnedRentalAmenities({amenities}) {
 
-    if (amenities.length === 0) return (<p>There are no reviews at this time.</p>)
+    if (amenities.length === 0) return (<p>There are no amenities at this time.</p>)
 
     console.log(amenities)
 
