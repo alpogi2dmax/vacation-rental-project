@@ -1,6 +1,6 @@
 
 
-function OwnedPropertyBookings({bookings}) {
+function OwnedPropertyBookings({ bookings = [] }) {
 
     if (bookings.length === 0) return (<p>There are no bookings at this time.</p>)
 

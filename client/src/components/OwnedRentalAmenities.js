@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 
-function OwnedRentalAmenities({rentalId, rentalAmenities}) {
+function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity}) {
 
     const [allAmenities, setAllAmenities] = useState([])
+    const [selectedAmenity, setSelectedAmenity] = useState("")
     const [isVisible, setIsVisible] = useState(false)
 
 useEffect(() => {
@@ -22,6 +23,16 @@ useEffect(() => {
     setIsVisible(!isVisible)
   }
 
+  function handleClick() {
+    const selectedAmenityId = parseInt(selectedAmenity, 10); // Convert to a number if IDs are numbers
+    if (rentalAmenities.map(amenity => amenity.id).includes(selectedAmenityId)) {
+      alert('Amenity is already on the list. Select another one.');
+    } else {
+      onRentalAppendAmenity(selectedAmenityId);
+      handleToggle();
+    }
+  }
+
  
 
   return (
@@ -37,18 +48,23 @@ useEffect(() => {
       ) : (
         <p>No specific amenities for this rental.</p>
       )}
-      <button onClick={handleToggle}>Add Amenities</button>
+      {!isVisible && <button onClick={handleToggle}>Add Amenities</button>}
+      <br></br>
       {isVisible && (
-        <select>
-          {allAmenities.map(amenity => (
-            <option key={amenity.id} value={amenity.id}>
-              {amenity.name} {/* Ensure you access a property like name */}
-            </option>
-          ))}
-        </select>
+        <div>
+          <select value={selectedAmenity} onChange={(e) => setSelectedAmenity(e.target.value)}>
+            {allAmenities.map((amenity) => (
+              <option key={amenity.id} value={amenity.id}>
+                {amenity.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleClick}>Add Amenity</button>
+        </div>
       )}
     </div>
   );
+
 }
 
 export default OwnedRentalAmenities

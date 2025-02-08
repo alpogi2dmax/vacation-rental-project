@@ -362,7 +362,7 @@ class AmenitiesByID(Resource):
             amenity_schema.dump(amenity), 202)
             return response
         else:
-            response_body = {'error': 'User not found'}
+            response_body = {'error': 'Amenity not found'}
             return response_body, 404
         
     def delete(self, id):
@@ -373,10 +373,37 @@ class AmenitiesByID(Resource):
             response_body = ''
             return response_body, 204
         else:
-            response_body = {'error': 'User not found'}
+            response_body = {'error': 'Amenity not found'}
             return response_body, 404
     
 api.add_resource(AmenitiesByID, '/amenities/<int:id>')
+
+class RentalByIDAppendAmenityByID(Resource):
+
+    def patch(self, id):
+
+        rental = Rental.query.filter_by(id=id).first()
+        data = request.get_json()
+
+        # Correct the filter method to filter_by instead of filter
+        amenity = Amenity.query.filter_by(id=data['id']).first()
+
+        if not rental:
+            response_body = {'error': 'Rental not found'}
+            return response_body, 404
+
+        if not amenity:
+            response_body = {'error': 'Amenity not found'}
+            return response_body, 404
+
+        rental.amenities.append(amenity)
+        db.session.commit()
+        response = make_response(rental_schema.dump(rental), 202)
+        return response
+            
+            
+
+api.add_resource(RentalByIDAppendAmenityByID, '/rentalamenities/<int:id>')
 
 class SignUp(Resource):
 
