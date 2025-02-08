@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import OwnedPropertyBookings from "./OwnedPropertyBookings";
 import OwnedRentalReviews from "./OwnedRentalReviews";
+import OwnedRentalAmenities from "./OwnedRentalAmenities";
 
 function OwnedRentalDetails() {
 
@@ -32,6 +33,8 @@ function OwnedRentalDetails() {
                         <li>State: {rental.state}</li>
                         <li>Daily Rate: ${rental.daily_rate}</li>
                     </ul>
+                    <h3>Amenities</h3>
+                    <OwnedRentalAmenities amenities={rental.amenities}/>
                     <h3>Bookings: </h3>
                     <OwnedPropertyBookings bookings={rental.bookings}/>
                     <h3>Reviews: </h3>
