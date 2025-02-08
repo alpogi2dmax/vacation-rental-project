@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
         print("Seeding bookings...")
         bookings = []
-        bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), traveler_id=1, rental_id=1))
+        bookings.append(Booking(name='alcerdanlico-Mountain Area Cottage', start_date=datetime.strptime('05/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('05/05/2025', '%m/%d/%Y'), traveler_id=2, rental_id=1))
         bookings.append(Booking(name='glendalico-Seaside Cabana', start_date=datetime.strptime('06/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('06/05/2025', '%m/%d/%Y'), traveler_id=3, rental_id=2))
         bookings.append(Booking(name='gelolico-City Condo', start_date=datetime.strptime('07/03/2025', '%m/%d/%Y'), end_date=datetime.strptime('07/05/2025', '%m/%d/%Y'), traveler_id=2, rental_id=3))
         db.session.add_all(bookings)

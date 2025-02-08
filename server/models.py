@@ -265,7 +265,7 @@ class RentalSchema(ma.SQLAlchemySchema):
     cover_pic = ma.auto_field()
     owner = ma.Nested(lambda: UserSchema, only=('id', 'username'))
     traveler = ma.Nested(lambda: UserSchema, many=True, only=('id', 'username'))
-    bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "traveler_id"))
+    bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "traveler", "traveler_id"))
     reviews = ma.Nested(lambda: ReviewSchema, many=True, only=('id', 'title', 'review', 'reviewer'))
     amenities = ma.Nested(lambda: AmenitySchema, many=True, only=('id', 'name'))
 
@@ -294,7 +294,7 @@ class BookingSchema(ma.SQLAlchemySchema):
     traveler_id = ma.auto_field()
     rental_id = ma.auto_field()
 
-    traveler = ma.Nested(UserSchema, only=('id', 'username'))
+    traveler = ma.Nested(UserSchema, only=('id', 'username', 'first_name', 'last_name'))
     rental = ma.Nested(RentalSchema, only=('id', 'name'))
 
     url = ma.Hyperlinks(
@@ -320,7 +320,7 @@ class ReviewSchema(ma.SQLAlchemySchema):
     reviewer_id = ma.auto_field()
     reviewed_rental_id = ma.auto_field()
 
-    reviewer = ma.Nested(UserSchema, only=('id', 'username'))
+    reviewer = ma.Nested(UserSchema, only=('id', 'first_name'))
     reviewed_rental = ma.Nested(RentalSchema, only=('id', 'name'))
 
     url = ma.Hyperlinks(

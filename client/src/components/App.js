@@ -3,12 +3,14 @@ import { Routes, Route, Link } from "react-router-dom"
 import NavBar from "./NavBar";
 import RentalList from "./RentalList";
 import MyAccount from "./MyAccount";
+import OwnedRentalDetails from "./OwnedRentalDetails";
 
 
 function App() {
 
   const [user, setUser] = useState(null)
-  const [ownedRentals, setOwnedRentals] = useState(null)
+  const [ownedRentals, setOwnedRentals] = useState([])
+  const [bookedRentals, setBookedRentals] = useState([])
 
   useEffect(() => {
     fetch('/checksession')
@@ -24,6 +26,7 @@ function App() {
         } else {
           setUser(data);
           setOwnedRentals(data.owned_rentals);
+          setBookedRentals(data.rentals);
         }
       })
       .catch(error => console.error('Fetch error:', error));
@@ -33,21 +36,24 @@ function App() {
     fetch('/logout', { method: 'DELETE' }).then((r) => {
         if (r.ok) {
             setUser(null);
+            setOwnedRentals([]);
+            setBookedRentals([]);
         }
     })
 }
 
-  console.log(ownedRentals)
-
   return (
     <div className="fontapp">
-      <NavBar onLogOut={handleLogOut}/>
-      {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
-      <Routes>
-        <Route path="" element={<RentalList />}/>
-        <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals}/>}/>
-      </Routes>
-    </div>
+         <NavBar onLogOut={handleLogOut}/>
+           <>
+             {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
+             <Routes>
+               <Route path="" element={<RentalList />}/>
+               <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals} bookedRentals={bookedRentals}/>}/>
+               <Route path="/ownedrentaldetails/:id" element={<OwnedRentalDetails />}/>
+             </Routes>
+           </>
+       </div>
   )
 }
 
