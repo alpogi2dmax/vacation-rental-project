@@ -45,6 +45,9 @@ useEffect(() => {
     .then(r => r.json())
     .then(data => {
       setAllAmenities([...allAmenities, data])
+      const newAmenityId = parseInt(data.id, 10);
+      onRentalAppendAmenity(newAmenityId);
+      handleToggle();
       setNewAmenity('')
     })
   }
