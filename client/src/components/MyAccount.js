@@ -7,16 +7,20 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user, setUser } = useContext(UserContext) 
+  const { user, setUser, ownedRentals } = useContext(UserContext) 
   const [loading, setLoading] = useState(false)
 
     if (user) {
+
+      console.log(user.owned_rentals)
+      console.log(ownedRentals)
     
         return (
           <div>
             <h2>My Properties</h2>
             {user.owned_rentals.length > 0 ? (
-              <OwnedRentalList ownedRentals={user.owned_rentals} user={user} />
+              <OwnedRentalList />
+              // <OwnedRentalList ownedRentals={user.owned_rentals} user={user} />
             ) : (
               <p>Loading...</p>
             )}

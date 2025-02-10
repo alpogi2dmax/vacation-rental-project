@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react";
+import { UserContext } from "../context/user";
 
-function NavBar({user, onLogOut}) {
+function NavBar() {
 
     const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext)
 
     function handleLogOutClick() {
-        onLogOut()
+        setUser(null)
         navigate('/')
     }
 
@@ -24,6 +27,7 @@ function NavBar({user, onLogOut}) {
                     </Link>
                 )}
             </nav>
+            {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
         </div>
     )
 }

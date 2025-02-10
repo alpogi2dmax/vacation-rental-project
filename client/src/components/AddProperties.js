@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import { UserContext } from '../context/user';
 
-function AddProperties({user, onToggle}) {
+function AddProperties({rentals, onAddRental, onToggle}) {
+
+    const { user } = useContext(UserContext)
 
     console.log(user)
 
@@ -39,7 +42,7 @@ function AddProperties({user, onToggle}) {
                 .then((r) => r.json())
                 .then((rental) => {
                     console.log(rental)
-                    onToggle()
+                    onAddRental(rental)
                 })
             },
         })
