@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import { UserContext } from '../context/user';
 
-function SignUpForm({ onLogin }) {
+function SignUpForm() {
+
+    const { setUser, setOwnedRentals } = useContext(UserContext)
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username").min(2, 'Must be more than 1 character').max(15, 'Must be less than 15 characters.'),
@@ -43,7 +46,8 @@ function SignUpForm({ onLogin }) {
             })
             .then((r) => r.json())
             .then((user) => {
-                onLogin(user)
+                setUser(user)
+                setOwnedRentals(user.owned_rentals)
             })
         },
     })

@@ -7,14 +7,11 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user, setUser, ownedRentals } = useContext(UserContext) 
+  const { user, setUser } = useContext(UserContext) 
   const [loading, setLoading] = useState(false)
 
     if (user) {
 
-      console.log(user.owned_rentals)
-      console.log(ownedRentals)
-    
         return (
           <div>
             <h2>My Properties</h2>

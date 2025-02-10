@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { UserContext } from '../context/user';
 
-function LoginForm({onLogin}) {
 
+function LoginForm() {
+
+    const { setUser, setOwnedRentals } = useContext(UserContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
@@ -17,7 +20,8 @@ function LoginForm({onLogin}) {
         }).then((r) => {
             if (r.ok) {
                 r.json().then((user) => {
-                    onLogin(user)
+                    setUser(user)
+                    setOwnedRentals(user.owned_rentals)
                 });
             } else {
                 // Check if response has content before parsing

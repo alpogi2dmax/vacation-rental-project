@@ -5,10 +5,11 @@ import { UserContext } from "../context/user";
 function NavBar() {
 
     const navigate = useNavigate();
-    const { user, setUser } = useContext(UserContext)
+    const { user, setUser, setOwnedRentals } = useContext(UserContext)
 
     function handleLogOutClick() {
         setUser(null)
+        setOwnedRentals([])
         navigate('/')
     }
 

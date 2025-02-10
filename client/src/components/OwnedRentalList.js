@@ -20,7 +20,8 @@ function OwnedRentalList() {
         setIsVisible(!isVisible)
     }
 
-
+    console.log(ownedRentals)
+    console.log(user)
 
     return (
         <div>

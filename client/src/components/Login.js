@@ -2,7 +2,7 @@ import LoginForm from "./LoginForm"
 import SignUpForm from "./SignUpForm";
 import React, { useEffect, useState } from "react";
 
-function Login({onLogin}) {
+function Login() {
 
     const [showLogin, setShowLogin] = useState(true)
 
@@ -10,7 +10,7 @@ function Login({onLogin}) {
         <div>
             {showLogin ? (
                 <>
-                    <LoginForm onLogin={onLogin}/>
+                    <LoginForm />
                     <br></br>
                     <p>
                         Don't have an account? &nbsp;
@@ -21,7 +21,7 @@ function Login({onLogin}) {
                 </>   
             ) : (
                 <>
-                    <SignUpForm onLogin={onLogin}/>
+                    <SignUpForm />
                     <br></br>
                     <p>
                         Already have an account? &nbsp;
