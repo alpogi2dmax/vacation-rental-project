@@ -4,8 +4,7 @@ const UserContext = React.createContext()
 
 function UserProvider({children}) {
     const [ user, setUser ] = useState(null)
-    const [ownedRentals, setOwnedRentals] = useState([])
-    const [bookedRentals, setBookedRentals] = useState([])
+    const [ ownedRentals, setOwnedRentals] = useState([])
 
     useEffect(() => {
         fetch('/checksession')
@@ -20,32 +19,17 @@ function UserProvider({children}) {
               console.log('No active session');
             } else {
               setUser(data);
-              console.log(data.owned_rentals)
-              setOwnedRentals(data.owned_rentals || []); // Ensure arrays are initialized
-              setBookedRentals(data.rentals || []);
+              setOwnedRentals(data.owned_rentals)
             }
-            // setLoading(false); // Set loading to false after data is fetched
           })
           .catch(error => console.error('Fetch error:', error));
-        //   setLoading(false); // Ensure loading state is updated even on error
       }, []);
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals}}>
             {children}
         </UserContext.Provider>
     )
-
-    // function handleLogOut() {
-    //     fetch('/logout', { method: 'DELETE' }).then((r) => {
-    //       if (r.ok) {
-    //           console.log('Logged out'); // Debug log
-    //           setUser(null);
-    //           setOwnedRentals([]);
-    //           setBookedRentals([]);
-    //       }
-    //     })
-    //   }
 
 }
 

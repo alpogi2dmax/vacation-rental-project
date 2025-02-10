@@ -221,7 +221,7 @@ class UserSchema(ma.SQLAlchemySchema):
     email = ma.auto_field()
     profile_pic = ma.auto_field()
     # owned_rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'address', 'bookings'))
-    owned_rentals = fields.List(fields.Nested(lambda: RentalSchema(only=('id', 'name', 'city', 'state', 'description', 'daily_rate', 'cover_pic', 'bookings'))))
+    owned_rentals = fields.List(fields.Nested(lambda: RentalSchema(only=('id', 'name', 'city', 'address', 'state', 'description', 'daily_rate', 'cover_pic', 'bookings', 'reviews', 'amenities'))))
     # rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'city', 'amenities', 'bookings'))
     rentals = ma.Method("get_bookings")
     # bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "rental"))

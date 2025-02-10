@@ -2,6 +2,10 @@
 
 function OwnedRentalReviews({reviews}) {
 
+    if (reviews.length === 0) return (<p>There are no reviews at this time.</p>)
+
+    console.log(reviews)
+
     return (
         
         <div>
@@ -16,5 +20,9 @@ function OwnedRentalReviews({reviews}) {
     )
 
 }
+
+OwnedRentalReviews.defaultProps = {
+    reviews: [],
+  };
 
 export default OwnedRentalReviews

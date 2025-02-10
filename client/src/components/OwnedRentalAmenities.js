@@ -87,4 +87,8 @@ useEffect(() => {
 
 }
 
+OwnedRentalAmenities.defaultProps = {
+  rentalAmenities: [],
+};
+
 export default OwnedRentalAmenities

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import OwnedRentalCard from "./OwnedRentalCard";
 import AddProperties from "./AddProperties";
 import { UserContext } from "../context/user";
@@ -7,12 +7,12 @@ import { UserContext } from "../context/user";
 function OwnedRentalList() {
 
 
-    const { user } = useContext(UserContext)
-    const [ rentals, setRentals ] = useState(user.owned_rentals)
+    const { user, ownedRentals, setOwnedRentals } = useContext(UserContext)
+    const rentals = ownedRentals
     const [isVisible, setIsVisible] = useState(false)
 
     function handleAddRental(newRental) {
-        setRentals([...rentals, newRental])
+        setOwnedRentals([...rentals, newRental])
         setIsVisible(!isVisible)
     }
 
@@ -25,7 +25,7 @@ function OwnedRentalList() {
     return (
         <div>
             <div className="clearfix">
-            {rentals.map(rental => (
+            {ownedRentals.map(rental => (
                 <OwnedRentalCard key={rental.id} rental={rental} />
             ))}
             </div>
