@@ -6,9 +6,12 @@ import BookedRentalList from './BookedRentalList'
 
 function MyAccount({user, ownedRentals, bookedRentals, onLogin}) {
 
+  const [loading, setLoading] = useState(false)
+
     if (user) {
         console.log('User:', user); // Debug log
         console.log('Owned Rentals:', ownedRentals); // Debug log
+        console.log(user.owned_rentals)
     
         return (
           <div>

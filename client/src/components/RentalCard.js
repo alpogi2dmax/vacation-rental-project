@@ -1,12 +1,13 @@
 import './App.css'
+import { Routes, Route, Link } from "react-router-dom"
 
 function RentalCard({rental}) {
 
-    console.log(rental.owner)
-
     return(
         <div className='rentalcard'>
-            <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>
+            <Link to={`/rentaldetails/${rental.id}`}>
+                <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>
+            </Link>
             <p>{rental.name}</p>
             <p>${rental.daily_rate} per night</p>
         </div>

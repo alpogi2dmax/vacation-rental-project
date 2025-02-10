@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import RentalList from "./RentalList";
 import MyAccount from "./MyAccount";
 import OwnedRentalDetails from "./OwnedRentalDetails";
+import RentalDetails from "./RentalDetails";
 
 
 function App() {
@@ -36,6 +37,10 @@ function App() {
       setLoading(false); // Ensure loading state is updated even on error
   }, []);
 
+  if (loading) {
+    return <p>Loading...</p>;
+}
+
   function handleLogOut() {
     fetch('/logout', { method: 'DELETE' }).then((r) => {
       if (r.ok) {
@@ -60,6 +65,7 @@ function App() {
               <Route path="/" element={<RentalList />} />
               <Route path="/myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals} bookedRentals={bookedRentals} />} />
               <Route path="/ownedrentaldetails/:id" element={<OwnedRentalDetails />} />
+              <Route path="/rentaldetails/:id" element={<RentalDetails />} />
             </Routes>
           </>
         )}
