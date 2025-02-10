@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Link } from "react-router-dom"
+import { Routes, Route, Link, Outlet } from "react-router-dom"
 import NavBar from "./NavBar";
+import { UserProvider } from "../context/user";
 import RentalList from "./RentalList";
 import MyAccount from "./MyAccount";
 import OwnedRentalDetails from "./OwnedRentalDetails";
@@ -54,39 +55,34 @@ function App() {
 
   return (
     <div className="fontapp">
-      <NavBar user={user} onLogOut={handleLogOut} />
-      <>
+      <UserProvider>
+        <NavBar user={user} onLogOut={handleLogOut} />
+        <>
+          {loading ? (
+            <p>Loading...</p> // Show loading message while data is being fetched
+          ) : (
+            <>
+              {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
+              <Outlet />
+
+            </>
+          )}
+        </>
+      </UserProvider>
+      {/* <NavBar user={user} onLogOut={handleLogOut} /> */}
+      {/* <>
         {loading ? (
           <p>Loading...</p> // Show loading message while data is being fetched
         ) : (
           <>
             {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
-            <Routes>
-              <Route path="/" element={<RentalList />} />
-              <Route path="/myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals} bookedRentals={bookedRentals} />} />
-              <Route path="/ownedrentaldetails/:id" element={<OwnedRentalDetails />} />
-              <Route path="/rentaldetails/:id" element={<RentalDetails />} />
-            </Routes>
+            <Outlet />
+
           </>
         )}
-      </>
+      </> */}
     </div>
   );
-
-
-// return (
-//   <div className="fontapp">
-//        <NavBar user={user} onLogOut={handleLogOut}/>
-//          <>
-//            {user ? <p>Welcome {user.first_name} {user.last_name}</p> : <p>Welcome Guest!</p>}
-//            <Routes>
-//              <Route path="" element={<RentalList />}/>
-//              <Route path="myaccount" element={<MyAccount user={user} onLogin={setUser} ownedRentals={ownedRentals} bookedRentals={bookedRentals}/>}/>
-//              <Route path="/ownedrentaldetails/:id" element={<OwnedRentalDetails />}/>
-//            </Routes>
-//          </>
-//      </div>
-// )
 }
 
 export default App;

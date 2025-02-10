@@ -1,17 +1,16 @@
 import Login from './Login'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import OwnedRentalList from './OwnedRentalList';
-import BookedRentalList from './BookedRentalList'
+import BookedRentalList from './BookedRentalList';
+import { UserContext } from '../context/user';
 
 
-function MyAccount({user, ownedRentals, bookedRentals, onLogin}) {
+function MyAccount() {
 
+  const { user, setUser } = useContext(UserContext) 
   const [loading, setLoading] = useState(false)
 
     if (user) {
-        console.log('User:', user); // Debug log
-        console.log('Owned Rentals:', ownedRentals); // Debug log
-        console.log(user.owned_rentals)
     
         return (
           <div>
@@ -26,7 +25,7 @@ function MyAccount({user, ownedRentals, bookedRentals, onLogin}) {
           </div>
         );
       } else {
-        return <Login onLogin={onLogin} />;
+        return <Login onLogin={setUser} />;
     }
 }
 

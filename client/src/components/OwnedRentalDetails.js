@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import OwnedPropertyBookings from "./OwnedPropertyBookings";
 import OwnedRentalReviews from "./OwnedRentalReviews";
 import OwnedRentalAmenities from "./OwnedRentalAmenities";
 import EditOwnedRentalDetails from "./EditOwnedRentalDetails";
+import { UserContext } from "../context/user";
+
 
 function OwnedRentalDetails() {
 
+    const { user } = useContext(UserContext)
     const [rental, setRental] = useState(null)
     const { id } = useParams();
     const [isVisible, setIsVisible] = useState(false)
 
+    // useEffect(() => {
+    //     fetch(`/rentals/${id}`)
+    //     .then(r => r.json())
+    //     .then(data => {
+    //         setRental(data);
+    //     })
+    //     .catch(error => console.error('Fetch error:', error));
+    // }, [id]);
+
     useEffect(() => {
-        fetch(`/rentals/${id}`)
-        .then(r => r.json())
-        .then(data => {
-            setRental(data);
-        })
-        .catch(error => console.error('Fetch error:', error));
-    }, [id]);
+        const selectedRental = user.owned_rentals.find(or => or.id == id)
+        setRental(selectedRental)
+    }, [id])
 
     function handleToggle() {
         setIsVisible(!isVisible)
@@ -66,9 +74,11 @@ function OwnedRentalDetails() {
                     <h3>Bookings: </h3>
                     <OwnedPropertyBookings bookings={rental.bookings}/>
                     <h3>Reviews: </h3>
-                    <OwnedRentalReviews reviews={rental.reviews}/>
-
-                    
+                    {rental.reviews ? (
+                        <OwnedRentalReviews reviews={rental.reviews} />
+                    ) : (
+                        <p>No reviews available</p>
+                    )}
                 </div>
             
             : <p>Loading...</p>}
