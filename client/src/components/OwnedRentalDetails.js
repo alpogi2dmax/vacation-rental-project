@@ -9,7 +9,7 @@ import { UserContext } from "../context/user";
 
 function OwnedRentalDetails() {
 
-    const { user, ownedRentals} = useContext(UserContext)
+    const { user, ownedRentals, setOwnedRentals } = useContext(UserContext)
     const [rental, setRental] = useState(null)
     const { id } = useParams();
     const [isVisible, setIsVisible] = useState(false)

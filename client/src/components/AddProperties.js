@@ -3,11 +3,9 @@ import { useFormik } from 'formik';
 import * as yup from "yup";
 import { UserContext } from '../context/user';
 
-function AddProperties({rentals, onAddRental, onToggle}) {
+function AddProperties({ onAddRental, onToggle}) {
 
     const { user } = useContext(UserContext)
-
-    console.log(user)
 
     const formSchema = yup.object().shape({
         name: yup.string().required("Must enter name").min(3, 'Must be more than 3 character').max(50, 'Must be less than 30 characters.'),
@@ -41,7 +39,6 @@ function AddProperties({rentals, onAddRental, onToggle}) {
                 })
                 .then((r) => r.json())
                 .then((rental) => {
-                    console.log(rental)
                     onAddRental(rental)
                 })
             },

@@ -7,8 +7,7 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user, setUser } = useContext(UserContext) 
-  const [loading, setLoading] = useState(false)
+  const { user } = useContext(UserContext) 
 
     if (user) {
 
@@ -21,7 +20,7 @@ function MyAccount() {
           </div>
         );
       } else {
-        return <Login onLogin={setUser} />;
+        return <Login />;
     }
 }
 

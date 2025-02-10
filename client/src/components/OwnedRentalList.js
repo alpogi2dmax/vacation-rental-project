@@ -31,8 +31,7 @@ function OwnedRentalList() {
             ))}
             </div>
             {!isVisible ? <button onClick={handleToggle}>Add Property</button>: ""}
-            {isVisible && (<AddProperties rentals={rentals} onAddRental={handleAddRental} onToggle={handleToggle}/>)}
-            {/* {isVisible && (<AddProperties user={user} onToggle={handleToggle}/>)} */}
+            {isVisible && (<AddProperties onAddRental={handleAddRental} onToggle={handleToggle}/>)}
 
 
         </div>
