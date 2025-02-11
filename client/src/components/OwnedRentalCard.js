@@ -1,7 +1,11 @@
 import './App.css'
-import { Routes, Route, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
-function OwnedRentalCard({rental}) {
+function OwnedRentalCard({rental, onDeleteClick}) {
+
+    function handleClick() {
+        onDeleteClick(rental.id)
+    }
 
     return(
         <div className='rentalcard'>
@@ -10,6 +14,7 @@ function OwnedRentalCard({rental}) {
             </Link>
             <p>{rental.name}</p>
             <p>${rental.daily_rate} per night</p>
+            <button onClick={handleClick}>Remove Property</button>
         </div>
     )
 }

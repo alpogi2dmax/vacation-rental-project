@@ -3,6 +3,7 @@ import RentalList from "./components/RentalList"
 import MyAccount from "./components/MyAccount"
 import OwnedRentalDetails from "./components/OwnedRentalDetails"
 import RentalDetails from "./components/RentalDetails"
+import BookedRental from "./components/BookedRental"
 import App from "./components/App"
 
 
@@ -26,6 +27,10 @@ const routes = [
             { 
                 path: "/rentaldetails/:id", 
                 element: <RentalDetails />, 
+            }, 
+            { 
+                path: "/bookedrental/:id", 
+                element: <BookedRental />, 
             }, 
         ]
     }

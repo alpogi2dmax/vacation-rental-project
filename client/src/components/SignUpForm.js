@@ -5,7 +5,7 @@ import { UserContext } from '../context/user';
 
 function SignUpForm() {
 
-    const { setUser, setOwnedRentals } = useContext(UserContext)
+    const { setUser, setOwnedRentals, setBookedRentals } = useContext(UserContext)
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username").min(2, 'Must be more than 1 character').max(15, 'Must be less than 15 characters.'),
@@ -48,6 +48,7 @@ function SignUpForm() {
             .then((user) => {
                 setUser(user)
                 setOwnedRentals(user.owned_rentals)
+                setBookedRentals(user.rentals)
             })
         },
     })

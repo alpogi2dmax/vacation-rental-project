@@ -4,7 +4,7 @@ import { UserContext } from '../context/user';
 
 function LoginForm() {
 
-    const { setUser, setOwnedRentals } = useContext(UserContext)
+    const { setUser, setOwnedRentals, setBookedRentals } = useContext(UserContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
@@ -22,6 +22,7 @@ function LoginForm() {
                 r.json().then((user) => {
                     setUser(user)
                     setOwnedRentals(user.owned_rentals)
+                    setBookedRentals(user.rentals)
                 });
             } else {
                 // Check if response has content before parsing

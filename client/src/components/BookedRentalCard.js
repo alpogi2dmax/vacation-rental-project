@@ -1,4 +1,5 @@
 import { date } from 'yup'
+import { Link } from 'react-router-dom'
 import './App.css'
 
 function BookedRentalCard({rental}) {
@@ -8,7 +9,9 @@ function BookedRentalCard({rental}) {
 
     return(
         <div className='bookedrentalcard'>
-            <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>
+            <Link to={`/bookedrental/${rental.id}`}>
+                <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>  
+            </Link>
             <p>{rental.name}</p>
             {rental.bookings.map(booking => {
                 const startDate = new Date(booking.start_date);

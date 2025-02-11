@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 
-function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity}) {
+function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity, onRentalRemoveAmenity}) {
 
     const [allAmenities, setAllAmenities] = useState([])
     const [selectedAmenity, setSelectedAmenity] = useState("")
@@ -58,7 +58,7 @@ useEffect(() => {
         <div>
           <ul>
             {rentalAmenities.map((amenity, index) => (
-              <li key={amenity.id || index}>{amenity.name}</li>
+              <li key={amenity.id || index}>{amenity.name} <button onClick={()=> onRentalRemoveAmenity(amenity.id)}>Remove</button></li>
             ))}
           </ul>
         </div>

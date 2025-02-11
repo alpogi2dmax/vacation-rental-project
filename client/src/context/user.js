@@ -5,6 +5,7 @@ const UserContext = React.createContext()
 function UserProvider({children}) {
     const [ user, setUser ] = useState(null)
     const [ ownedRentals, setOwnedRentals] = useState([])
+    const [ bookedRentals, setBookedRentals ] = useState([])
 
     useEffect(() => {
         fetch('/checksession')
@@ -20,13 +21,19 @@ function UserProvider({children}) {
             } else {
               setUser(data);
               setOwnedRentals(data.owned_rentals)
+              setBookedRentals(data.rentals)
             }
           })
           .catch(error => console.error('Fetch error:', error));
       }, []);
 
+    //   function handleDeleteBooking() {
+    //     // window.location.reload()
+    //     }
+
+
     return (
-        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals}}>
+        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, setBookedRentals }}>
             {children}
         </UserContext.Provider>
     )

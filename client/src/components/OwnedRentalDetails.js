@@ -44,11 +44,42 @@ function OwnedRentalDetails() {
         .then(data => {
             console.log(data)
             setRental(data)
+            setOwnedRentals(ownedRentals.map(ownedRental => {
+                if (ownedRental.id === data.id) {
+                    return data
+                } 
+                return ownedRental
+            }))
+        })
+    }
+
+    function rentalRemoveAmenity(amenityID) {
+        const data = {id: amenityID}
+        console.log(data)
+        fetch(`http://localhost:5555/rentalamenities/${rental.id}/remove`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json,'
+            },
+            body: JSON.stringify({
+                id: amenityID
+            }),
+        })
+        .then((r) => r.json())
+        .then(data => {
+            console.log(data)
+            setRental(data)
+            setOwnedRentals(ownedRentals.map(ownedRental => {
+                if (ownedRental.id === data.id) {
+                    return data
+                } 
+                return ownedRental
+            }))
         })
     }
 
     if (!user) {
-        return <p>Loeading user data...</p>
+        return <p>Loading user data...</p>
     }
 
     return (
@@ -73,7 +104,7 @@ function OwnedRentalDetails() {
                     {isVisible && <EditOwnedRentalDetails rental={rental} onToggle={handleToggle} onRental={setRental}/>}
                     <button onClick={handleToggle}>{!isVisible ? 'Edit Rental Details' : 'Cancel'}</button>
                     <h3>Amenities</h3>
-                    <OwnedRentalAmenities rentalAmenities={rental.amenities} rentalId={rental.id} onRentalAppendAmenity={rentalAppendAmenity}/>
+                    <OwnedRentalAmenities rentalAmenities={rental.amenities} rentalId={rental.id} onRentalAppendAmenity={rentalAppendAmenity} onRentalRemoveAmenity={rentalRemoveAmenity}/>
                     <h3>Bookings: </h3>
                     <OwnedPropertyBookings bookings={rental.bookings}/>
                     <h3>Reviews: </h3>

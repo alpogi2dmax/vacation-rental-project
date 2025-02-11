@@ -1,8 +1,11 @@
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import { useContext } from 'react';
+import { UserContext } from '../context/user';
 
 function EditOwnedRentalDetails({rental, onToggle, onRental}) {
 
+    const { ownedRentals, setOwnedRentals } = useContext(UserContext)
 
     const formSchema = yup.object().shape({
                 name: yup.string().required("Must enter name").min(3, 'Must be more than 3 character').max(50, 'Must be less than 30 characters.'),
@@ -39,6 +42,12 @@ function EditOwnedRentalDetails({rental, onToggle, onRental}) {
                         .then((rental) => {
                             onRental(rental)
                             onToggle()
+                            setOwnedRentals(ownedRentals.map(ownedRental => {
+                                if (ownedRental.id === rental.id) {
+                                    return rental
+                                }
+                                return ownedRental
+                            }))
                         })
                     },
                 })

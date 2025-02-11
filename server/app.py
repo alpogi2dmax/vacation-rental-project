@@ -405,6 +405,35 @@ class RentalByIDAppendAmenityByID(Resource):
 
 api.add_resource(RentalByIDAppendAmenityByID, '/rentalamenities/<int:id>')
 
+class RentalByIDRemoveAmenityByID(Resource):
+
+    def patch(self, id):
+        rental = Rental.query.filter_by(id=id).first()
+        data = request.get_json()
+
+        amenity = Amenity.query.filter_by(id=data['id']).first()
+
+        if not rental:
+            response_body = {'error': 'Rental not found'}
+            return response_body, 404
+
+        if not amenity:
+            response_body = {'error': 'Amenity not found'}
+            return response_body, 404
+
+        # Check if amenity is already in the rental's amenities
+        if amenity in rental.amenities:
+            rental.amenities.remove(amenity)
+            db.session.commit()
+            response = make_response(rental_schema.dump(rental), 202)
+        else:
+            response_body = {'error': 'Amenity not associated with this rental'}
+            return response_body, 404
+
+        return response
+
+api.add_resource(RentalByIDRemoveAmenityByID, '/rentalamenities/<int:id>/remove')
+
 class SignUp(Resource):
 
     def post(self):
@@ -465,21 +494,7 @@ class Login(Resource):
             response_body = {'error': 'Invalid username and password'}
             return response_body, 401
         
-    # def post(self):
-
-    #     username = request.get_json().get('username')
-    #     user = User.query.filter(User.username == username).first()
-
-    #     password = request.get_json()['password']
-
-    #     if user.authenticate(password):
-    #         session['user_id'] = user.id
-    #         user_dict = user.to_dict()
-    #         return user_dict, 200
-    #     else:
-    #         response_body = {'error': 'Invalid username and password'}
-    #         return response_body, 401
-            
+    
         
 api.add_resource(Login, '/login')
 

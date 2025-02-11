@@ -7,7 +7,9 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user } = useContext(UserContext) 
+  const { user }= useContext(UserContext) 
+
+ 
 
     if (user) {
 
@@ -16,7 +18,7 @@ function MyAccount() {
             <h2>My Properties</h2>
             <OwnedRentalList />
             <h2>My Vacations</h2>
-            <BookedRentalList bookedRentals={user.rentals} />
+            <BookedRentalList />
           </div>
         );
       } else {
