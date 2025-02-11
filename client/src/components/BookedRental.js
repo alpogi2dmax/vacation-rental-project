@@ -8,52 +8,51 @@ import BookedRentalBooking from "./BookedRentalBooking";
 
 function BookedRental() {
 
-    const { user, bookedRentals, setBookedRentals } = useContext(UserContext)
+    const { user, bookedRentals, filteredBookedRentals, handleUpdateBookedRentals } = useContext(UserContext)
     const { id } = useParams();
     const [rental, setRental] = useState(null)
+    // const [bookings, setBookings] = useState([])
     const navigate = useNavigate();
 
     const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
-        if (user && bookedRentals) {
-            const selectedRental = bookedRentals.find(or => or.id == id);
+        if (user && filteredBookedRentals) {
+            const selectedRental = filteredBookedRentals.find(or => or.id == id);
             setRental(selectedRental);
+            // setBookings(selectedRental.bookings)
         } else {
             console.log("User or rentals not ready yet.");
         }
-    }, [id, user, bookedRentals]);
+    }, [id, user, filteredBookedRentals]);
 
 
     // function handleToggle() {
     //     setIsVisible(!isVisible)
     // }
 
-    // function handleDeleteBooking(bookingid) {
-    //     // console.log("Booking ID to delete:", bookingid);
-    //     // console.log("Current bookedRentals:", bookedRentals);
-        
-    //     // setBookedRentals(prevRentals => {
-    //     // const updatedRentals = prevRentals.map(bookedRental => {
-    //     // if (bookedRental.bookings) {
-    //     // return {
-    //     // ...bookedRental,
-    //     // bookings: bookedRental.bookings.filter(booking => booking.id !== bookingid)
-    //     // };
-    //     // }
-    //     // return bookedRental;
-    //     // });
-        
-    //     //  console.log("Updated bookedRentals:", updatedRentals);
-    //     //  return updatedRentals;
-    //     // });
-    //     window.location.reload()
-    //     navigate('/myaccount');
-    //     }
+    function handleDeleteBooking(bookingId) {
+        console.log(bookingId);
+        fetch(`/bookings/${bookingId}`, {
+            method: "DELETE",
+        })
+        .then(() => {
+            setRental(prevRental => {
+                const updatedRental = {
+                    ...prevRental,
+                    bookings: prevRental.bookings.filter(booking => booking.id !== bookingId)
+                };
+                // Update the global state
+                handleUpdateBookedRentals(updatedRental);
+                return updatedRental; // Return the updated rental for local state
+            });
+            navigate('/myaccount')
+        });
+    }
 
 
     if (!user) {
-        return <p>Loeading user data...</p>
+        return <p>Loading user data...</p>
     }
 
     return (
@@ -100,7 +99,7 @@ function BookedRental() {
                         </thead>
                         <tbody>
                             {rental.bookings.map(booking => (
-                                <BookedRentalBooking key={booking.id} booking={booking} />
+                                <BookedRentalBooking key={booking.id} booking={booking} onDeleteBooking={handleDeleteBooking}/>
                             ))}
                         </tbody>
                     </table>

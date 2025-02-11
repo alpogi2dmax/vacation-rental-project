@@ -2,21 +2,17 @@ import { useContext } from "react";
 import { UserContext } from "../context/user";
 import { useNavigate } from "react-router-dom";
 
-function BookedRentalBooking({ booking }) {
+function BookedRentalBooking({ booking, onDeleteBooking }) {
 
     // const { handleDeleteBooking } = useContext(UserContext)
     const navigate = useNavigate()
 
     function handleDeleteClick() {
-        
-        fetch(`/bookings/${booking.id}`, {
-            method: "DELETE",
-        })
-        .then(() => {
-            // handleDeleteBooking()
-            navigate('/')
-
-        })
+        onDeleteBooking(booking.id)
+        // fetch(`/bookings/${booking.id}`, {
+        //     method: "DELETE",
+        // })
+        // .then(() => console.log('deleted in rentalbooking'))
     }
 
 

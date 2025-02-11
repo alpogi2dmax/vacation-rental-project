@@ -6,7 +6,7 @@ import { UserContext } from "../context/user";
 
 function BookedRentalList({}) {
 
-    const {bookedRentals} = useContext(UserContext)
+    const {bookedRentals, filteredBookedRentals, setBookedRentals} = useContext(UserContext)
 
     // const [isVisible, setIsVisible] = useState(false)
 
@@ -17,7 +17,7 @@ function BookedRentalList({}) {
     return (
         <div>
             <div className="clearfix">
-                {bookedRentals.map(rental => (
+                {filteredBookedRentals.map(rental => (
                     <BookedRentalCard key={rental.id} rental={rental} />
                 ))}
             </div>

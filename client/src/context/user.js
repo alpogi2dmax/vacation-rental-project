@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const UserContext = React.createContext()
 
+
 function UserProvider({children}) {
     const [ user, setUser ] = useState(null)
     const [ ownedRentals, setOwnedRentals] = useState([])
@@ -27,13 +28,19 @@ function UserProvider({children}) {
           .catch(error => console.error('Fetch error:', error));
       }, []);
 
-    //   function handleDeleteBooking() {
-    //     // window.location.reload()
-    //     }
+      function handleUpdateBookedRentals(updatedRental) {
+        setBookedRentals(prevRentals => 
+            prevRentals.map(rental => 
+                rental.id === updatedRental.id ? updatedRental : rental
+            )
+        );
+        console.log(bookedRentals)
+    }
 
+    const filteredBookedRentals = bookedRentals.filter(rental => rental.bookings && rental.bookings.length > 0);
 
     return (
-        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, setBookedRentals }}>
+        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, filteredBookedRentals, setBookedRentals, handleUpdateBookedRentals }}>
             {children}
         </UserContext.Provider>
     )
