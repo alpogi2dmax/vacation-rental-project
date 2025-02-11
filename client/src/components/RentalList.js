@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RentalCard from "./RentalCard";
 
+
 function RentalList() {
 
     const [rentals, setRentals] = useState([])

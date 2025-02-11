@@ -137,7 +137,7 @@ if __name__ == '__main__':
             state='GA',
             description='The Loft is located in the forest on 22 acres that we call Farfalla, along with 2 other geodesic dome rentals. Less than 10 min drive to Helen, Yonah Mtn, Anna Ruby Falls, Lake Unicoi, and so much more! As former adventure travel guides we fell in love with this area because of the great hiking trails and stunning national forest that surrounds Sautee.',
             daily_rate=199,
-            cover_pic='./images/treetop-ga.png',
+            cover_pic="https://i.imgur.com/DLQRON3.png",
             owner_id=1
             )
         rentals.append(rental1)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
             state='NC',
             description='Come experience Weatherstone Ranch! View Mini Highland Cattle & Valais Blacknose sheep in comfort - pastoral views and a 54-acre working-farm experience awaits! Plenty of woods to explore and farm activities on site, but lots of nearby attractions like Lake Norman State Park, Zootastic, Davaste Vineyards, Fort Dobbs, Iredell Fairgrounds (of Dixie Horse Auction fame) and lots more. Seasonal highlights include lambing and calving & shearing time.',
             daily_rate=285,
-            cover_pic='./images/ranchretreat-nc.png',
+            cover_pic='https://i.imgur.com/sjam4f8.png',
             owner_id=2
             )
         rentals.append(rental2)
@@ -159,7 +159,7 @@ if __name__ == '__main__':
             state='CA',
             description='Studio suite with a private entrance located in the Parkside/Upper Sunset area of San Francisco. Studio suite is attached to an occupied family home. Close to restaurants and shops in the West Portal area. Stern Grove Park in walking distance. Ocean Beach, Golden Gate Park, and San Francisco Zoo all within one mile. Transportation on Muni or the street car to anywhere in the city just one block away. Parking in the neighborhood is easy with 24 hour street parking down the street.',
             daily_rate=172,
-            cover_pic='./images/mulkplace-ca.png',
+            cover_pic='https://i.imgur.com/fIErwGj.png',
             owner_id=3
             )
         rentals.append(rental3)

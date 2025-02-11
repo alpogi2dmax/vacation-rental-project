@@ -7,6 +7,7 @@ function UserProvider({children}) {
     const [ user, setUser ] = useState(null)
     const [ ownedRentals, setOwnedRentals] = useState([])
     const [ bookedRentals, setBookedRentals ] = useState([])
+    const [ amenities, setAmenities ] = useState([])
 
     useEffect(() => {
         fetch('/checksession')
@@ -23,9 +24,17 @@ function UserProvider({children}) {
               setUser(data);
               setOwnedRentals(data.owned_rentals)
               setBookedRentals(data.rentals)
-            }
-          })
-          .catch(error => console.error('Fetch error:', error));
+              console.log('Fetching amenities...');
+                fetch('/amenities')
+                .then(r => r.json())
+                .then(data => {
+                    console.log('All amenities fetched:', data);
+                    setAmenities(data);
+                })
+                .catch(error => console.error('Error fetching amenities:', error));
+                }
+            })
+        .catch(error => console.error('Fetch error:', error));
       }, []);
 
       function handleUpdateBookedRentals(updatedRental) {
@@ -40,7 +49,7 @@ function UserProvider({children}) {
     const filteredBookedRentals = bookedRentals.filter(rental => rental.bookings && rental.bookings.length > 0);
 
     return (
-        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, filteredBookedRentals, setBookedRentals, handleUpdateBookedRentals }}>
+        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, filteredBookedRentals, setBookedRentals, handleUpdateBookedRentals, amenities, setAmenities }}>
             {children}
         </UserContext.Provider>
     )

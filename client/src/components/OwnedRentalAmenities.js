@@ -1,24 +1,27 @@
 
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../context/user";
 
 
 function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity, onRentalRemoveAmenity}) {
 
+    const { amenities, setAmenities } = useContext(UserContext)
     const [allAmenities, setAllAmenities] = useState([])
     const [selectedAmenity, setSelectedAmenity] = useState("")
     const [isVisible, setIsVisible] = useState(false)
     const [newAmenity, setNewAmenity] = useState('')
 
-useEffect(() => {
-    console.log('Fetching amenities...');
-    fetch('/amenities')
-      .then(r => r.json())
-      .then(data => {
-        console.log('All amenities fetched:', data);
-        setAllAmenities(data);
-      })
-      .catch(error => console.error('Error fetching amenities:', error));
-  }, [rentalId, rentalAmenities]);
+// useEffect(() => {
+//     console.log('Fetching amenities...');
+//     fetch('/amenities')
+//       .then(r => r.json())
+//       .then(data => {
+//         console.log('All amenities fetched:', data);
+//         setAllAmenities(data);
+//       })
+//       .catch(error => console.error('Error fetching amenities:', error));
+//   }, [rentalId, rentalAmenities]);
 
   function handleToggle() {
     setIsVisible(!isVisible)
@@ -44,7 +47,7 @@ useEffect(() => {
     })
     .then(r => r.json())
     .then(data => {
-      setAllAmenities([...allAmenities, data])
+      setAmenities([...amenities, data])
       const newAmenityId = parseInt(data.id, 10);
       onRentalAppendAmenity(newAmenityId);
       handleToggle();
@@ -70,7 +73,7 @@ useEffect(() => {
       {isVisible && (
         <div>
           <select value={selectedAmenity} onChange={(e) => setSelectedAmenity(e.target.value)}>
-            {allAmenities.map((amenity) => (
+            {amenities.map((amenity) => (
               <option key={amenity.id} value={amenity.id}>
                 {amenity.name}
               </option>

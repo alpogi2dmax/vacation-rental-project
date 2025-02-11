@@ -27,28 +27,20 @@ function OwnedRentalList() {
         .then(() => setOwnedRentals(ownedRentals.filter(ownedRental => ownedRental.id !== deletedRentalId)))
     }
 
-    // function handleDeleteClick() {
-        
-    //     fetch(`/bookings/${booking.id}`, {
-    //         method: "DELETE",
-    //     })
-    //     .then(() => {
-    //         // handleDeleteBooking()
-    //         navigate('/')
-
-    //     })
-    // }
 
 
-    console.log(ownedRentals)
-    console.log(user)
+    
 
     return (
         <div>
             <div className="clearfix">
-            {ownedRentals.map(rental => (
-                <OwnedRentalCard key={rental.id} rental={rental} onDeleteClick={handleDeleteClick} />
-            ))}
+            {ownedRentals.length === 0 ? 
+                <p>There are no properties at this time.</p>
+            : 
+                ownedRentals.map(rental => (
+                    <OwnedRentalCard key={rental.id} rental={rental} onDeleteClick={handleDeleteClick} />
+                ))
+            }
             </div>
             {!isVisible ? <button onClick={handleToggle}>Add Property</button>: ""}
             {isVisible && (<AddProperties onAddRental={handleAddRental} onToggle={handleToggle}/>)}

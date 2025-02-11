@@ -34,7 +34,7 @@ function OwnedRentalDetails() {
         fetch(`http://localhost:5555/rentalamenities/${rental.id}`, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json,'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 id: amenityID
@@ -59,7 +59,7 @@ function OwnedRentalDetails() {
         fetch(`http://localhost:5555/rentalamenities/${rental.id}/remove`, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json,'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 id: amenityID

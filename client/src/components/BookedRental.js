@@ -31,6 +31,45 @@ function BookedRental() {
     //     setIsVisible(!isVisible)
     // }
 
+    const formatDate = (date) => { 
+        const d = new Date(date); 
+        const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
+        const day = d.getDate().toString().padStart(2, '0'); 
+        const year = d.getFullYear(); 
+        return `${month}/${day}/${year}`; 
+    };
+
+    function handleEditBooking(bookingData) {
+        console.log(bookingData)
+        fetch(`http://localhost:5555/bookings/${bookingData.bookingId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                start_date: formatDate(bookingData.startDate),
+                end_date: formatDate(bookingData.endDate),
+                rental_id: rental.id,
+                traveler_id: user.id
+            }),
+        })
+        .then((r) => r.json())
+        .then(data => {
+            console.log(data)
+            setRental(prevRental => {
+                const updatedRental = {
+                    ...prevRental,
+                    bookings: prevRental.bookings.map(booking => 
+                        booking.id === data.id ? data : booking
+                    )
+                };
+                handleUpdateBookedRentals(updatedRental);
+                return updatedRental
+            })
+        })
+    } 
+
+
     function handleDeleteBooking(bookingId) {
         console.log(bookingId);
         fetch(`/bookings/${bookingId}`, {
@@ -94,12 +133,13 @@ function BookedRental() {
                             <tr>
                                 <th>Start Date</th>
                                 <th>End Date</th>
+                                <th>Edit Booking</th>
                                 <th>Cancel Booking</th>
                             </tr>
                         </thead>
                         <tbody>
                             {rental.bookings.map(booking => (
-                                <BookedRentalBooking key={booking.id} booking={booking} onDeleteBooking={handleDeleteBooking}/>
+                                <BookedRentalBooking key={booking.id} booking={booking} onDeleteBooking={handleDeleteBooking} onEditBooking={handleEditBooking}/>
                             ))}
                         </tbody>
                     </table>
