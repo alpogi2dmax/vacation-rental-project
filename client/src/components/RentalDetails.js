@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { UserContext } from "../context/user";
 import RentalReview from "./RentalReview";
+import RentalReviewForm from "./RentalReviewForm";
+
 
 function RentalDetails() {
 
     const [rental, setRental] = useState(null);
+    const [reviews, setReviews] = useState([])
     const [loading, setLoading] = useState(true);
+    const [ isReviewVisible, setIsReviewVisible] = useState(true)
     const { id } = useParams();
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         fetch(`/rentals/${id}`)
             .then(r => r.json())
             .then(data => {
                 setRental(data);
+                setReviews(data.reviews || [])
                 setLoading(false);
             })
             .catch(error => {
@@ -20,6 +27,12 @@ function RentalDetails() {
                 setLoading(false);
             });
     }, [id]);
+
+    function handleAddReview(newReview) {
+        setReviews([...reviews, newReview])
+    }
+
+    console.log(reviews)
 
     if (loading) {
         return <p>Loading...</p>;
@@ -49,9 +62,17 @@ function RentalDetails() {
                         ))}
                     </ul> 
                     <h3>Reviews: </h3>
-                    {rental.reviews.map(review => (
+                    {reviews.length === 0 ? <p>There are no reviews at this time.</p> : reviews.map(review => (
                         <RentalReview key={review.id} review={review}/>
                     ))}
+                    <button onClick={() => setIsReviewVisible(!isReviewVisible)}>Leave a review:</button>
+                    {!isReviewVisible && (
+                        !user ? (
+                            <p>Please log in!</p>
+                        ) : (
+                            <RentalReviewForm rental={rental} onAddReview={handleAddReview}/>
+                        )
+                    )}
                 </div>
             
             : <p>Loading...</p>}

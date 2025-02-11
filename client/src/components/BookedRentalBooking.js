@@ -4,14 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 function BookedRentalBooking({ booking, onDeleteBooking, onEditBooking }) {
 
-    // const { handleDeleteBooking } = useContext(UserContext)
-    const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(true)
     const [ startDate, setStartDate ] = useState(new Date(booking.start_date))
     const [ endDate, setEndDate ] = useState(new Date(booking.end_date))
 
     function handleDeleteClick() {
-        onDeleteBooking(booking.id)
+        onDeleteBooking(booking)
        
     }
 
@@ -20,13 +18,17 @@ function BookedRentalBooking({ booking, onDeleteBooking, onEditBooking }) {
     }
 
     function handleUpdateClick() {
-        const data = {
-            bookingId: booking.id,
-            startDate: startDate,
-            endDate: endDate
+        if (startDate > endDate ) {
+            alert('Start Date cannot be greater than End Date')
+        } else {
+            const data = {
+                bookingId: booking.id,
+                startDate: startDate,
+                endDate: endDate
+            }
+            onEditBooking(data)
+            setIsVisible(!isVisible)
         }
-        onEditBooking(data)
-        setIsVisible(!isVisible)
     }
 
 
@@ -70,15 +72,15 @@ function BookedRentalBooking({ booking, onDeleteBooking, onEditBooking }) {
             {isVisible ?
                 <td>{formattedEndDate}</td> 
             : 
+
                 <td>
-                    <td>
                     <input 
                         type='date' 
                         value={formatDateToInput(endDate)} 
                         onChange={(e) => setEndDate(new Date(e.target.value))}
                     />
                 </td>
-                </td>
+
             }
             <td>
                 {isVisible ?

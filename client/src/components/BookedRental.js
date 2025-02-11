@@ -8,7 +8,7 @@ import BookedRentalBooking from "./BookedRentalBooking";
 
 function BookedRental() {
 
-    const { user, bookedRentals, filteredBookedRentals, handleUpdateBookedRentals } = useContext(UserContext)
+    const { user, bookedRentals, filteredBookedRentals, handleUpdateBookedRentals, setBookedRentals } = useContext(UserContext)
     const { id } = useParams();
     const [rental, setRental] = useState(null)
     // const [bookings, setBookings] = useState([])
@@ -17,14 +17,14 @@ function BookedRental() {
     const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
-        if (user && filteredBookedRentals) {
-            const selectedRental = filteredBookedRentals.find(or => or.id == id);
+        if (user && bookedRentals) {
+            const selectedRental = bookedRentals.find(or => or.id == id);
             setRental(selectedRental);
             // setBookings(selectedRental.bookings)
         } else {
             console.log("User or rentals not ready yet.");
         }
-    }, [id, user, filteredBookedRentals]);
+    }, [id, user, bookedRentals]);
 
 
     // function handleToggle() {
@@ -40,7 +40,6 @@ function BookedRental() {
     };
 
     function handleEditBooking(bookingData) {
-        console.log(bookingData)
         fetch(`http://localhost:5555/bookings/${bookingData.bookingId}`, {
             method: 'PATCH',
             headers: {
@@ -55,36 +54,34 @@ function BookedRental() {
         })
         .then((r) => r.json())
         .then(data => {
-            console.log(data)
-            setRental(prevRental => {
-                const updatedRental = {
-                    ...prevRental,
-                    bookings: prevRental.bookings.map(booking => 
-                        booking.id === data.id ? data : booking
-                    )
-                };
-                handleUpdateBookedRentals(updatedRental);
-                return updatedRental
-            })
+            const updatedSelectedRentalBookings = rental.bookings.map(b => b.id === data.id ? data : b)
+            const updatedSelectedRental = {...rental, bookings: updatedSelectedRentalBookings}
+            setBookedRentals(bookedRentals.map(br => br.id === updatedSelectedRental.id ? updatedSelectedRental : br))
+           
         })
     } 
 
 
-    function handleDeleteBooking(bookingId) {
-        console.log(bookingId);
-        fetch(`/bookings/${bookingId}`, {
+    function handleDeleteBooking(booking) {
+        console.log(booking);
+        fetch(`/bookings/${booking.id}`, {
             method: "DELETE",
         })
         .then(() => {
-            setRental(prevRental => {
-                const updatedRental = {
-                    ...prevRental,
-                    bookings: prevRental.bookings.filter(booking => booking.id !== bookingId)
-                };
-                // Update the global state
-                handleUpdateBookedRentals(updatedRental);
-                return updatedRental; // Return the updated rental for local state
-            });
+            const selectedBookedRental = bookedRentals.find(br => br.id === booking.rental_id)
+            const updatedBookedRentalBookings = selectedBookedRental.bookings.filter(b => b.id !== booking.id)
+            const updatedSelectedBookedRental = {...selectedBookedRental, bookings: updatedBookedRentalBookings}
+            const updatedBookedRentals = []
+            bookedRentals.forEach(br => {
+                if (br.id !== booking.rental_id) {
+                    updatedBookedRentals.push(br)
+                } else {
+                    if (updatedBookedRentalBookings.length !== 0) {
+                        updatedBookedRentals.push(updatedSelectedBookedRental)
+                    }
+                }
+                setBookedRentals(updatedBookedRentals)
+            })
             navigate('/myaccount')
         });
     }
@@ -128,6 +125,7 @@ function BookedRental() {
                         <p>No specific amenities for this rental.</p>
                     )}
                     <h3>Bookings: </h3>
+                    {rental.bookings.length !== 0 ? (
                     <table style={{ width: "100%" }}>
                         <thead>
                             <tr>
@@ -142,7 +140,10 @@ function BookedRental() {
                                 <BookedRentalBooking key={booking.id} booking={booking} onDeleteBooking={handleDeleteBooking} onEditBooking={handleEditBooking}/>
                             ))}
                         </tbody>
-                    </table>
+                    </table>)
+                    :
+                    (<p>No bookings at this time.</p>)
+                        }
                     {/* <h3>Reviews: </h3>
                     <OwnedRentalReviews reviews={rental.reviews} /> */}
                 </div>
