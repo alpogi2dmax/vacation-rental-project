@@ -54,6 +54,7 @@ function BookedRental() {
         })
         .then((r) => r.json())
         .then(data => {
+            console.log(data)
             const updatedSelectedRentalBookings = rental.bookings.map(b => b.id === data.id ? data : b)
             const updatedSelectedRental = {...rental, bookings: updatedSelectedRentalBookings}
             setBookedRentals(bookedRentals.map(br => br.id === updatedSelectedRental.id ? updatedSelectedRental : br))
@@ -68,9 +69,10 @@ function BookedRental() {
             method: "DELETE",
         })
         .then(() => {
-            const selectedBookedRental = bookedRentals.find(br => br.id === booking.rental_id)
-            const updatedBookedRentalBookings = selectedBookedRental.bookings.filter(b => b.id !== booking.id)
-            const updatedSelectedBookedRental = {...selectedBookedRental, bookings: updatedBookedRentalBookings}
+            // const selectedBookedRental = bookedRentals.find(br => br.id === booking.rental_id)
+            const updatedBookedRentalBookings = rental.bookings.filter(b => b.id !== booking.id)
+            const updatedSelectedBookedRental = {...rental, bookings: updatedBookedRentalBookings}
+            setRental(updatedSelectedBookedRental)
             const updatedBookedRentals = []
             bookedRentals.forEach(br => {
                 if (br.id !== booking.rental_id) {

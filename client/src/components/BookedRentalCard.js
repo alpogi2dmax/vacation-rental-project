@@ -13,7 +13,16 @@ function BookedRentalCard({rental}) {
                 <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>  
             </Link>
             <p>{rental.name}</p>
-            {rental.bookings.map(booking => {
+            {rental.bookings.length > 1 ? 
+                <p>{rental.bookings.length} Booked Vacations</p> 
+                : 
+                <div>
+                    <p>Start Date: {new Date(rental.bookings[0].start_date).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                    <p>End Date: {new Date(rental.bookings[0].end_date).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                </div>
+            }
+
+            {/* {rental.bookings.map(booking => {
                 const startDate = new Date(booking.start_date);
                 const formattedStartDate = startDate.toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -33,7 +42,7 @@ function BookedRentalCard({rental}) {
                         <p>End Date: {formattedEndDate}</p>
                     </div>
                 );
-            })}
+            })} */}
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../context/user";
 import RentalReview from "./RentalReview";
 import RentalReviewForm from "./RentalReviewForm";
+import BookingRentalForm from "./BookingRentalForm";
 
 
 function RentalDetails() {
@@ -11,6 +12,7 @@ function RentalDetails() {
     const [reviews, setReviews] = useState([])
     const [loading, setLoading] = useState(true);
     const [ isReviewVisible, setIsReviewVisible] = useState(true)
+    const [ isBookingVisible, setIsBookingVisible] = useState(true)
     const { id } = useParams();
     const { user } = useContext(UserContext)
 
@@ -30,6 +32,7 @@ function RentalDetails() {
 
     function handleAddReview(newReview) {
         setReviews([...reviews, newReview])
+        setIsReviewVisible(!isReviewVisible)
     }
 
     console.log(reviews)
@@ -65,12 +68,21 @@ function RentalDetails() {
                     {reviews.length === 0 ? <p>There are no reviews at this time.</p> : reviews.map(review => (
                         <RentalReview key={review.id} review={review}/>
                     ))}
-                    <button onClick={() => setIsReviewVisible(!isReviewVisible)}>Leave a review:</button>
+                    <button onClick={() => setIsReviewVisible(!isReviewVisible)}>{isReviewVisible ? 'Leave a review' : 'Cancel review'} </button>
                     {!isReviewVisible && (
                         !user ? (
                             <p>Please log in!</p>
                         ) : (
                             <RentalReviewForm rental={rental} onAddReview={handleAddReview}/>
+                        )
+                    )}
+                    <h3>Book This Place!</h3>
+                    <button onClick={() => setIsBookingVisible(!isBookingVisible)}>Book Rental</button>
+                    {!isBookingVisible && (
+                        !user ? (
+                            <p>Please log in!</p>
+                        ) : (
+                            <BookingRentalForm key={rental.id} rental={rental}/>
                         )
                     )}
                 </div>
