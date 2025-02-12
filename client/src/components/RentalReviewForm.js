@@ -38,7 +38,7 @@ function RentalReviewForm({rental, onAddReview}) {
 
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form className='reviewform' onSubmit={formik.handleSubmit}>
             <label>Title: </label>
             <input type='text' name='title' id='title' value={formik.values.title} onChange={formik.handleChange} />
             <p style={{color: "red" }}> {formik.errors.title}</p>

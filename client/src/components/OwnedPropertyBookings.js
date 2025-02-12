@@ -6,7 +6,7 @@ function OwnedPropertyBookings({ bookings = [] }) {
 
     return (
         
-        <table style={{ width: "100%" }}>
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>

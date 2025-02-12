@@ -58,9 +58,15 @@ function BookingRentalForm({rental}) {
             })
             .then((r) => r.json())
             .then((booking) => {
+                console.log(bookedRentals)
+                console.log(rental)
+                console.log(booking)
+                const selectedBookedRental = bookedRentals.find(br => br.id == rental.id)
+                console.log(selectedBookedRental)
                 const newRentalBookings = [...rental.bookings, booking]
+                const filteredRentalBookings = newRentalBookings.filter(b => b.traveler_id === user.id)
                 console.log(newRentalBookings)
-                const newRental = {...rental, bookings: newRentalBookings}
+                const newRental = {...rental, bookings: filteredRentalBookings}
                 console.log(newRental)
                 const rentalExists = bookedRentals.some(br => br.id === newRental.id);
 
@@ -73,7 +79,7 @@ function BookingRentalForm({rental}) {
                 }   
             })
             .then(() => {
-                alert('Booking is successfull. Check your Account.')  
+                navigate('/myaccount')
             })
             .catch((error) => {
                 console.log("Error:", error);
@@ -82,7 +88,7 @@ function BookingRentalForm({rental}) {
     })
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form className='bookingform' onSubmit={formik.handleSubmit}>
             <input type="hidden" name="name" value={formik.values.name} />
             <label>Start Date: </label>
             <input type='date' name='start_date' id='start_date' value={formik.values.start_date} onChange={formik.handleChange} />

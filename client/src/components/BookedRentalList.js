@@ -6,15 +6,7 @@ import { UserContext } from "../context/user";
 
 function BookedRentalList({}) {
 
-    const {bookedRentals, filteredBookedRentals, setBookedRentals} = useContext(UserContext)
-
-    // const [isVisible, setIsVisible] = useState(false)
-
-    // function handleToggle() {
-    //     setIsVisible(!isVisible)
-    // }
-
-    console.log(bookedRentals)
+    const {bookedRentals} = useContext(UserContext)
 
     if (bookedRentals.length === 0) {
         return (

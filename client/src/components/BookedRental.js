@@ -11,7 +11,7 @@ function BookedRental() {
     const { user, bookedRentals, filteredBookedRentals, handleUpdateBookedRentals, setBookedRentals } = useContext(UserContext)
     const { id } = useParams();
     const [rental, setRental] = useState(null)
-    // const [bookings, setBookings] = useState([])
+    const [showAllAmenities, setShowAllAmenities] = useState(false);
     const navigate = useNavigate();
 
     const [isVisible, setIsVisible] = useState(false)
@@ -25,11 +25,6 @@ function BookedRental() {
             console.log("User or rentals not ready yet.");
         }
     }, [id, user, bookedRentals]);
-
-
-    // function handleToggle() {
-    //     setIsVisible(!isVisible)
-    // }
 
     const formatDate = (date) => { 
         const d = new Date(date); 
@@ -56,7 +51,7 @@ function BookedRental() {
         .then((r) => r.json())
         .then(data => {
             console.log(data)
-            const selectedBookedRental = bookedRentals.find(br => br.id === data.id)
+            const selectedBookedRental = bookedRentals.find(br => br.id === rental.id)
             console.log(selectedBookedRental)
             const updatedSelectedRentalBookings = selectedBookedRental.bookings.map(b => b.id === data.id ? data : b)
             const updatedSelectedRental = {...selectedBookedRental, bookings: updatedSelectedRentalBookings}
@@ -71,37 +66,11 @@ function BookedRental() {
         fetch(`/bookings/${booking.id}`, {
             method: "DELETE",
         })
-        // .then(() => {
-
-        //     const updatedBookedRentals = bookedRentals.map(br => {
-        //         if (br.id === booking.rental_id) {
-        //             const updatedBookings = br.bookings.filter(b => b.id !== booking.id);
-        //             return { ...br, bookings: updatedBookings };
-        //         }
-        //         return br;
-        //     }).filter(br => br.bookings.length > 0); // Remove rentals with no bookings
- 
-        //     setBookedRentals(updatedBookedRentals);
-        //     setTimeout(() => {
-        //         navigate('/myaccount');
-        //     }, 5000);
-
-        // })
         .then(() => {
         })  
-            console.log(bookedRentals)
-            console.log(booking)
             const selectedBookedRental = bookedRentals.find(br => br.id === rental.id)
-            console.log(selectedBookedRental)
-            console.log(bookedRentals)
-            console.log(booking)
             const updatedBookedRentalBookings = selectedBookedRental.bookings.filter(b => b.id !== booking.id)
-            console.log(selectedBookedRental)
-            console.log(bookedRentals)
-            console.log(booking)
-            console.log(updatedBookedRentalBookings)
             const updatedSelectedBookedRental = {...rental, bookings: updatedBookedRentalBookings}
-            // setRental(updatedSelectedBookedRental)
             const updatedBookedRentals = []
             bookedRentals.forEach(br => {
                 if (br.id !== rental.id) {
@@ -111,51 +80,14 @@ function BookedRental() {
                         updatedBookedRentals.push(updatedSelectedBookedRental)
                     }
                 }
-                // setBookedRentals(updatedBookedRentals)
-                // console.log(updatedBookedRentals)
             })
-            console.log(selectedBookedRental)
-            console.log(bookedRentals)
-            console.log(booking)
-            console.log(updatedBookedRentalBookings)
-            console.log(updatedSelectedBookedRental)
             setBookedRentals(updatedBookedRentals)
-            // setBookedRentals(bookedRentals.map(br => br.id !== updatedSelectedBookedRental.id ? br : updatedBookedRentalBookings !== 0 ? updatedSelectedBookedRental : null))
-            // console.log(updatedBookedRentals)
             navigate('/myaccount')
     }
 
-    // const handleDeleteBooking = async (booking) => {
-    //     console.log(booking);
-    
-    //     try {
-    //         // Send delete request
-    //         const response = await fetch(`/bookings/${booking.id}`, {
-    //             method: "DELETE",
-    //         });
-    
-    //         // Check if the response is successful
-    //         if (response.ok) {
-    //             // Update state only after confirming deletion
-    //             const updatedBookedRentals = bookedRentals.map(br => {
-    //                 if (br.id === booking.rental_id) {
-    //                     const updatedBookings = br.bookings.filter(b => b.id !== booking.id);
-    //                     return { ...br, bookings: updatedBookings };
-    //                 }
-    //                 return br;
-    //             }).filter(br => br.bookings.length > 0); // Remove rentals with no bookings
-    
-    //             setBookedRentals(updatedBookedRentals);
-    
-    //             // Navigate after state update
-    //             // navigate('/myaccount');
-    //         } else {
-    //             console.error('Failed to delete booking. Please try again.');
-    //         }
-    //     } catch (error) {
-    //         console.error('An error occurred while deleting the booking:', error);
-    //     }
-    // }
+    const toggleAmenities = () => {
+        setShowAllAmenities(prevState => !prevState);
+    };
 
 
     if (!user) {
@@ -169,35 +101,38 @@ function BookedRental() {
                     {!isVisible &&
                     <div>
                         <h2>{rental.name}</h2>
-                        <img src={rental.cover_pic} alt={rental.cover_pic} />
-                        <h3>Description</h3>
-                        <p>{rental.description}</p>
-                        <h3>Details</h3>
-                        <ul>
-                            <li>Address: {rental.address}</li>
-                            <li>City: {rental.city}</li>
-                            <li>State: {rental.state}</li>
-                            <li>Daily Rate: ${rental.daily_rate}</li>
-                            <li>Owner: {rental.owner.first_name} {rental.owner.last_name}</li>
-                        </ul>
+                        <div className="rental-content">
+                            <img className='rentalimage' src={rental.cover_pic} alt={rental.cover_pic} />
+                            <div className='rentaldetails'>
+                                <h3>Details</h3>
+                                    <ul>
+                                        <li>Address: {rental.address}</li>
+                                        <li>City: {rental.city}</li>
+                                        <li>State: {rental.state}</li>
+                                        <li>Daily Rate: ${rental.daily_rate}</li>
+                                        <li>Owner: {rental.owner.first_name} {rental.owner.last_name}</li>
+                                    </ul>
+                                <h3>Description</h3>
+                                <p>{rental.description}</p>
+                            </div>
+                        </div>
                     </div>
                     }
-                    
-                    <h3>Amenities</h3>
-                    {rental.amenities && rental.amenities.length > 0 ? (
-                        <div>
-                            <ul>
-                                {rental.amenities.map((amenity, index) => (
-                                <li key={amenity.id || index}>{amenity.name}</li>
+                    <div className="rental-section">
+                        <h3>Amenities</h3>
+                            <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
+                                {rental.amenities.map(amenity => (
+                                    <li key={amenity.id}>{amenity.name}</li>
                                 ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        <p>No specific amenities for this rental.</p>
-                    )}
+                            </ul> 
+                            <span className="toggle-link" onClick={toggleAmenities}>
+                                {showAllAmenities ? 'See less...' : 'See more...'}
+                            </span>
+                    
+                    </div>
                     <h3>Bookings: </h3>
                     {rental.bookings.length !== 0 ? (
-                    <table style={{ width: "100%" }}>
+                    <table>
                         <thead>
                             <tr>
                                 <th>Start Date</th>

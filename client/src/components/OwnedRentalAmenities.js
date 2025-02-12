@@ -8,20 +8,9 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
 
     const { amenities, setAmenities } = useContext(UserContext)
     const [allAmenities, setAllAmenities] = useState([])
-    const [selectedAmenity, setSelectedAmenity] = useState("")
+    const [selectedAmenity, setSelectedAmenity] = useState(1)
     const [isVisible, setIsVisible] = useState(false)
     const [newAmenity, setNewAmenity] = useState('')
-
-// useEffect(() => {
-//     console.log('Fetching amenities...');
-//     fetch('/amenities')
-//       .then(r => r.json())
-//       .then(data => {
-//         console.log('All amenities fetched:', data);
-//         setAllAmenities(data);
-//       })
-//       .catch(error => console.error('Error fetching amenities:', error));
-//   }, [rentalId, rentalAmenities]);
 
   function handleToggle() {
     setIsVisible(!isVisible)

@@ -36,7 +36,7 @@
 }
 
 .bookedrentalcard {
-    height: 330px;
+    height: 350px;
     width: 200px;
     color: gray;
     float: left;
@@ -53,10 +53,146 @@
     border-radius: 20px
 }
 
+table {
+    width: 80%;
+    margin-left: auto; /* Center the table horizontally */
+    margin-right: auto; /* Center the table horizontally */
+    border: 5px solid rgb(218, 215, 215);
+    border-radius: 20px
+}
+
 table, th, td {
-    border: 1px solid rgb(158, 211, 241);
+    border: 1px solid none;
     border-collapse: collapse;
   }
   th, td {
-    background-color: #dde4eb;
+    background-color: #f2f3f5;
+    text-align: center; /* Center text within cells */
+    padding: 5px; /* Optional: Add padding for space */
+    border: 1px solid #f1f1f1; /* Optional: Add borders for clarity */
   }
+
+.rental-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Provides space between items */
+}
+
+.rentalimage {
+    flex: 1 1 400px; /* Flex-grow, flex-shrink, flex-basis */
+    border-radius: 20px; /* Slightly reduce border radius for a modern look */
+    max-width: 400px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.rentaldetails {
+    flex: 1 1 600px;
+    max-width: 600px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.rental-section {
+    width: 100%;
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.toggle-link {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+
+.amenities {
+    display: flex;
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, Helvetica, sans-serif;
+    flex-wrap: wrap; /* Allows items to wrap into multiple rows */
+    gap: 10px; /* Space between items */
+    max-height: 8em; /* Control height to fit approximately two rows */
+    overflow: hidden; /* Hide excess content */
+}
+
+.amenities.expanded {
+    max-height: none; /* Allow full height when expanded */
+}
+
+.amenities li {
+    flex: 1 1 30%; /* Adjust width to fit 3 items per row */
+    max-width: 30%; /* Prevent items from exceeding the row */
+    list-style-type: none; /* Remove bullet points */
+}
+
+.review-container {
+    display: flex;
+    flex-wrap: wrap; /* Ensures items wrap to the next line if needed */
+    gap: 20px; /* Space between cards */
+    margin-bottom: 20px; /* Space between sections */
+}
+
+.reviewcard {
+    flex: 1 1 400px; /* Flex-grow, flex-shrink, flex-basis */
+    float: left;
+    max-width: 400px;
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.reviewcard h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333; /* Darker text color for better readability */
+}
+
+.reviewcard p {
+    color: #555; /* Medium gray for less emphasis */
+    margin-bottom: 8px;
+    line-height: 1.4; /* Improve readability */
+}
+
+/* .review-container::after {
+    content: "";
+    display: table;
+    clear: both;
+} */
+
+.reviewform {
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.bookingform {
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}

@@ -5,7 +5,7 @@ function RentalReview({review}) {
 
     return (
         
-        <div>
+        <div className='reviewcard'>
             
                     <h3>{review.title}</h3>
                     <p>{review.review}</p>

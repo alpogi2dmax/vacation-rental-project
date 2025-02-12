@@ -18,7 +18,6 @@ function OwnedRentalDetails() {
         if (user && ownedRentals) {
             const selectedRental = ownedRentals.find(or => or.id == id);
             setRental(selectedRental);
-            console.log("Rental set:", selectedRental);
         } else {
             console.log("User or rentals not ready yet.");
         }
@@ -30,6 +29,7 @@ function OwnedRentalDetails() {
 
     function rentalAppendAmenity(amenityID) {
         const data = {id: amenityID}
+        console.log(data)
         console.log(data)
         fetch(`http://localhost:5555/rentalamenities/${rental.id}`, {
             method: 'PATCH',
@@ -55,6 +55,7 @@ function OwnedRentalDetails() {
 
     function rentalRemoveAmenity(amenityID) {
         const data = {id: amenityID}
+        console.log(rental)
         console.log(data)
         fetch(`http://localhost:5555/rentalamenities/${rental.id}/remove`, {
             method: 'PATCH',
