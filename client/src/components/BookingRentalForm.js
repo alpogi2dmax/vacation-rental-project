@@ -70,9 +70,10 @@ function BookingRentalForm({rental}) {
                 } else {
                     // If it exists, update the existing rental
                     setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
-                }
-                navigate('/myaccount')    
-                console.log(bookedRentals);
+                }   
+            })
+            .then(() => {
+                alert('Booking is successfull. Check your Account.')  
             })
             .catch((error) => {
                 console.log("Error:", error);

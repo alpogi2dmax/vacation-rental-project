@@ -38,6 +38,7 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
   }
 
   function handleAddAmenityClick() {
+    !newAmenity ? alert('Amenity cannot be blank!') :
     fetch('/amenities', {
       method: "POST",
       headers: {

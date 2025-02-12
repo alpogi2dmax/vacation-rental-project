@@ -20,7 +20,7 @@ function BookedRental() {
         if (user && bookedRentals) {
             const selectedRental = bookedRentals.find(or => or.id == id);
             setRental(selectedRental);
-            // setBookings(selectedRental.bookings)
+            console.log(selectedRental)
         } else {
             console.log("User or rentals not ready yet.");
         }
@@ -39,7 +39,8 @@ function BookedRental() {
         return `${month}/${day}/${year}`; 
     };
 
-    function handleEditBooking(bookingData) {
+    const handleEditBooking = (bookingData) => {
+        console.log(bookingData)
         fetch(`http://localhost:5555/bookings/${bookingData.bookingId}`, {
             method: 'PATCH',
             headers: {
@@ -55,38 +56,106 @@ function BookedRental() {
         .then((r) => r.json())
         .then(data => {
             console.log(data)
-            const updatedSelectedRentalBookings = rental.bookings.map(b => b.id === data.id ? data : b)
-            const updatedSelectedRental = {...rental, bookings: updatedSelectedRentalBookings}
+            const selectedBookedRental = bookedRentals.find(br => br.id === data.id)
+            console.log(selectedBookedRental)
+            const updatedSelectedRentalBookings = selectedBookedRental.bookings.map(b => b.id === data.id ? data : b)
+            const updatedSelectedRental = {...selectedBookedRental, bookings: updatedSelectedRentalBookings}
             setBookedRentals(bookedRentals.map(br => br.id === updatedSelectedRental.id ? updatedSelectedRental : br))
            
         })
     } 
 
 
-    function handleDeleteBooking(booking) {
+    const handleDeleteBooking = (booking) => {
         console.log(booking);
         fetch(`/bookings/${booking.id}`, {
             method: "DELETE",
         })
+        // .then(() => {
+
+        //     const updatedBookedRentals = bookedRentals.map(br => {
+        //         if (br.id === booking.rental_id) {
+        //             const updatedBookings = br.bookings.filter(b => b.id !== booking.id);
+        //             return { ...br, bookings: updatedBookings };
+        //         }
+        //         return br;
+        //     }).filter(br => br.bookings.length > 0); // Remove rentals with no bookings
+ 
+        //     setBookedRentals(updatedBookedRentals);
+        //     setTimeout(() => {
+        //         navigate('/myaccount');
+        //     }, 5000);
+
+        // })
         .then(() => {
-            // const selectedBookedRental = bookedRentals.find(br => br.id === booking.rental_id)
-            const updatedBookedRentalBookings = rental.bookings.filter(b => b.id !== booking.id)
+        })  
+            console.log(bookedRentals)
+            console.log(booking)
+            const selectedBookedRental = bookedRentals.find(br => br.id === rental.id)
+            console.log(selectedBookedRental)
+            console.log(bookedRentals)
+            console.log(booking)
+            const updatedBookedRentalBookings = selectedBookedRental.bookings.filter(b => b.id !== booking.id)
+            console.log(selectedBookedRental)
+            console.log(bookedRentals)
+            console.log(booking)
+            console.log(updatedBookedRentalBookings)
             const updatedSelectedBookedRental = {...rental, bookings: updatedBookedRentalBookings}
-            setRental(updatedSelectedBookedRental)
+            // setRental(updatedSelectedBookedRental)
             const updatedBookedRentals = []
             bookedRentals.forEach(br => {
-                if (br.id !== booking.rental_id) {
+                if (br.id !== rental.id) {
                     updatedBookedRentals.push(br)
                 } else {
                     if (updatedBookedRentalBookings.length !== 0) {
                         updatedBookedRentals.push(updatedSelectedBookedRental)
                     }
                 }
-                setBookedRentals(updatedBookedRentals)
+                // setBookedRentals(updatedBookedRentals)
+                // console.log(updatedBookedRentals)
             })
+            console.log(selectedBookedRental)
+            console.log(bookedRentals)
+            console.log(booking)
+            console.log(updatedBookedRentalBookings)
+            console.log(updatedSelectedBookedRental)
+            setBookedRentals(updatedBookedRentals)
+            // setBookedRentals(bookedRentals.map(br => br.id !== updatedSelectedBookedRental.id ? br : updatedBookedRentalBookings !== 0 ? updatedSelectedBookedRental : null))
+            // console.log(updatedBookedRentals)
             navigate('/myaccount')
-        });
     }
+
+    // const handleDeleteBooking = async (booking) => {
+    //     console.log(booking);
+    
+    //     try {
+    //         // Send delete request
+    //         const response = await fetch(`/bookings/${booking.id}`, {
+    //             method: "DELETE",
+    //         });
+    
+    //         // Check if the response is successful
+    //         if (response.ok) {
+    //             // Update state only after confirming deletion
+    //             const updatedBookedRentals = bookedRentals.map(br => {
+    //                 if (br.id === booking.rental_id) {
+    //                     const updatedBookings = br.bookings.filter(b => b.id !== booking.id);
+    //                     return { ...br, bookings: updatedBookings };
+    //                 }
+    //                 return br;
+    //             }).filter(br => br.bookings.length > 0); // Remove rentals with no bookings
+    
+    //             setBookedRentals(updatedBookedRentals);
+    
+    //             // Navigate after state update
+    //             // navigate('/myaccount');
+    //         } else {
+    //             console.error('Failed to delete booking. Please try again.');
+    //         }
+    //     } catch (error) {
+    //         console.error('An error occurred while deleting the booking:', error);
+    //     }
+    // }
 
 
     if (!user) {

@@ -14,7 +14,9 @@ function BookedRentalList({}) {
     //     setIsVisible(!isVisible)
     // }
 
-    if (filteredBookedRentals.length === 0) {
+    console.log(bookedRentals)
+
+    if (bookedRentals.length === 0) {
         return (
             <p>There are no booked vacations at this point.</p>
         )
@@ -24,7 +26,7 @@ function BookedRentalList({}) {
         <div>
             
             <div className="clearfix">
-                {filteredBookedRentals.map(rental => (
+                {bookedRentals.map(rental => (
                     <BookedRentalCard key={rental.id} rental={rental} />
                 ))}
             </div>

@@ -8,12 +8,12 @@ function BookedRentalBooking({ booking, onDeleteBooking, onEditBooking }) {
     const [ startDate, setStartDate ] = useState(new Date(booking.start_date))
     const [ endDate, setEndDate ] = useState(new Date(booking.end_date))
 
-    function handleDeleteClick() {
+    const handleDeleteClick =() => {
         onDeleteBooking(booking)
        
     }
 
-    function handleEditClick() {
+    const handleEditClick = () => {
         setIsVisible(!isVisible)
     }
 
