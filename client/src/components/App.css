@@ -99,6 +99,7 @@ table, th, td {
     flex: 1 1 400px; /* Flex-grow, flex-shrink, flex-basis */
     border-radius: 20px; /* Slightly reduce border radius for a modern look */
     max-width: 400px;
+    max-height: 400px;
     padding: 5px;
     margin: 5px;
 }
@@ -265,4 +266,9 @@ input {
 
 select {
     margin: 10px
+}
+
+.owner-thumbnail {
+    height: 80px;
+    width: 80px
 }

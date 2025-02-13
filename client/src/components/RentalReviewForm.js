@@ -45,7 +45,7 @@ function RentalReviewForm({rental, onAddReview}) {
             <label>Review: </label>
             <textarea name='review' id='review' value={formik.values.review} onChange={formik.handleChange} rows="5" cols="50"/>
             <p style={{color: "red" }}> {formik.errors.review}</p>
-            <button type='submit'>Submit Review</button>
+            <button className='button-23' type='submit'>Submit Review</button>
         </form>
     )
 }

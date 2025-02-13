@@ -40,6 +40,8 @@ function BookingRentalForm({rental}) {
             // Convert the start_date and end_date to the desired format
             const formattedStartDate = formatDateForBackend(values.start_date)
             const formattedEndDate = formatDateForBackend(values.end_date)
+            console.log(formattedStartDate)
+            console.log(formattedEndDate)
      
             const formattedValues = {
                 ...values,
@@ -59,40 +61,16 @@ function BookingRentalForm({rental}) {
             .then((r) => r.json())
             .then((booking) => {
                 const newRentalBookings = [...rental.bookings, booking]
-                console.log(bookedRentals)
-                console.log(newRentalBookings)
                 const filteredRentalBookings = newRentalBookings.filter(b => b.traveler.id === user.id)
-                console.log(bookedRentals)
-                console.log(newRentalBookings)
-                console.log(filteredRentalBookings)
                 const newRental = {...rental, bookings: filteredRentalBookings}
-                console.log(bookedRentals)
-                console.log(newRentalBookings)
-                console.log(filteredRentalBookings)
-                console.log(newRental)
                 const rentalExists = bookedRentals.some(br => br.id === newRental.id);
-                console.log(bookedRentals)
-                console.log(newRentalBookings)
-                console.log(filteredRentalBookings)
-                console.log(newRental)
-                console.log(rentalExists)
 
                 if (!rentalExists) {
                     // If it doesn't exist, add the newRental
                     setBookedRentals([...bookedRentals, newRental]);
-                    console.log(bookedRentals)
-                    console.log(newRentalBookings)
-                    console.log(filteredRentalBookings)
-                    console.log(newRental)
-                    console.log(rentalExists)
                 } else {
                     // If it exists, update the existing rental
                     setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
-                    console.log(bookedRentals)
-                    console.log(newRentalBookings)
-                    console.log(filteredRentalBookings)
-                    console.log(newRental)
-                    console.log(rentalExists)
                 }   
             })
             .then(() => {
@@ -114,7 +92,7 @@ function BookingRentalForm({rental}) {
             <label>End Date: </label>
             <input type='date' name='end_date' id='end_date' value={formik.values.end_date} onChange={formik.handleChange} />
             <p style={{color: "red" }}> {formik.errors.end_date}</p>
-            <button type='submit'>Book Rental</button>
+            <button className='button-23' type='submit'>Book Rental</button>
         </form>
     )
 }

@@ -18,6 +18,8 @@ function RentalDetails() {
     const { id } = useParams();
     const { user } = useContext(UserContext)
 
+
+
     useEffect(() => {
         fetch(`/rentals/${id}`)
             .then(r => r.json())
@@ -41,6 +43,7 @@ function RentalDetails() {
         setShowAllAmenities(prevState => !prevState);
     };
 
+    console.log(rental)
 
     if (loading) {
         return <p>Loading...</p>;
@@ -60,6 +63,8 @@ function RentalDetails() {
                                 <li>City: {rental.city}</li>
                                 <li>State: {rental.state}</li>
                                 <li>Daily Rate: ${rental.daily_rate}</li>
+                                <li>Host: {rental.owner.first_name} {rental.owner.last_name}</li>
+                                <li><img className='owner-thumbnail' src={rental.owner.profile_pic} /></li>
                             </ul>
                             <h3>Description</h3>
                             <p>{rental.description}</p>
@@ -89,7 +94,7 @@ function RentalDetails() {
                                 </div>
                             }
                         </div>
-                        <button onClick={() => setIsReviewVisible(!isReviewVisible)}>
+                        <button className='button-23' onClick={() => setIsReviewVisible(!isReviewVisible)}>
                             {isReviewVisible ? 'Leave a review' : 'Cancel review'}
                         </button>
                         {!isReviewVisible && (

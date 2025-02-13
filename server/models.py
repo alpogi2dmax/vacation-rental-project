@@ -263,7 +263,7 @@ class RentalSchema(ma.SQLAlchemySchema):
     daily_rate = ma.auto_field()
     description = ma.auto_field()
     cover_pic = ma.auto_field()
-    owner = ma.Nested(lambda: UserSchema, only=('id', 'first_name', 'last_name'))
+    owner = ma.Nested(lambda: UserSchema, only=('id', 'first_name', 'last_name', 'profile_pic'))
     traveler = ma.Nested(lambda: UserSchema, many=True, only=('id', 'first_name', 'last_name'))
     bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "traveler"))
     reviews = ma.Nested(lambda: ReviewSchema, many=True, only=('id', 'title', 'review', 'reviewer'))
