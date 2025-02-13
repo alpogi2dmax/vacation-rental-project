@@ -30,11 +30,11 @@ def index():
 
 class Users(Resource):
 
-    def get(self):
+    # def get(self):
 
-        users = User.query.all()
-        response = make_response(users_schema.dump(users), 200)
-        return response
+    #     users = User.query.all()
+    #     response = make_response(users_schema.dump(users), 200)
+    #     return response
     
     def post(self):
         try:
@@ -60,14 +60,18 @@ api.add_resource(Users,'/users')
 
 class UsersByID(Resource):
 
-    def get(self, id):
-        user = User.query.filter_by(id=id).first()
-        response = make_response(
-            user_schema.dump(user), 200
-        )
-        return response
+    # def get(self, id):
+    #     user = User.query.filter_by(id=id).first()
+    #     response = make_response(
+    #         user_schema.dump(user), 200
+    #     )
+    #     return response
     
     def patch(self, id):
+        if id != session['user_id']:
+            response_body = {'error': "User not authorized"}
+            return response_body, 404
+
         user = User.query.filter_by(id=id).first()
         data = request.get_json()
         if user:
@@ -85,6 +89,10 @@ class UsersByID(Resource):
             return response_body, 404
         
     def delete(self, id):
+        if id != session['user_id']:
+            response_body = {'error': "User not authorized"}
+            return response_body, 404
+
         user = User.query.filter_by(id=id).first()
         if user:
             db.session.delete(user)
@@ -473,7 +481,7 @@ class CheckSession(Resource):
         else:
             # Return a response that can be safely parsed as JSON
             response_body = {"message": "No active session", "session": None}
-            response = make_response(jsonify(response_body), 200)
+            response = make_response(jsonify(response_body), 404)
             return response
 
 api.add_resource(CheckSession, '/checksession')
