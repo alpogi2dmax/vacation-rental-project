@@ -56,31 +56,31 @@ function EditOwnedRentalDetails({rental, onToggle, onRental}) {
         <div>
             
                 <div className='addpropertyform'>
-                    <form onSubmit={formik.handleSubmit}>
-                        <label>Name: </label>
-                        <input type='text' name='name' id='name' value={formik.values.name} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.name}</p>
-                        <label>Address: </label>
-                        <input type='text' name='address' id='address' value={formik.values.address} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.address}</p>
-                        <label>City: </label>
-                        <input type='text' name='city' id='city' value={formik.values.city} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.city}</p>
-                        <label>State: </label>
-                        <input type='text' name='state' id='state' value={formik.values.state} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.state}</p>
-                        <label>Daily Rate: </label>
-                        <input type='number' name='daily_rate' id='daily_rate' value={formik.values.daily_rate} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.daily_rate}</p>
-                        <label>Description: </label>
-                        <textarea name='description' id='description' value={formik.values.description} onChange={formik.handleChange} rows="4" style={{ width: '75%' }}/>
-                        <p style={{color: "red" }}> {formik.errors.description}</p>
-                        <label>Cover Photo: </label>
-                        <input type='text' name='cover_pic' id='cover_pic' value={formik.values.cover_pic} onChange={formik.handleChange} />
-                        <p style={{color: "red" }}> {formik.errors.cover_pic}</p>
-                        <button type='submit'>Edit Property Details</button>
-                    </form>
-                    <br></br>
+                    <h2>Edit Property Details</h2>
+                        <form onSubmit={formik.handleSubmit}>
+                            <label>Name: </label>
+                            <input type='text' name='name' id='name' value={formik.values.name} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.name}</p>
+                            <label>Address: </label>
+                            <input type='text' name='address' id='address' value={formik.values.address} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.address}</p>
+                            <label>City: </label>
+                            <input type='text' name='city' id='city' value={formik.values.city} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.city}</p>
+                            <label>State: </label>
+                            <input type='text' name='state' id='state' value={formik.values.state} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.state}</p>
+                            <label>Daily Rate: </label>
+                            <input type='number' name='daily_rate' id='daily_rate' value={formik.values.daily_rate} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.daily_rate}</p>
+                            <label>Description: </label>
+                            <textarea name='description' id='description' value={formik.values.description} onChange={formik.handleChange} rows="4" style={{ width: '75%' }}/>
+                            <p style={{color: "red" }}> {formik.errors.description}</p>
+                            <label>Cover Photo: </label>
+                            <input type='text' name='cover_pic' id='cover_pic' value={formik.values.cover_pic} onChange={formik.handleChange} />
+                            <p style={{color: "red" }}> {formik.errors.cover_pic}</p>
+                            <button className='button-23' type='submit'>Submit Changes</button>
+                        </form>
                 </div>
             
         </div>

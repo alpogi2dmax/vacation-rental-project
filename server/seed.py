@@ -41,7 +41,7 @@ if __name__ == '__main__':
             email='lightyagami@gmail.com',
             first_name='Light',
             last_name='Yagami',
-            profile_pic='./images/lightyagami.png'
+            profile_pic='https://i.imgur.com/q4IgIRx.png'
         )
         user1.password_hash = 'password'
         users.append(user1)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
             email='roronoazoro@gmail.com',
             first_name='Roronoa',
             last_name='Zoro',
-            profile_pic='./images/roronoazoro.png'
+            profile_pic='https://i.imgur.com/XcxCRIW.png'
         )
         user2.password_hash = 'password'
         users.append(user2)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
             email='leviackerman@gmail.com',
             first_name='Levi',
             last_name='Ackerman',
-            profile_pic='./images/leviackerman.png'
+            profile_pic='https://i.imgur.com/Bfqji06.png'
         )
         user3.password_hash = 'password'
         users.append(user3)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
             email='edwardeldric@gmail.com',
             first_name='Edward',
             last_name='Eldric',
-            profile_pic='./images/edwardeldric.png'
+            profile_pic='https://i.imgur.com/Tf2jQQV.png'
         )
         user4.password_hash = 'password'
         users.append(user4)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
             email='gojosatoru@gmail.com',
             first_name='Gojo',
             last_name='Satoru',
-            profile_pic='./images/satorugojo.png'
+            profile_pic='https://i.imgur.com/qRfUCpd.png'
         )
         user5.password_hash = 'password'
         users.append(user5)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
             email='josephjoestar@gmail.com',
             first_name='Joseph',
             last_name='Joestar',
-            profile_pic='./images/josephjoestar.png'
+            profile_pic='https://i.imgur.com/U44ASCB.png'
         )
         user6.password_hash = 'password'
         users.append(user6)
@@ -95,7 +95,7 @@ if __name__ == '__main__':
             email='monkeydluffy@gmail.com',
             first_name='Monkey',
             last_name='Luffy',
-            profile_pic='./images/monkeydluffy.png'
+            profile_pic='https://i.imgur.com/JrCXyOZ.png'
         )
         user7.password_hash = 'password'
         users.append(user7)
@@ -104,7 +104,7 @@ if __name__ == '__main__':
             email='arsenelupiniii@gmail.com',
             first_name='Arsene',
             last_name='Lupin III',
-            profile_pic='./images/arsenelupiniii.png'
+            profile_pic='https://i.imgur.com/R6497xl.png'
         )
         user8.password_hash = 'password'
         users.append(user8)
@@ -113,7 +113,7 @@ if __name__ == '__main__':
             email='kenshinhimura@gmail.com',
             first_name='Kenshin',
             last_name='Himura',
-            profile_pic='./images/kenshinhimura.png'
+            profile_pic='https://i.imgur.com/0Mq5J1u.png'
         )
         user9.password_hash = 'password'
         users.append(user9)
@@ -122,7 +122,7 @@ if __name__ == '__main__':
             email='spikespiegel@gmail.com',
             first_name='Spike',
             last_name='Spiegel',
-            profile_pic='./images/spikespiegel.png'
+            profile_pic='https://i.imgur.com/DBYghZ8.png'
         )
         user10.password_hash = 'password'
         users.append(user10)
@@ -183,7 +183,7 @@ if __name__ == '__main__':
         amenities_list.append(Amenity(name='Kitchen'))
         amenities_list.append(Amenity(name='Air Conditioning'))
         amenities_list.append(Amenity(name='Fire Place'))
-        amenities_list.append(Amenity(name='Kitchen'))
+        amenities_list.append(Amenity(name='Garden'))
         amenities_list.append(Amenity(name='Washer and Dryer - In Unit'))
         amenities_list.append(Amenity(name='Free Driveway'))
         amenity1 = Amenity(name='Swimming Pool')

@@ -14,6 +14,8 @@ function BookedRentalList({}) {
         )
     }
 
+    console.log(bookedRentals)
+
     return (
         <div>
             

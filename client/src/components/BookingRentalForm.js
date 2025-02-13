@@ -58,28 +58,46 @@ function BookingRentalForm({rental}) {
             })
             .then((r) => r.json())
             .then((booking) => {
-                console.log(bookedRentals)
-                console.log(rental)
-                console.log(booking)
-                const selectedBookedRental = bookedRentals.find(br => br.id == rental.id)
-                console.log(selectedBookedRental)
                 const newRentalBookings = [...rental.bookings, booking]
-                const filteredRentalBookings = newRentalBookings.filter(b => b.traveler_id === user.id)
+                console.log(bookedRentals)
                 console.log(newRentalBookings)
+                const filteredRentalBookings = newRentalBookings.filter(b => b.traveler.id === user.id)
+                console.log(bookedRentals)
+                console.log(newRentalBookings)
+                console.log(filteredRentalBookings)
                 const newRental = {...rental, bookings: filteredRentalBookings}
+                console.log(bookedRentals)
+                console.log(newRentalBookings)
+                console.log(filteredRentalBookings)
                 console.log(newRental)
                 const rentalExists = bookedRentals.some(br => br.id === newRental.id);
+                console.log(bookedRentals)
+                console.log(newRentalBookings)
+                console.log(filteredRentalBookings)
+                console.log(newRental)
+                console.log(rentalExists)
 
                 if (!rentalExists) {
                     // If it doesn't exist, add the newRental
                     setBookedRentals([...bookedRentals, newRental]);
+                    console.log(bookedRentals)
+                    console.log(newRentalBookings)
+                    console.log(filteredRentalBookings)
+                    console.log(newRental)
+                    console.log(rentalExists)
                 } else {
                     // If it exists, update the existing rental
                     setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
+                    console.log(bookedRentals)
+                    console.log(newRentalBookings)
+                    console.log(filteredRentalBookings)
+                    console.log(newRental)
+                    console.log(rentalExists)
                 }   
             })
             .then(() => {
                 navigate('/myaccount')
+                console.log(bookedRentals)
             })
             .catch((error) => {
                 console.log("Error:", error);

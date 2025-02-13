@@ -14,7 +14,7 @@ function OwnedRentalCard({rental, onDeleteClick}) {
             </Link>
             <p>{rental.name}</p>
             <p>${rental.daily_rate} per night</p>
-            <button onClick={handleClick}>Remove Property</button>
+            <button className='button-23' onClick={handleClick}>Remove Property</button>
         </div>
     )
 }

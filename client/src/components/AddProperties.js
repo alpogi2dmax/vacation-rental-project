@@ -68,10 +68,10 @@ function AddProperties({ onAddRental, onToggle}) {
                     <label>Cover Photo: </label>
                     <input type='text' name='cover_pic' id='cover_pic' value={formik.values.cover_pic} onChange={formik.handleChange} />
                     <p style={{color: "red" }}> {formik.errors.cover_pic}</p>
-                    <button type='submit'>Add Property</button>
+                    <button className='button-23' type='submit'>Add Property</button>
                 </form>
                 <br></br>
-                <button onClick={onToggle}>Cancel</button>
+                <button className='button-23' onClick={onToggle}>Cancel</button>
             </div>
         )
     }

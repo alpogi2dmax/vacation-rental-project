@@ -8,7 +8,7 @@ function OwnedRentalReviews({reviews}) {
 
     return (
         
-        <div>
+        <div className='review-container'>
             {reviews.map(review => (
                 <div key={review.id}>
                     <h3>{review.title}</h3>

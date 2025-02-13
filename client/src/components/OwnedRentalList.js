@@ -27,8 +27,6 @@ function OwnedRentalList() {
         .then(() => setOwnedRentals(ownedRentals.filter(ownedRental => ownedRental.id !== deletedRentalId)))
     }
 
-
-
     
 
     return (
@@ -42,7 +40,7 @@ function OwnedRentalList() {
                 ))
             }
             </div>
-            {!isVisible ? <button onClick={handleToggle}>Add Property</button>: ""}
+            {!isVisible ? <button className='button-23' onClick={handleToggle}>Add Property</button>: ""}
             {isVisible && (<AddProperties onAddRental={handleAddRental} onToggle={handleToggle}/>)}
 
 

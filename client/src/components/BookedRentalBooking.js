@@ -84,13 +84,13 @@ function BookedRentalBooking({ booking, onDeleteBooking, onEditBooking }) {
             }
             <td>
                 {isVisible ?
-                    <button onClick={handleEditClick}>Edit Booking</button>
+                    <button className='button-23' onClick={handleEditClick}>Edit Booking</button>
                 : 
-                    <button onClick={handleUpdateClick}>Update Booking</button>
+                    <button className='button-23' onClick={handleUpdateClick}>Update Booking</button>
                 }
             </td>
             <td>
-                <button onClick={handleDeleteClick}>Cancel Booking</button>
+                <button className='button-23' onClick={handleDeleteClick}>Cancel Booking</button>
             </td>
         </tr>
                      

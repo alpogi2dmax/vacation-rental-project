@@ -11,6 +11,8 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
     const [selectedAmenity, setSelectedAmenity] = useState(1)
     const [isVisible, setIsVisible] = useState(false)
     const [newAmenity, setNewAmenity] = useState('')
+    const [showAllAmenities, setShowAllAmenities] = useState(false);
+
 
   function handleToggle() {
     setIsVisible(!isVisible)
@@ -45,20 +47,27 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
     })
   }
 
+  const toggleAmenities = () => {
+    setShowAllAmenities(prevState => !prevState);
+};
+
   return (
     <div>
       {rentalAmenities && rentalAmenities.length > 0 ? (
         <div>
-          <ul>
+          <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
             {rentalAmenities.map((amenity, index) => (
-              <li key={amenity.id || index}>{amenity.name} <button onClick={()=> onRentalRemoveAmenity(amenity.id)}>Remove</button></li>
+              <li key={amenity.id || index}>{amenity.name} <span><button className='button-23' onClick={()=> onRentalRemoveAmenity(amenity.id)}>x</button></span></li>
             ))}
           </ul>
+          <span className="toggle-link" onClick={toggleAmenities}>
+            {showAllAmenities ? 'See less...' : 'See more...'}
+          </span>
         </div>
       ) : (
         <p>No specific amenities for this rental.</p>
       )}
-      {!isVisible && <button onClick={handleToggle}>Add Amenities</button>}
+      {!isVisible && <button className='button-23' onClick={handleToggle}>Add Amenities</button>}
       <br></br>
       {isVisible && (
         <div>
@@ -69,10 +78,10 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
               </option>
             ))}
           </select>
-          <button onClick={handleClick}>Add Amenity</button>
+          <button className='button-23' onClick={handleClick}>Add Amenity</button>
           <br></br>
           <input type='text' id='newamenities' name='newamenities' value={newAmenity} onChange={e => setNewAmenity(e.target.value)}></input>
-          <button onClick={handleAddAmenityClick}>Add Amenity to List</button>
+          <button className='button-23' onClick={handleAddAmenityClick}>Add Amenity to List</button>
         </div>
       )}
     </div>

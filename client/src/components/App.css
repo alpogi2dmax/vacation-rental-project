@@ -3,19 +3,29 @@
 }
 
 .navbar {
-    background-color: rgb(228, 236, 241);
+    text-align: center;
+    background-color: rgb(236, 234, 234);
+    padding: 5px;
+    margin: 5px;
+    border-radius: 20px;
     padding: 5px;
     margin: 5px;
 }
 
 .navbarlinks {
     padding: 5px;
-    margin: 5px;
+    margin: 10px;
 }
 
 .addpropertyform {
     padding: 5px;
     margin: 5px;
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .clearfix::after {
@@ -25,7 +35,7 @@
   }
 
 .rentalcard {
-    height: 335px;
+    height: 360px;
     width: 200px;
     color: gray;
     float: left;
@@ -76,6 +86,13 @@ table, th, td {
     display: flex;
     flex-wrap: wrap;
     gap: 20px; /* Provides space between items */
+    border: 1px solid rgb(218, 215, 215);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .rentalimage {
@@ -195,4 +212,57 @@ ul {
     background-color: #f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+}
+
+
+
+.button-23 {
+  background-color: #FFFFFF;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 5px 10px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+}
+
+.button-23:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.button-23:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+.button-23:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+input {
+    margin: 10px
+}
+
+select {
+    margin: 10px
 }

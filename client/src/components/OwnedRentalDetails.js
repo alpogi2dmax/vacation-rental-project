@@ -90,22 +90,28 @@ function OwnedRentalDetails() {
                     {!isVisible &&
                     <div>
                         <h2>{rental.name}</h2>
-                        <img src={rental.cover_pic} alt={rental.cover_pic} />
-                        <h3>Description</h3>
-                        <p>{rental.description}</p>
-                        <h3>Details</h3>
-                        <ul>
-                            <li>Address: {rental.address}</li>
-                            <li>City: {rental.city}</li>
-                            <li>State: {rental.state}</li>
-                            <li>Daily Rate: ${rental.daily_rate}</li>
-                        </ul>
+                        <div className="rental-content">
+                            <img className='rentalimage' src={rental.cover_pic} alt={rental.cover_pic} />
+                            <div className='rentaldetails'>
+                                <h3>Details</h3>
+                                    <ul>
+                                        <li>Address: {rental.address}</li>
+                                        <li>City: {rental.city}</li>
+                                        <li>State: {rental.state}</li>
+                                        <li>Daily Rate: ${rental.daily_rate}</li>
+                                    </ul>
+                                <h3>Description</h3>
+                                <p>{rental.description}</p>
+                            </div>
+                        </div>
                     </div>
                     }
                     {isVisible && <EditOwnedRentalDetails rental={rental} onToggle={handleToggle} onRental={setRental}/>}
-                    <button onClick={handleToggle}>{!isVisible ? 'Edit Rental Details' : 'Cancel'}</button>
-                    <h3>Amenities</h3>
-                    <OwnedRentalAmenities rentalAmenities={rental.amenities} rentalId={rental.id} onRentalAppendAmenity={rentalAppendAmenity} onRentalRemoveAmenity={rentalRemoveAmenity}/>
+                    <button className='button-23' onClick={handleToggle}>{!isVisible ? 'Edit Rental Details' : 'Cancel'}</button>
+                    <div className='rental-section'>
+                        <h3>Amenities</h3>
+                        <OwnedRentalAmenities rentalAmenities={rental.amenities} rentalId={rental.id} onRentalAppendAmenity={rentalAppendAmenity} onRentalRemoveAmenity={rentalRemoveAmenity}/>
+                    </div>
                     <h3>Bookings: </h3>
                     <OwnedPropertyBookings bookings={rental.bookings}/>
                     <h3>Reviews: </h3>
