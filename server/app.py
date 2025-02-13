@@ -71,6 +71,8 @@ class UsersByID(Resource):
         user = User.query.filter_by(id=id).first()
         data = request.get_json()
         if user:
+            if 'password' in data:
+                user.password_hash = data['password']
             for attr, value, in data.items():
                 setattr(user, attr, value)
             db.session.add(user)

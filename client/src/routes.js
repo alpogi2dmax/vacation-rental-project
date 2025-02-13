@@ -5,6 +5,7 @@ import OwnedRentalDetails from "./components/OwnedRentalDetails"
 import RentalDetails from "./components/RentalDetails"
 import BookedRental from "./components/BookedRental"
 import App from "./components/App"
+import MyProfile from "./components/MyProfile"
 
 
 const routes = [ 
@@ -20,6 +21,10 @@ const routes = [
                 path: "/myaccount", 
                 element: <MyAccount />, 
             }, 
+            {
+                path: "/myprofile",
+                element: <MyProfile />
+            },
             { 
                 path: "/ownedrentaldetails/:id", 
                 element: <OwnedRentalDetails />, 

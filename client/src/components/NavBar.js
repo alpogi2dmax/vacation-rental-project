@@ -8,6 +8,7 @@ function NavBar() {
     const { user, setUser, setOwnedRentals, setBookedRentals } = useContext(UserContext)
 
     function handleLogOutClick() {
+        console.log(user)
         setUser(null)
         setOwnedRentals([])
         setBookedRentals([])
@@ -18,12 +19,13 @@ function NavBar() {
         <div>
             <h1>Vacation Rental</h1>
             <nav className='navbar' >
-                <Link to="/myaccount" className='button-23'>My Account</Link>
-                <Link to="/" className='button-23'>Rentals</Link>
+                <Link to="/myaccount" className='navbarlinks'>My Account</Link>
+                <Link to="/" className='navbarlinks'>Rentals</Link>
+                <Link to="/myprofile" className='navbarlinks'>MyProfile</Link>
                 {user ? (
-                    <button onClick={handleLogOutClick} className='button-23'>Logout</button>
+                    <button onClick={handleLogOutClick} className='navbarlinks'>Logout</button>
                 ) : (
-                    <Link to="/myaccount" className='button-23'>
+                    <Link to="/myaccount" className='navbarlinks'>
                         Login
                     </Link>
                 )}
