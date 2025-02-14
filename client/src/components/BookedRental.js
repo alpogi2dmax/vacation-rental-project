@@ -115,18 +115,20 @@ function BookedRental() {
                         </div>
                     </div>
                     }
-                    <div className="rental-section">
-                        <h3>Amenities</h3>
-                            <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
-                                {rental.amenities.map(amenity => (
-                                    <li key={amenity.id}>{amenity.name}</li>
-                                ))}
-                            </ul> 
-                            <span className="toggle-link" onClick={toggleAmenities}>
-                                {showAllAmenities ? 'See less...' : 'See more...'}
-                            </span>
-                    
-                    </div>
+                    {rental.amenities > 0 &&
+                        <div className="rental-section">
+                            <h3>Amenities</h3>
+                                <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
+                                    {rental.amenities.map(amenity => (
+                                        <li key={amenity.id}>{amenity.name}</li>
+                                    ))}
+                                </ul> 
+                                <span className="toggle-link" onClick={toggleAmenities}>
+                                    {showAllAmenities ? 'See less...' : 'See more...'}
+                                </span>
+                        
+                        </div>
+                    }
                     <h3>Bookings: </h3>
                     {rental.bookings.length !== 0 ? (
                     <table>

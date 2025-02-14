@@ -174,6 +174,17 @@ if __name__ == '__main__':
             owner_id=4
             )
         rentals.append(rental4)
+        rental5 = Rental(
+            name='Cozy, modern retreat in vibrant, trendy ‘hood',
+            address ='999 Suite St',
+            city='Chicago',
+            state='IL',
+            description='Artfully restored, turn-of-the-century apartment in hot Ukrainian Village. Casual yet considered, this sunny, basement-level studio is steps from award-winning restaurants, swank bars, public transportation, and more. Chicago’s best kept secret, this safe, centrally-located neighborhood is close to it all!',
+            daily_rate=186,
+            cover_pic='https://i.imgur.com/56KM4GL.png',
+            owner_id=5
+            )
+        rentals.append(rental5)
         db.session.add_all(rentals)
 
         print("Seeding bookings...")

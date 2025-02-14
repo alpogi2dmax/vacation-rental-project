@@ -14,7 +14,7 @@ function NavBar() {
 
     return (
         <div>
-            <h1>Vacation Rental</h1>
+            <img className='vacationlogo' src='https://i.imgur.com/R4UWEEK.png' alt='vacation_rental_logo' />
             <nav className='navbar' >
                 <Link to="/myaccount" className='navbarlinks'>My Account</Link>
                 <Link to="/" className='navbarlinks'>Rentals</Link>

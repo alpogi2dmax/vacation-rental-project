@@ -213,12 +213,12 @@ api.add_resource(Bookings, '/bookings')
 
 class BookingsByID(Resource):
 
-    def get(self, id):
-        booking = Booking.query.filter_by(id=id).first()
-        response = make_response(
-            booking_schema.dump(booking), 200
-        )
-        return response
+    # def get(self, id):
+    #     booking = Booking.query.filter_by(id=id).first()
+    #     response = make_response(
+    #         booking_schema.dump(booking), 200
+    #     )
+    #     return response
     
     def patch(self, id):
         booking = Booking.query.filter_by(id=id).first()
@@ -259,10 +259,10 @@ api.add_resource(BookingsByID, '/bookings/<int:id>')
 
 class Reviews(Resource):
 
-    def get(self): 
-        reviews = Review.query.all()
-        response = make_response(reviews_schema.dump(reviews), 200)
-        return response
+    # def get(self): 
+    #     reviews = Review.query.all()
+    #     response = make_response(reviews_schema.dump(reviews), 200)
+    #     return response
     
     def post(self):
         try:
@@ -294,32 +294,32 @@ class ReviewsByID(Resource):
         )
         return response
     
-    def patch(self, id):
-        review = Review.query.filter_by(id=id).first()
-        data = request.get_json()
-        if review:
-            for attr, value, in data.items():
-                setattr(review, attr, value)
-            db.session.add(review)
-            db.session.commit()
+    # def patch(self, id):
+    #     review = Review.query.filter_by(id=id).first()
+    #     data = request.get_json()
+    #     if review:
+    #         for attr, value, in data.items():
+    #             setattr(review, attr, value)
+    #         db.session.add(review)
+    #         db.session.commit()
 
-            response = make_response(
-            review_schema.dump(review), 202)
-            return response
-        else:
-            response_body = {'error': 'User not found'}
-            return response_body, 404
+    #         response = make_response(
+    #         review_schema.dump(review), 202)
+    #         return response
+    #     else:
+    #         response_body = {'error': 'User not found'}
+    #         return response_body, 404
         
-    def delete(self, id):
-        review = Review.query.filter_by(id=id).first()
-        if review:
-            db.session.delete(review)
-            db.session.commit()
-            response_body = ''
-            return response_body, 204
-        else:
-            response_body = {'error': 'User not found'}
-            return response_body, 404
+    # def delete(self, id):
+    #     review = Review.query.filter_by(id=id).first()
+    #     if review:
+    #         db.session.delete(review)
+    #         db.session.commit()
+    #         response_body = ''
+    #         return response_body, 204
+    #     else:
+    #         response_body = {'error': 'User not found'}
+    #         return response_body, 404
 
 api.add_resource(ReviewsByID, '/reviews/<int:id>')
 
