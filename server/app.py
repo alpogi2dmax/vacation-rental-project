@@ -9,12 +9,14 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User, Rental, Booking, Review, Amenity, UserSchema, RentalSchema, BookingSchema, ReviewSchema, AmenitySchema, datetime
+from models import User, Rental, Booking, Review, Amenity, UserSchema, RentalSchema, RentalMinimalSchema, BookingSchema, ReviewSchema, AmenitySchema, datetime
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 rental_schema = RentalSchema()
 rentals_schema = RentalSchema(many=True)
+rental_minimal_schema = RentalMinimalSchema()
+rentals_minimal_schema = RentalMinimalSchema(many=True)
 booking_schema = BookingSchema()
 bookings_schema = BookingSchema(many=True)
 review_schema = ReviewSchema()
@@ -107,12 +109,9 @@ api.add_resource(UsersByID,'/users/<int:id>')
 
 class Rentals(Resource):
 
-
-
     def get(self):
-
         rentals = Rental.query.all()
-        response = make_response(rentals_schema.dump(rentals), 200)
+        response = make_response(rentals_minimal_schema.dump(rentals), 200)
         return response
     
     def post(self):
@@ -146,7 +145,7 @@ class RentalsByID(Resource):
     def get(self, id):
         rental = Rental.query.filter_by(id=id).first()
         response = make_response(
-            rental_schema.dump(rental), 200
+            rental_minimal_schema.dump(rental), 200
         )
         return response
     
@@ -180,11 +179,11 @@ api.add_resource(RentalsByID, '/rentals/<int:id>')
 
 class Bookings(Resource):
 
-    def get(self):
+    # def get(self):
 
-        bookings = Booking.query.all()
-        response = make_response(bookings_schema.dump(bookings), 200)
-        return response
+    #     bookings = Booking.query.all()
+    #     response = make_response(bookings_schema.dump(bookings), 200)
+    #     return response
     
     def post(self):
         try:

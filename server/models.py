@@ -281,6 +281,35 @@ class RentalSchema(ma.SQLAlchemySchema):
 rental_schema = RentalSchema()
 rentals_schema = RentalSchema(many=True)
 
+class RentalMinimalSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Rental
+        load_instance = True
+
+    id = ma.auto_field()
+    name = ma.auto_field()
+    address = ma.auto_field()
+    city = ma.auto_field()
+    state = ma.auto_field()
+    daily_rate = ma.auto_field()
+    description = ma.auto_field()
+    cover_pic = ma.auto_field()
+    owner = ma.Nested(lambda: UserSchema, only=('id', 'first_name', 'last_name', 'profile_pic'))
+    reviews = ma.Nested(lambda: ReviewSchema, many=True, only=('id', 'title', 'review', 'reviewer'))
+    amenities = ma.Nested(lambda: AmenitySchema, many=True, only=('id', 'name'))
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "rentalsbyid",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("rentals"),
+        }
+    )
+
+rental_minimal_schema = RentalMinimalSchema()
+rentals_minimal_schema = RentalMinimalSchema(many=True)
+
 
 class BookingSchema(ma.SQLAlchemySchema):
     class Meta:
