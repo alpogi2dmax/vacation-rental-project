@@ -6,7 +6,7 @@ import Login from './Login';
 
 function MyProfile() {
 
-    const {user} = useContext(UserContext)
+    const {user, amenities} = useContext(UserContext)
     const [isVisible, setIsVisible] = useState(true)
     const [isPwVisible, setIsPwVisible] = useState(true)
 
@@ -22,6 +22,7 @@ function MyProfile() {
         setIsPwVisible(!isPwVisible)
     }
     
+    console.log(amenities)
 
         return(
             <div>

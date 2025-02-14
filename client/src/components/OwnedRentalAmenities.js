@@ -7,7 +7,6 @@ import { UserContext } from "../context/user";
 function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity, onRentalRemoveAmenity}) {
 
     const { amenities, setAmenities } = useContext(UserContext)
-    const [allAmenities, setAllAmenities] = useState([])
     const [selectedAmenity, setSelectedAmenity] = useState(1)
     const [isVisible, setIsVisible] = useState(false)
     const [newAmenity, setNewAmenity] = useState('')
@@ -50,6 +49,8 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
   const toggleAmenities = () => {
     setShowAllAmenities(prevState => !prevState);
 };
+
+console.log(amenities)
 
   return (
     <div>

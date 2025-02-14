@@ -38,10 +38,16 @@ function BookingRentalForm({rental}) {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // Convert the start_date and end_date to the desired format
+            console.log(values.start_date)
+            console.log(values.end_date)
             const formattedStartDate = formatDateForBackend(values.start_date)
             const formattedEndDate = formatDateForBackend(values.end_date)
             console.log(formattedStartDate)
             console.log(formattedEndDate)
+            console.log("Original start_date:", values.start_date);
+            const dateObject = new Date(values.start_date);
+            console.log("Date object:", dateObject);
+            console.log("Formatted start_date:", formattedStartDate);
      
             const formattedValues = {
                 ...values,
@@ -60,17 +66,9 @@ function BookingRentalForm({rental}) {
             })
             .then((r) => r.json())
             .then((booking) => {
-                // const newRentalBookings = [...rental.bookings, booking]
-                // const filteredRentalBookings = newRentalBookings.filter(b => b.traveler.id === user.id)
-                // const newRental = {...rental, bookings: filteredRentalBookings}
-                
-                //add rental bookings to rental
                 const newBookingArray = []
                 newBookingArray.push(booking)
-                console.log(newBookingArray)
                 const newRental = {...rental, bookings: newBookingArray}
-                console.log(newRental)
-
 
                 const rentalExists = bookedRentals.some(br => br.id === newRental.id);
 
@@ -80,13 +78,9 @@ function BookingRentalForm({rental}) {
                 } else {
                     // If it exists, update the existing rental
                     const selectedBookRental = bookedRentals.find(br => br.id == newRental.id)
-                    console.log(selectedBookRental)
                     const newBookings = [...selectedBookRental.bookings, booking]
-                    console.log(newBookings)
                     const newSelectedBookRental = {...selectedBookRental, bookings: newBookings}
-                    console.log(newSelectedBookRental)
                     setBookedRentals(bookedRentals.map(br => br.id === newSelectedBookRental.id ? newSelectedBookRental : br))
-                    // setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
                 }   
             })
             .then(() => {

@@ -107,7 +107,7 @@ function BookedRental() {
                                         <li>City: {rental.city}</li>
                                         <li>State: {rental.state}</li>
                                         <li>Daily Rate: ${rental.daily_rate}</li>
-                                        <li>Owner: {rental.owner.first_name} {rental.owner.last_name}</li>
+                                        <li>Host: {rental.owner.first_name} {rental.owner.last_name}</li>
                                     </ul>
                                 <h3>Description</h3>
                                 <p>{rental.description}</p>

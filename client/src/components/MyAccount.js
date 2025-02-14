@@ -7,9 +7,9 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user }= useContext(UserContext) 
+  const { user, amenities }= useContext(UserContext) 
 
-  console.log(user)
+  console.log(amenities)
 
     if (user) {
 
