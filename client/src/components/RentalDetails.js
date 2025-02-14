@@ -70,18 +70,21 @@ function RentalDetails() {
                             <p>{rental.description}</p>
                         </div>
                     </div>
-    
-                    <div className="rental-section">
-                    <h3>Amenities</h3>
-                        <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
-                            {rental.amenities.map(amenity => (
-                                <li key={amenity.id}>{amenity.name}</li>
-                            ))}
-                        </ul> 
-                        <span className="toggle-link" onClick={toggleAmenities}>
-                            {showAllAmenities ? 'See less...' : 'See more...'}
-                        </span>
-                    </div>
+                    {rental.amenities.length > 0 && (
+                        <div className="rental-section">
+                        <h3>Amenities</h3>
+                            <ul className={`amenities ${showAllAmenities ? 'expanded' : ''}`}>
+                                {rental.amenities.map(amenity => (
+                                    <li key={amenity.id}>{amenity.name}</li>
+                                ))}
+                            </ul> 
+                            <span className="toggle-link" onClick={toggleAmenities}>
+                                {showAllAmenities ? 'See less...' : 'See more...'}
+                            </span>
+                        </div>
+                    )
+                    }
+                    
     
                     <div className="rental-section">
                         <h3>Reviews</h3>

@@ -205,9 +205,9 @@ ul {
 }
 
 .reviewcard {
-    flex: 1 1 400px; /* Flex-grow, flex-shrink, flex-basis */
     float: left;
-    max-width: 400px;
+    height: 200px; /* Fixed height */
+    width: 300px; /* Fixed width */
     border: 1px solid rgb(218, 215, 215);
     padding: 15px;
     margin: 10px;
@@ -215,6 +215,30 @@ ul {
     background-color: #f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden; /* Hide overflow content */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out content and toggle link */
+}
+
+.reviewcard.expanded {
+    overflow: visible; /* Show all content when expanded */
+    height: auto; /* Allow height to adjust when expanded */
+}
+
+.review-content {
+    flex-grow: 1; /* Allow content to take up available space */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Add ellipsis if needed */
+}
+
+.toggle-link {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9em;
+    align-self: flex-end; /* Align to the bottom of the card */
+    margin-top: 10px; /* Space above the link */
 }
 
 
@@ -320,6 +344,8 @@ select {
     float: left;
     margin: 10px; /* Adds some space between the image and text */
     padding: 10px;
+    width: 300px;
+    height: 300px;
     border-radius: 10px
   }
   

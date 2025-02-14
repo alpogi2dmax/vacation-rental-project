@@ -195,8 +195,8 @@ class Review(db.Model):
     
     @validates('review')
     def validate_review(self, key, review):
-        if len(review) < 3:
-            raise ValueError('review must be more than 3 characters')
+        if len(review) < 3 or len(review) > 1000:
+            raise ValueError('review must be more than 3 and 1000 characters')
         return review
 
 class Amenity(db.Model):

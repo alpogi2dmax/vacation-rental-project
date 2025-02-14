@@ -8,8 +8,8 @@ function RentalReviewForm({rental, onAddReview}) {
     const { user } = useContext(UserContext)
 
     const formSchema = yup.object().shape({
-        title: yup.string().required("Must enter title"),
-        review: yup.string().required("Must enter review"),
+        title: yup.string().required("Must enter title").min(3, 'Must be more than 3 characters').max(50, 'Must be less than 50 characters.'),
+        review: yup.string().required("Must enter review").min(3, 'Must be more than 3 characters').max(1000, 'Must be less than 1000 characters.'),
     })
 
     const formik = useFormik({

@@ -169,7 +169,7 @@ if __name__ == '__main__':
             city='Austin',
             state='TX',
             description='Welcome to Boho Bungalow, a beautifully remodeled 1-bedroom, 1-bath private loft in NW Austin—perfect for bachelorettes, couples, friends, and weekend getaways!',
-            daily_rate=172,
+            daily_rate=163,
             cover_pic='https://i.imgur.com/HDOjxsn.png',
             owner_id=4
             )

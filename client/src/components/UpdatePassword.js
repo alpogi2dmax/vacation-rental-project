@@ -45,6 +45,7 @@ function UpdatePassword({onHandlePwToggle}) {
                     console.log("Response user:", updatedUser); // Debugging line
                     setUser(updatedUser);
                     onHandlePwToggle()
+                    alert('Your password was successfully changed!')
                 })
                 .catch((error) => {
                     console.error("Error updating password:", error); // Error handling
