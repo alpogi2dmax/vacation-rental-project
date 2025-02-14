@@ -5,7 +5,7 @@ import { UserContext } from '../context/user';
 
 function EditOwnedRentalDetails({rental, onToggle, onRental}) {
 
-    const { ownedRentals, setOwnedRentals } = useContext(UserContext)
+    const { user, ownedRentals, setOwnedRentals } = useContext(UserContext)
 
     const formSchema = yup.object().shape({
                 name: yup.string().required("Must enter name").min(3, 'Must be more than 3 character').max(50, 'Must be less than 30 characters.'),
@@ -27,7 +27,7 @@ function EditOwnedRentalDetails({rental, onToggle, onRental}) {
                         daily_rate: rental?.daily_rate || '',
                         description: rental?.description || '',
                         cover_pic: rental?.cover_pic || '',
-                        owner_id: rental?.owner?.id || ''
+                        owner_id: user?.id || ''
                     },
                     validationSchema: formSchema,
                     onSubmit: (values) => {

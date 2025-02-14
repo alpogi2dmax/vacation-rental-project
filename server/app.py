@@ -150,27 +150,39 @@ class RentalsByID(Resource):
         return response
     
     def patch(self, id):
-        rental = Rental.query.filter_by(id=id).first()
-        data = request.get_json()
-        if rental:
-            for attr, value, in data.items():
-                setattr(rental, attr, value)
-            db.session.add(rental)
-            db.session.commit()
-            response = make_response(
-                rental_schema.dump(rental), 202)
-            return response
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
+            data = request.get_json()
+            print(data)
+            if rental:
+                for attr, value, in data.items():
+                    setattr(rental, attr, value)
+                print(rental)
+                db.session.add(rental)
+                db.session.commit()
+                response = make_response(
+                    rental_schema.dump(rental), 202)
+                return response
+            else:
+                response_body = {'error': 'Rental not found'}
+                return response_body, 404
         else:
             response_body = {'error': 'User not found'}
             return response_body, 404
         
     def delete(self, id):
-        rental = Rental.query.filter_by(id=id).first()
-        if rental:
-            db.session.delete(rental)
-            db.session.commit()
-            response_body = ''
-            return response_body, 204
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
+            if rental:
+                db.session.delete(rental)
+                db.session.commit()
+                response_body = ''
+                return response_body, 204
+            else:
+                response_body = {'error': 'Rental not found'}
+                return response_body, 404
         else:
             response_body = {'error': 'User not found'}
             return response_body, 404

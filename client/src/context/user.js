@@ -24,11 +24,9 @@ function UserProvider({children}) {
               setUser(data);
               setOwnedRentals(data.owned_rentals)
               setBookedRentals(data.rentals)
-              console.log('Fetching amenities...');
               fetch('/amenities')
               .then(r => r.json())
               .then(data => {
-                  console.log('All amenities fetched:', data);
                   setAmenities(data);
               })
               .catch(error => console.error('Error fetching amenities:', error));
@@ -47,8 +45,6 @@ function UserProvider({children}) {
         setBookedRentals([])
       })
     }
-
-    // const filteredBookedRentals = bookedRentals.filter(rental => rental.bookings && rental.bookings.length > 0);
 
     return (
         <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, setBookedRentals, amenities, setAmenities, handleLogout }}>

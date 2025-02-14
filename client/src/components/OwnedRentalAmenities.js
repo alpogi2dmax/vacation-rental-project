@@ -50,8 +50,6 @@ function OwnedRentalAmenities({rentalId, rentalAmenities, onRentalAppendAmenity,
     setShowAllAmenities(prevState => !prevState);
 };
 
-console.log(amenities)
-
   return (
     <div>
       {rentalAmenities && rentalAmenities.length > 0 ? (

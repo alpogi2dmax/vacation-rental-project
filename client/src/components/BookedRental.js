@@ -19,7 +19,9 @@ function BookedRental() {
     useEffect(() => {
         if (user && bookedRentals) {
             const selectedRental = bookedRentals.find(or => or.id == id);
-            setRental(selectedRental);
+            if (selectedRental) {
+                setRental(selectedRental);
+            }
         } else {
             console.log("User or rentals not ready yet.");
         }
@@ -32,6 +34,14 @@ function BookedRental() {
         const year = d.getFullYear(); 
         return `${month}/${day}/${year}`; 
     };
+
+    // const formatDate = (date) => { 
+    //     const [year, month, day] = date.split('-'); 
+    //     const d = new Date(Date.UTC(year, month - 1, day)); 
+    //     const formattedDate = `${String(d.getUTCMonth() + 1)
+    //         .padStart(2, '0')}/${String(d.getUTCDate())
+    //             .padStart(2, '0')}/${d.getUTCFullYear()}`; 
+    //             return formattedDate; };
 
     const handleEditBooking = (bookingData) => {
         console.log(bookingData)
@@ -88,7 +98,7 @@ function BookedRental() {
 
 
     if (!user) {
-        return <p>Loading user data...</p>
+        return <p>Please log in to see this information...</p>
     }
 
     return (
@@ -153,7 +163,7 @@ function BookedRental() {
                     <OwnedRentalReviews reviews={rental.reviews} /> */}
                 </div>
             
-            : <p>Loading...</p>}
+            : <p>Unauthorized...</p>}
         </div>
     )
 }

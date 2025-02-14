@@ -12,8 +12,6 @@ function RentalList() {
         .then(data => setRentals(data))
       }, [])
 
-      console.log(rentals)
-
     return (
         <div>
             {rentals.map(rental => (

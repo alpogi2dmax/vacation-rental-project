@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import './App.css'
 
 function BookedRentalCard({rental}) {
-
-    console.log(rental.bookings)
     
 
     return(

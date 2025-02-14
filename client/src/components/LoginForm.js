@@ -4,7 +4,7 @@ import { UserContext } from '../context/user';
 
 function LoginForm() {
 
-    const { setUser, setOwnedRentals, setBookedRentals } = useContext(UserContext)
+    const { setUser, setOwnedRentals, setBookedRentals, setAmenities } = useContext(UserContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
@@ -23,6 +23,12 @@ function LoginForm() {
                     setUser(user)
                     setOwnedRentals(user.owned_rentals)
                     setBookedRentals(user.rentals)
+                    fetch('/amenities')
+                    .then(r => r.json())
+                    .then(data => {
+                        setAmenities(data);
+                    })
+                    .catch(error => console.error('Error fetching amenities:', error));
                 });
             } else {
                 // Check if response has content before parsing

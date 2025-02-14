@@ -43,8 +43,6 @@ function RentalDetails() {
         setShowAllAmenities(prevState => !prevState);
     };
 
-    console.log(rental)
-
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -121,7 +119,7 @@ function RentalDetails() {
                         </div>
                     </div>
                 </div>
-            : <p>Loading...</p>}
+            : <p>Rental not found...</p>}
         </div>
     );
 }

@@ -9,13 +9,26 @@ function BookingRentalForm({rental}) {
     const { user, bookedRentals, setBookedRentals } = useContext(UserContext)
     const navigate = useNavigate()
 
-    const formatDateForBackend = (date) => {
-        const d = new Date(date);
-        const month = (d.getMonth() + 1).toString().padStart(2, '0');
-        const day = d.getDate().toString().padStart(2, '0');
-        const year = d.getFullYear();
-        return `${month}/${day}/${year}`;
-    };
+    // const formatDateForBackend = (date) => {
+    //     const d = new Date(date);
+    //     const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    //     const day = d.getDate().toString().padStart(2, '0');
+    //     const year = d.getFullYear();
+    //     return `${month}/${day}/${year}`;
+    // };
+
+    // const formatDateForBackend = (date) => {
+    //     const [year, month, day] = date.split('-');
+    //     return `${month}/${day}/${year}`;
+    // };
+
+    const formatDateForBackend = (date) => { 
+        const [year, month, day] = date.split('-'); 
+        const d = new Date(Date.UTC(year, month - 1, day)); 
+        const formattedDate = `${String(d.getUTCMonth() + 1)
+            .padStart(2, '0')}/${String(d.getUTCDate())
+                .padStart(2, '0')}/${d.getUTCFullYear()}`; 
+                return formattedDate; };
 
     const formSchema = yup.object().shape({
         start_date: yup.string().required("Start date is required"),
@@ -56,7 +69,6 @@ function BookingRentalForm({rental}) {
                 name: user.first_name
             };
 
-            console.log(formattedValues)
             fetch("/bookings", {
                 method: "POST",
                 headers: {
@@ -85,7 +97,6 @@ function BookingRentalForm({rental}) {
             })
             .then(() => {
                 navigate('/myaccount')
-                console.log(bookedRentals)
             })
             .catch((error) => {
                 console.log("Error:", error);

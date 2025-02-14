@@ -21,8 +21,6 @@ function MyProfile() {
     const handlePwToggle = () => {
         setIsPwVisible(!isPwVisible)
     }
-    
-    console.log(amenities)
 
         return(
             <div>

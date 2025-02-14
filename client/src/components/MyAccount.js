@@ -1,5 +1,5 @@
 import Login from './Login'
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import OwnedRentalList from './OwnedRentalList';
 import BookedRentalList from './BookedRentalList';
 import { UserContext } from '../context/user';
@@ -7,9 +7,7 @@ import { UserContext } from '../context/user';
 
 function MyAccount() {
 
-  const { user, amenities }= useContext(UserContext) 
-
-  console.log(amenities)
+  const { user }= useContext(UserContext) 
 
     if (user) {
 

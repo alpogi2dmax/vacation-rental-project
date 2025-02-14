@@ -29,8 +29,6 @@ function OwnedRentalDetails() {
 
     function rentalAppendAmenity(amenityID) {
         const data = {id: amenityID}
-        console.log(data)
-        console.log(data)
         fetch(`http://localhost:5555/rentalamenities/${rental.id}`, {
             method: 'PATCH',
             headers: {
@@ -42,7 +40,6 @@ function OwnedRentalDetails() {
         })
         .then((r) => r.json())
         .then(data => {
-            console.log(data)
             setRental(data)
             setOwnedRentals(ownedRentals.map(ownedRental => {
                 if (ownedRental.id === data.id) {
@@ -80,7 +77,7 @@ function OwnedRentalDetails() {
     }
 
     if (!user) {
-        return <p>Loading user data...</p>
+        return <p>Please log in to see this information...</p>
     }
 
     return (
@@ -118,7 +115,7 @@ function OwnedRentalDetails() {
                     <OwnedRentalReviews reviews={rental.reviews} />
                 </div>
             
-            : <p>Loading...</p>}
+            : <p>Unauthorized...</p>}
         </div>
     )
 }
