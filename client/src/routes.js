@@ -26,15 +26,15 @@ const routes = [
                 element: <MyProfile />
             },
             { 
-                path: "/ownedrentaldetails/:id", 
+                path: "/ownedrentals/:id", 
                 element: <OwnedRentalDetails />, 
             }, 
             { 
-                path: "/rentaldetails/:id", 
+                path: "/rentals/:id", 
                 element: <RentalDetails />, 
             }, 
             { 
-                path: "/bookedrental/:id", 
+                path: "/bookedrentals/:id", 
                 element: <BookedRental />, 
             }, 
         ]

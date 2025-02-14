@@ -20,7 +20,6 @@ function BookedRental() {
         if (user && bookedRentals) {
             const selectedRental = bookedRentals.find(or => or.id == id);
             setRental(selectedRental);
-            console.log(selectedRental)
         } else {
             console.log("User or rentals not ready yet.");
         }
@@ -50,9 +49,7 @@ function BookedRental() {
         })
         .then((r) => r.json())
         .then(data => {
-            console.log(data)
             const selectedBookedRental = bookedRentals.find(br => br.id === rental.id)
-            console.log(selectedBookedRental)
             const updatedSelectedRentalBookings = selectedBookedRental.bookings.map(b => b.id === data.id ? data : b)
             const updatedSelectedRental = {...selectedBookedRental, bookings: updatedSelectedRentalBookings}
             setBookedRentals(bookedRentals.map(br => br.id === updatedSelectedRental.id ? updatedSelectedRental : br))

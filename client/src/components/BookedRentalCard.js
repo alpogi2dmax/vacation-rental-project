@@ -9,7 +9,7 @@ function BookedRentalCard({rental}) {
 
     return(
         <div className='bookedrentalcard'>
-            <Link to={`/bookedrental/${rental.id}`}>
+            <Link to={`/bookedrentals/${rental.id}`}>
                 <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>  
             </Link>
             <p>{rental.name}</p>

@@ -37,10 +37,21 @@ function UserProvider({children}) {
         .catch(error => console.error('Fetch error:', error));
       }, []);
 
-    const filteredBookedRentals = bookedRentals.filter(rental => rental.bookings && rental.bookings.length > 0);
+    const handleLogout = () => {
+      fetch(`/logout`, {
+        method: "DELETE",
+      })
+      .then(() => {
+        setUser(null)
+        setOwnedRentals([])
+        setBookedRentals([])
+      })
+    }
+
+    // const filteredBookedRentals = bookedRentals.filter(rental => rental.bookings && rental.bookings.length > 0);
 
     return (
-        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, filteredBookedRentals, setBookedRentals, amenities, setAmenities }}>
+        <UserContext.Provider value={{user, setUser, ownedRentals, setOwnedRentals, bookedRentals, setBookedRentals, amenities, setAmenities, handleLogout }}>
             {children}
         </UserContext.Provider>
     )

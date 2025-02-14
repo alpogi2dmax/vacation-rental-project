@@ -9,7 +9,7 @@ function MyAccount() {
 
   const { user }= useContext(UserContext) 
 
- 
+  console.log(user)
 
     if (user) {
 

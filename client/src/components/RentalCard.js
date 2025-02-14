@@ -5,7 +5,7 @@ function RentalCard({rental}) {
 
     return(
         <div className='rentalcard'>
-            <Link to={`/rentaldetails/${rental.id}`}>
+            <Link to={`/rentals/${rental.id}`}>
                 <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>
             </Link>
             <p>{rental.name}</p>

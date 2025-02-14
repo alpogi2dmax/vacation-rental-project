@@ -110,7 +110,7 @@ function RentalDetails() {
                         <h3>Book This Place!</h3>
                         <div>
                             {!user ? (
-                                <p>Please log in!</p>
+                                <p>Please log in to book this place.</p>
                             ) : (
                                 <BookingRentalForm key={rental.id} rental={rental}/>
                             )

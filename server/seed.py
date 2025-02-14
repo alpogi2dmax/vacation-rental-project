@@ -163,6 +163,17 @@ if __name__ == '__main__':
             owner_id=3
             )
         rentals.append(rental3)
+        rental4 = Rental(
+            name='Boho Chic Retreat w/Patio',
+            address ='553 Boho St',
+            city='Austin',
+            state='TX',
+            description='Welcome to Boho Bungalow, a beautifully remodeled 1-bedroom, 1-bath private loft in NW Austin—perfect for bachelorettes, couples, friends, and weekend getaways!',
+            daily_rate=172,
+            cover_pic='https://i.imgur.com/HDOjxsn.png',
+            owner_id=4
+            )
+        rentals.append(rental4)
         db.session.add_all(rentals)
 
         print("Seeding bookings...")

@@ -9,7 +9,7 @@ function OwnedRentalCard({rental, onDeleteClick}) {
 
     return(
         <div className='rentalcard'>
-            <Link to={`/ownedrentaldetails/${rental.id}`}>
+            <Link to={`/ownedrentals/${rental.id}`}>
                 <img className='imagecard' src={rental.cover_pic} alt={rental.cover_pic}/>  
             </Link>
             <p>{rental.name}</p>

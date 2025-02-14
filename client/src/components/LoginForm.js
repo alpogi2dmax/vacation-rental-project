@@ -43,7 +43,7 @@ function LoginForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='addpropertyform' onSubmit={handleSubmit}>
             <label for="username">Username: </label>
             <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             <br></br>
@@ -51,7 +51,7 @@ function LoginForm() {
             <label for="password">Password: </label>
             <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
             <br></br>
-            <input type="submit" value="Login"/>
+            <input className='button-23' type="submit" value="Login"/>
             {errors.map((err) => (
                 <p key={err}>{err}</p>
         ))}

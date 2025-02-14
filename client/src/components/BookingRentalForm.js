@@ -60,9 +60,18 @@ function BookingRentalForm({rental}) {
             })
             .then((r) => r.json())
             .then((booking) => {
-                const newRentalBookings = [...rental.bookings, booking]
-                const filteredRentalBookings = newRentalBookings.filter(b => b.traveler.id === user.id)
-                const newRental = {...rental, bookings: filteredRentalBookings}
+                // const newRentalBookings = [...rental.bookings, booking]
+                // const filteredRentalBookings = newRentalBookings.filter(b => b.traveler.id === user.id)
+                // const newRental = {...rental, bookings: filteredRentalBookings}
+                
+                //add rental bookings to rental
+                const newBookingArray = []
+                newBookingArray.push(booking)
+                console.log(newBookingArray)
+                const newRental = {...rental, bookings: newBookingArray}
+                console.log(newRental)
+
+
                 const rentalExists = bookedRentals.some(br => br.id === newRental.id);
 
                 if (!rentalExists) {
@@ -70,7 +79,14 @@ function BookingRentalForm({rental}) {
                     setBookedRentals([...bookedRentals, newRental]);
                 } else {
                     // If it exists, update the existing rental
-                    setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
+                    const selectedBookRental = bookedRentals.find(br => br.id == newRental.id)
+                    console.log(selectedBookRental)
+                    const newBookings = [...selectedBookRental.bookings, booking]
+                    console.log(newBookings)
+                    const newSelectedBookRental = {...selectedBookRental, bookings: newBookings}
+                    console.log(newSelectedBookRental)
+                    setBookedRentals(bookedRentals.map(br => br.id === newSelectedBookRental.id ? newSelectedBookRental : br))
+                    // setBookedRentals(bookedRentals.map(br => br.id === newRental.id ? newRental : br));
                 }   
             })
             .then(() => {

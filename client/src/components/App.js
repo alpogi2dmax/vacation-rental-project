@@ -8,14 +8,12 @@ function App() {
 
   return (
     <div className="fontapp">
-      <RentalProvider>
         <UserProvider>
           <NavBar />
           <>
             <Outlet />
           </>
         </UserProvider>
-      </RentalProvider>
     </div>
   );
 }
