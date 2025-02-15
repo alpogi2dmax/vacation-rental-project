@@ -223,8 +223,8 @@ class UserSchema(ma.SQLAlchemySchema):
     # owned_rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'address', 'bookings'))
     owned_rentals = fields.List(fields.Nested(lambda: RentalSchema(only=('id', 'name', 'city', 'address', 'state', 'description', 'daily_rate', 'cover_pic', 'bookings', 'reviews', 'amenities'))))
     # rentals = ma.Nested(lambda: RentalSchema, many=True, only=('id', 'name', 'city', 'amenities', 'bookings'))
-    rentals = ma.Method("get_bookings")
-    # bookings = ma.Nested(lambda: BookingSchema, many=True, only=("id", "start_date", "end_date", "rental"))
+    rentals = ma.Method("get_rentals")
+    bookings = ma.Method("get_bookings")
     
 
     url = ma.Hyperlinks(
@@ -236,7 +236,7 @@ class UserSchema(ma.SQLAlchemySchema):
         }
     )
 
-    def get_bookings(self, user):
+    def get_rentals(self, user):
         rentals = user.rentals
         rental_schema = RentalSchema()
         filtered_rentals = []
@@ -246,6 +246,13 @@ class UserSchema(ma.SQLAlchemySchema):
             rental_data['bookings'] = BookingSchema(many=True).dump(filtered_bookings)
             filtered_rentals.append(rental_data)
         return filtered_rentals
+    
+    def get_bookings(self, user):
+        bookings = user.bookings
+        bookings_schema = BookingSchema(many=True)
+        filtered_bookings = [booking for booking in user.bookings if booking.traveler_id == user.id]
+        booking_data = bookings_schema.dump(filtered_bookings)
+        return booking_data
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)

@@ -1,8 +1,6 @@
 import { useContext } from 'react'
 import { UserContext } from '../context/user'
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import Login from './Login';
 import * as yup from "yup";
 
 function EditUserProfile({onHandleToggle}) {

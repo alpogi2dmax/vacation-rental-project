@@ -198,74 +198,94 @@ class Bookings(Resource):
     #     return response
     
     def post(self):
-        try:
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            try:
 
-            data = request.get_json()
+                data = request.get_json()
 
-            start = datetime.strptime(data['start_date'], '%m/%d/%Y')
-            end = datetime.strptime(data['end_date'], '%m/%d/%Y')
+                start = datetime.strptime(data['start_date'], '%m/%d/%Y')
+                end = datetime.strptime(data['end_date'], '%m/%d/%Y')
 
-            booking = Booking(
-                name = data['name'],
-                start_date = start,
-                end_date = end,
-                traveler_id = data['traveler_id'],
-                rental_id = data['rental_id']
-            )
-            db.session.add(booking)
-            db.session.commit()
-            response = make_response(
-                booking_schema.dump(booking), 202)
-            return response
-        except Exception as e:
-            response_body = {'errors': [str(e)]}
-            return response_body, 400
+                booking = Booking(
+                    name = data['name'],
+                    start_date = start,
+                    end_date = end,
+                    traveler_id = data['traveler_id'],
+                    rental_id = data['rental_id']
+                )
+                db.session.add(booking)
+                db.session.commit()
+                response = make_response(
+                    booking_schema.dump(booking), 202)
+                return response
+            except Exception as e:
+                response_body = {'errors': [str(e)]}
+                return response_body, 400
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
     
 api.add_resource(Bookings, '/bookings')
 
 class BookingsByID(Resource):
 
-    # def get(self, id):
-    #     booking = Booking.query.filter_by(id=id).first()
-    #     response = make_response(
-    #         booking_schema.dump(booking), 200
-    #     )
-    #     return response
+    def get(self, id):
+        booking = Booking.query.filter_by(id=id).first()
+        response = make_response(
+            booking_schema.dump(booking), 200
+        )
+        return response
     
     def patch(self, id):
-        booking = Booking.query.filter_by(id=id).first()
-        data = request.get_json()
-        if booking:
-            try:
-                # Convert start_date and end_date to datetime objects if they are included in the request
-                if 'start_date' in data:
-                    data['start_date'] = datetime.strptime(data['start_date'], '%m/%d/%Y')
-                if 'end_date' in data:
-                    data['end_date'] = datetime.strptime(data['end_date'], '%m/%d/%Y')
-                for attr, value, in data.items():
-                    setattr(booking, attr, value)
-                db.session.add(booking)
-                db.session.commit()
-                response = make_response(
-                booking_schema.dump(booking), 202)
-                return response
-            except ValueError as e:
-                response_body = {'error': 'Invalid date format. Please use MM/DD/YYYY.'}
-                return response_body, 400
-        else:
-            response_body = {'error': 'Booking not found'}
-            return response_body, 404
+        # user_id = session.get('user_id')
+        # print(user_id)
+        # if user_id:
+            # print(user_id)
+            # user = User.query.filter_by(id=user_id).first()
+            booking = Booking.query.filter_by(id=id).first()
+            # booking = next((booking for booking in user.bookings if booking.id==id), None)
+            data = request.get_json()
+            if booking:
+                try:
+                    # Convert start_date and end_date to datetime objects if they are included in the request
+                    if 'start_date' in data:
+                        data['start_date'] = datetime.strptime(data['start_date'], '%m/%d/%Y')
+                    if 'end_date' in data:
+                        data['end_date'] = datetime.strptime(data['end_date'], '%m/%d/%Y')
+                    for attr, value, in data.items():
+                        setattr(booking, attr, value)
+                    db.session.add(booking)
+                    db.session.commit()
+                    response = make_response(
+                    booking_schema.dump(booking), 202)
+                    return response
+                except ValueError as e:
+                    response_body = {'error': 'Invalid date format. Please use MM/DD/YYYY.'}
+                    return response_body, 400
+            else:
+                response_body = {'error': 'Booking not found'}
+                return response_body, 404
+        # else:
+        #     response_body = {'error': 'User not found'}
+        #     return response_body, 404    
         
     def delete(self, id):
-        booking = Booking.query.filter_by(id=id).first()
-        if booking:
-            db.session.delete(booking)
-            db.session.commit()
-            response_body = ''
-            return response_body, 204
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            booking = next((booking for booking in user.bookings if booking.id==id), None)
+            if booking:
+                db.session.delete(booking)
+                db.session.commit()
+                response_body = ''
+                return response_body, 204
+            else:
+                response_body = {'error': 'User not found'}
+                return response_body, 404
         else:
             response_body = {'error': 'User not found'}
-            return response_body, 404
+            return response_body, 404  
+            
         
 api.add_resource(BookingsByID, '/bookings/<int:id>')
 
@@ -277,23 +297,28 @@ class Reviews(Resource):
     #     return response
     
     def post(self):
-        try:
-            data = request.get_json()
-            review = Review(
-                title = data['title'],
-                review = data['review'],
-                reviewer_id = data['reviewer_id'],
-                reviewed_rental_id = data['reviewed_rental_id']
-            )
-            db.session.add(review)
-            db.session.commit()
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            try:
+                data = request.get_json()
+                review = Review(
+                    title = data['title'],
+                    review = data['review'],
+                    reviewer_id = data['reviewer_id'],
+                    reviewed_rental_id = data['reviewed_rental_id']
+                )
+                db.session.add(review)
+                db.session.commit()
 
-            response = make_response(
-                review_schema.dump(review), 201)
-            return response
-        except Exception as e:
-            response_body = {'errors': [str(e)]}
-            return response_body, 400
+                response = make_response(
+                    review_schema.dump(review), 201)
+                return response
+            except Exception as e:
+                response_body = {'errors': [str(e)]}
+                return response_body, 400
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404  
     
 api.add_resource(Reviews, '/reviews')
 
@@ -403,25 +428,31 @@ class RentalByIDAppendAmenityByID(Resource):
 
     def patch(self, id):
 
-        rental = Rental.query.filter_by(id=id).first()
-        data = request.get_json()
+        # user = User.query.filter_by(id=session['user_id']).first()
+        # breakpoint()
+        # if user:
+            # rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
+            rental = Rental.query.filter_by(id=id).first()
+            data = request.get_json()
 
-        # Correct the filter method to filter_by instead of filter
-        amenity = Amenity.query.filter_by(id=data['id']).first()
+            # Correct the filter method to filter_by instead of filter
+            amenity = Amenity.query.filter_by(id=data['id']).first()
 
-        if not rental:
-            response_body = {'error': 'Rental not found'}
-            return response_body, 404
+            if not rental:
+                response_body = {'error': 'Rental not found'}
+                return response_body, 404
 
-        if not amenity:
-            response_body = {'error': 'Amenity not found'}
-            return response_body, 404
+            if not amenity:
+                response_body = {'error': 'Amenity not found'}
+                return response_body, 404
 
-        rental.amenities.append(amenity)
-        db.session.commit()
-        response = make_response(rental_schema.dump(rental), 202)
-        return response
-            
+            rental.amenities.append(amenity)
+            db.session.commit()
+            response = make_response(rental_schema.dump(rental), 202)
+            return response
+        # else:
+        #     response_body = {'error': 'User not found'}
+        #     return response_body, 404
             
 
 api.add_resource(RentalByIDAppendAmenityByID, '/rentalamenities/<int:id>')
