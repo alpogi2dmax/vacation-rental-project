@@ -372,20 +372,25 @@ class Amenities(Resource):
         return response
     
     def post(self):
-        try:
-            data = request.get_json()
-            amenity = Amenity(
-                name = data['name']
-            )
-            db.session.add(amenity)
-            db.session.commit()
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            try:
+                data = request.get_json()
+                amenity = Amenity(
+                    name = data['name']
+                )
+                db.session.add(amenity)
+                db.session.commit()
 
-            response = make_response(
-                amenity_schema.dump(amenity), 201)
-            return response
-        except Exception as e:
-            response_body = {'errors': [str(e)]}
-            return response_body, 400
+                response = make_response(
+                    amenity_schema.dump(amenity), 201)
+                return response
+            except Exception as e:
+                response_body = {'errors': [str(e)]}
+                return response_body, 400
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404   
 
 api.add_resource(Amenities, '/amenities')
 
