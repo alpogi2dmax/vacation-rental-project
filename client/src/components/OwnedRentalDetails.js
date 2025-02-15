@@ -37,6 +37,7 @@ function OwnedRentalDetails() {
             body: JSON.stringify({
                 id: amenityID
             }),
+            credentials: 'include'
         })
         .then((r) => r.json())
         .then(data => {
@@ -62,6 +63,7 @@ function OwnedRentalDetails() {
             body: JSON.stringify({
                 id: amenityID
             }),
+            credentials: 'include'
         })
         .then((r) => r.json())
         .then(data => {

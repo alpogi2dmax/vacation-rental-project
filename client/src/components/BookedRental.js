@@ -56,6 +56,7 @@ function BookedRental() {
                 rental_id: rental.id,
                 traveler_id: user.id
             }),
+            credentials: 'include',
         })
         .then((r) => r.json())
         .then(data => {

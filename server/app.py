@@ -115,28 +115,33 @@ class Rentals(Resource):
         return response
     
     def post(self):
-        try:
-            data = request.get_json()
-            rental = Rental(
-                name = data['name'],
-                address = data['address'],
-                city = data['city'],
-                state = data['state'],
-                daily_rate = data['daily_rate'],
-                description = data['description'],
-                cover_pic = data['cover_pic'],
-                owner_id = data['owner_id']
-            )
-            if rental.daily_rate < 1:
-                raise ValueError('Daily rate must be over 0')
-            db.session.add(rental)
-            db.session.commit()
-            response = make_response(
-                rental_schema.dump(rental), 201)
-            return response
-        except Exception as e:
-            response_body = {'errors': [str(e)]}
-            return response_body, 400
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            try:
+                data = request.get_json()
+                rental = Rental(
+                    name = data['name'],
+                    address = data['address'],
+                    city = data['city'],
+                    state = data['state'],
+                    daily_rate = data['daily_rate'],
+                    description = data['description'],
+                    cover_pic = data['cover_pic'],
+                    owner_id = data['owner_id']
+                )
+                if rental.daily_rate < 1:
+                    raise ValueError('Daily rate must be over 0')
+                db.session.add(rental)
+                db.session.commit()
+                response = make_response(
+                    rental_schema.dump(rental), 201)
+                return response
+            except Exception as e:
+                response_body = {'errors': [str(e)]}
+                return response_body, 400   
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
     
 api.add_resource(Rentals, '/rentals')
 
@@ -230,21 +235,19 @@ api.add_resource(Bookings, '/bookings')
 
 class BookingsByID(Resource):
 
-    def get(self, id):
-        booking = Booking.query.filter_by(id=id).first()
-        response = make_response(
-            booking_schema.dump(booking), 200
-        )
-        return response
+    # def get(self, id):
+    #     booking = Booking.query.filter_by(id=id).first()
+    #     response = make_response(
+    #         booking_schema.dump(booking), 200
+    #     )
+    #     return response
     
     def patch(self, id):
-        # user_id = session.get('user_id')
-        # print(user_id)
-        # if user_id:
-            # print(user_id)
-            # user = User.query.filter_by(id=user_id).first()
-            booking = Booking.query.filter_by(id=id).first()
-            # booking = next((booking for booking in user.bookings if booking.id==id), None)
+        user = User.query.filter_by(id=session['user_id']).first()
+        
+        if user:
+            # booking = Booking.query.filter_by(id=id).first()
+            booking = next((booking for booking in user.bookings if booking.id==id), None)
             data = request.get_json()
             if booking:
                 try:
@@ -266,9 +269,9 @@ class BookingsByID(Resource):
             else:
                 response_body = {'error': 'Booking not found'}
                 return response_body, 404
-        # else:
-        #     response_body = {'error': 'User not found'}
-        #     return response_body, 404    
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404    
         
     def delete(self, id):
         user = User.query.filter_by(id=session['user_id']).first()
@@ -428,10 +431,9 @@ class RentalByIDAppendAmenityByID(Resource):
 
     def patch(self, id):
 
-        # user = User.query.filter_by(id=session['user_id']).first()
-        # breakpoint()
-        # if user:
-            # rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
             rental = Rental.query.filter_by(id=id).first()
             data = request.get_json()
 
@@ -450,9 +452,9 @@ class RentalByIDAppendAmenityByID(Resource):
             db.session.commit()
             response = make_response(rental_schema.dump(rental), 202)
             return response
-        # else:
-        #     response_body = {'error': 'User not found'}
-        #     return response_body, 404
+        else:
+            response_body = {'error': 'User not found'}
+            return response_body, 404
             
 
 api.add_resource(RentalByIDAppendAmenityByID, '/rentalamenities/<int:id>')
@@ -460,29 +462,35 @@ api.add_resource(RentalByIDAppendAmenityByID, '/rentalamenities/<int:id>')
 class RentalByIDRemoveAmenityByID(Resource):
 
     def patch(self, id):
-        rental = Rental.query.filter_by(id=id).first()
-        data = request.get_json()
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user:
+            # rental = Rental.query.filter_by(id=id).first()
+            rental = next((rental for rental in user.owned_rentals if rental.id == id), None)
+            data = request.get_json()
 
-        amenity = Amenity.query.filter_by(id=data['id']).first()
+            amenity = Amenity.query.filter_by(id=data['id']).first()
 
-        if not rental:
-            response_body = {'error': 'Rental not found'}
-            return response_body, 404
+            if not rental:
+                response_body = {'error': 'Rental not found'}
+                return response_body, 404
 
-        if not amenity:
-            response_body = {'error': 'Amenity not found'}
-            return response_body, 404
+            if not amenity:
+                response_body = {'error': 'Amenity not found'}
+                return response_body, 404
 
-        # Check if amenity is already in the rental's amenities
-        if amenity in rental.amenities:
-            rental.amenities.remove(amenity)
-            db.session.commit()
-            response = make_response(rental_schema.dump(rental), 202)
+            # Check if amenity is already in the rental's amenities
+            if amenity in rental.amenities:
+                rental.amenities.remove(amenity)
+                db.session.commit()
+                response = make_response(rental_schema.dump(rental), 202)
+            else:
+                response_body = {'error': 'Amenity not associated with this rental'}
+                return response_body, 404
+
+            return response
         else:
-            response_body = {'error': 'Amenity not associated with this rental'}
+            response_body = {'error': 'User not found'}
             return response_body, 404
-
-        return response
 
 api.add_resource(RentalByIDRemoveAmenityByID, '/rentalamenities/<int:id>/remove')
 
