@@ -6,7 +6,7 @@ import Login from './Login';
 
 function MyProfile() {
 
-    const {user, amenities} = useContext(UserContext)
+    const {user} = useContext(UserContext)
     const [isVisible, setIsVisible] = useState(true)
     const [isPwVisible, setIsPwVisible] = useState(true)
 
