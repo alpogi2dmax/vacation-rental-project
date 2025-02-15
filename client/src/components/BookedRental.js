@@ -27,13 +27,13 @@ function BookedRental() {
         }
     }, [id, user, bookedRentals]);
 
-    const formatDate = (date) => { 
-        const d = new Date(date); 
-        const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
-        const day = d.getDate().toString().padStart(2, '0'); 
-        const year = d.getFullYear(); 
-        return `${month}/${day}/${year}`; 
-    };
+    // const formatDate = (date) => { 
+    //     const d = new Date(date); 
+    //     const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
+    //     const day = d.getDate().toString().padStart(2, '0'); 
+    //     const year = d.getFullYear(); 
+    //     return `${month}/${day}/${year}`; 
+    // };
 
     // const formatDate = (date) => { 
     //     const [year, month, day] = date.split('-'); 
@@ -42,6 +42,14 @@ function BookedRental() {
     //         .padStart(2, '0')}/${String(d.getUTCDate())
     //             .padStart(2, '0')}/${d.getUTCFullYear()}`; 
     //             return formattedDate; };
+
+    const formatDate = (date) => { 
+        const [year, month, day] = date.slice(0, 10).split('-'); 
+        const d = new Date(Date.UTC(year, month - 1, day)); 
+        const formattedDate = `${String(d.getUTCMonth() + 1)
+            .padStart(2, '0')}/${String(d.getUTCDate())
+                .padStart(2, '0')}/${d.getUTCFullYear()}`; 
+                return formattedDate; };
 
     const handleEditBooking = (bookingData) => {
         console.log(bookingData)
