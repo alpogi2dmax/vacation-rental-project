@@ -130,5 +130,11 @@ The rental list will showcase all rentals in the database. Each rental is mapped
 ### My Account
 The site will check if there is a user. If there is none, the site will redirect to log in which will give the option to login if an existing user or sign up to create a user profile then login. Once logged in, my account will feature owned properties and booked vacation rentals
 
-- Owned Properties
-The 
+### Owned Properties
+The Owned Properties list will display all properties by the owner in individual owned properties card. Upon clicking the image, the site will redirect to the owned property details page which will show the the property details, amenities, reviews, and bookings. The user as the owner can edit the property details as well as add or remove amenities.
+
+### Vacation Bookings
+The Vacation Bookings section will list all rentals the user as the traveler booked. It will display the start and date of the rental booked if it is just one booking or it will will show the bookings count if it is multiple bookings. When the image is clicked, the site will redirect to the booked rental page which will show the rental details, amenities and bookings. The user as the traveler can edit bookings as well as cancel bookings.
+
+### My Profile
+The My Profile page will show the user details such as email address and first and last name. The user can edit the profile in this page. The user can also update the password.
