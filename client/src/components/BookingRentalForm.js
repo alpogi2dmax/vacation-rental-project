@@ -9,19 +9,6 @@ function BookingRentalForm({rental}) {
     const { user, bookedRentals, setBookedRentals } = useContext(UserContext)
     const navigate = useNavigate()
 
-    // const formatDateForBackend = (date) => {
-    //     const d = new Date(date);
-    //     const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    //     const day = d.getDate().toString().padStart(2, '0');
-    //     const year = d.getFullYear();
-    //     return `${month}/${day}/${year}`;
-    // };
-
-    // const formatDateForBackend = (date) => {
-    //     const [year, month, day] = date.split('-');
-    //     return `${month}/${day}/${year}`;
-    // };
-
     const formatDateForBackend = (date) => { 
         const [year, month, day] = date.split('-'); 
         const d = new Date(Date.UTC(year, month - 1, day)); 
@@ -51,16 +38,8 @@ function BookingRentalForm({rental}) {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // Convert the start_date and end_date to the desired format
-            console.log(values.start_date)
-            console.log(values.end_date)
             const formattedStartDate = formatDateForBackend(values.start_date)
             const formattedEndDate = formatDateForBackend(values.end_date)
-            console.log(formattedStartDate)
-            console.log(formattedEndDate)
-            console.log("Original start_date:", values.start_date);
-            const dateObject = new Date(values.start_date);
-            console.log("Date object:", dateObject);
-            console.log("Formatted start_date:", formattedStartDate);
      
             const formattedValues = {
                 ...values,

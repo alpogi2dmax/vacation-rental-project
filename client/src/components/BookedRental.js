@@ -8,7 +8,7 @@ import BookedRentalBooking from "./BookedRentalBooking";
 
 function BookedRental() {
 
-    const { user, bookedRentals, filteredBookedRentals, handleUpdateBookedRentals, setBookedRentals } = useContext(UserContext)
+    const { user, bookedRentals, setBookedRentals } = useContext(UserContext)
     const { id } = useParams();
     const [rental, setRental] = useState(null)
     const [showAllAmenities, setShowAllAmenities] = useState(false);
@@ -26,22 +26,6 @@ function BookedRental() {
             console.log("User or rentals not ready yet.");
         }
     }, [id, user, bookedRentals]);
-
-    // const formatDate = (date) => { 
-    //     const d = new Date(date); 
-    //     const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
-    //     const day = d.getDate().toString().padStart(2, '0'); 
-    //     const year = d.getFullYear(); 
-    //     return `${month}/${day}/${year}`; 
-    // };
-
-    // const formatDate = (date) => { 
-    //     const [year, month, day] = date.split('-'); 
-    //     const d = new Date(Date.UTC(year, month - 1, day)); 
-    //     const formattedDate = `${String(d.getUTCMonth() + 1)
-    //         .padStart(2, '0')}/${String(d.getUTCDate())
-    //             .padStart(2, '0')}/${d.getUTCFullYear()}`; 
-    //             return formattedDate; };
 
     const formatDate = (date) => { 
         const [year, month, day] = date.slice(0, 10).split('-'); 
@@ -78,7 +62,6 @@ function BookedRental() {
 
 
     const handleDeleteBooking = (booking) => {
-        console.log(booking);
         fetch(`/bookings/${booking.id}`, {
             method: "DELETE",
         })
